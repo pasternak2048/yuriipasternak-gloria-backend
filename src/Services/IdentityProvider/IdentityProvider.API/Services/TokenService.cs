@@ -12,27 +12,26 @@ namespace IdentityProvider.API.Services
 {
 	public class TokenService : ITokenService
 	{
-		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly JwtSettings _jwtSettings;
 
-		public TokenService(UserManager<ApplicationUser> userManager, IOptions<JwtSettings> jwtOptions)
+		public TokenService(IOptions<JwtSettings> jwtOprions)
 		{
-			_userManager = userManager;
-			_jwtSettings = jwtOptions.Value;
+			_jwtSettings = jwtOprions.Value;
 		}
 
-		public async Task<string> GenerateTokenAsync(ApplicationUser user)
+		public async Task<string> GenerateTokenAsync(ApplicationUser user, UserManager<ApplicationUser> userManager)
 		{
-			var userRoles = await _userManager.GetRolesAsync(user);
+			var userRoles = await userManager.GetRolesAsync(user);
 
 			var claims = new List<Claim>
 			{
 				new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
 				new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
-				new Claim(ClaimTypes.Name, user.UserName ?? "")
+				new Claim(ClaimTypes.Name, user.UserName ?? ""),
+				new Claim(ClaimTypes.GivenName, user.FirstName ?? ""),
+				new Claim(ClaimTypes.Surname, user.LastName ?? ""),
 			};
 
-			// Add Roles
 			claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
 
 			var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));

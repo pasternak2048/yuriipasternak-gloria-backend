@@ -1,4 +1,5 @@
-﻿using IdentityProvider.API.Models.DTOs;
+﻿using BuildingBlocks.Exceptions;
+using IdentityProvider.API.Models.DTOs;
 using IdentityProvider.API.Models.Identity;
 using IdentityProvider.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -25,20 +26,26 @@ namespace IdentityProvider.API.Controllers
 		[HttpPost("login")]
 		public async Task<IActionResult> Login([FromBody] LoginDto dto)
 		{
+			if (dto == null)
+			{
+				throw new UnauthorizedException("Unauthorized access", "No credentials provided.");
+			}
+
 			var user = await _userManager.FindByEmailAsync(dto.Email);
 
 			if (user == null)
 			{
-				return Unauthorized("User not found");
+				throw new NotFoundException("User not found.");
 			}
 
 			var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, false);
+
 			if (!result.Succeeded)
 			{
-				return Unauthorized("Wrong password");
+				throw new UnauthorizedException("Unauthorized access", "Wrong password.");
 			}
 
-			var token = await _tokenService.GenerateTokenAsync(user);
+			var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 			var roles = await _userManager.GetRolesAsync(user);
 
 			return Ok(new TokenResponseDto
@@ -57,11 +64,13 @@ namespace IdentityProvider.API.Controllers
 			var existingUser = await _userManager.FindByEmailAsync(dto.Email);
 			if (existingUser != null)
 			{
-				return BadRequest("User with this email already exists");
+				throw new BadRequestException("User with this email already exists.");
 			}
 				
 			var user = new ApplicationUser
 			{
+				FirstName = dto.FirstName,
+				LastName = dto.LastName,
 				UserName = dto.UserName,
 				Email = dto.Email
 			};
@@ -74,12 +83,12 @@ namespace IdentityProvider.API.Controllers
 				{
 					//_logger.LogError("Error creating user: {Error}", error.Description);
 				}
-				return BadRequest("Failed to create user");
+				throw new BadRequestException("Failed to create user.");
 			}
 
 			await _userManager.AddToRoleAsync(user, "User");
 
-			var token = await _tokenService.GenerateTokenAsync(user);
+			var token = await _tokenService.GenerateTokenAsync(user, _userManager);
 			var roles = await _userManager.GetRolesAsync(user);
 
 			return Ok(new TokenResponseDto

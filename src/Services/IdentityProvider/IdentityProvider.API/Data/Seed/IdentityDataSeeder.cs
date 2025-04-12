@@ -1,5 +1,6 @@
 ﻿using IdentityProvider.API.Models.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IdentityProvider.API.Data.Seed
 {
@@ -8,6 +9,10 @@ namespace IdentityProvider.API.Data.Seed
 		public static async Task SeedAsync(IServiceProvider serviceProvider)
 		{
 			using var scope = serviceProvider.CreateScope();
+
+			var context = scope.ServiceProvider.GetRequiredService<IdentityProviderDbContext>();
+
+			context.Database.MigrateAsync().GetAwaiter().GetResult();
 
 			var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 			var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
@@ -33,7 +38,9 @@ namespace IdentityProvider.API.Data.Seed
 				{
 					UserName = "admin",
 					Email = adminEmail,
-					EmailConfirmed = true
+					EmailConfirmed = true,
+					FirstName = "Admin",
+					LastName = "Admin"
 				};
 
 				var result = await userManager.CreateAsync(admin, "Admin123!");
