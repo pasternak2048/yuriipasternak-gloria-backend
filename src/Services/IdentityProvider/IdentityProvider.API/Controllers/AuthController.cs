@@ -52,6 +52,8 @@ namespace IdentityProvider.API.Controllers
 			{
 				Token = token,
 				UserId = user.Id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
 				Email = user.Email!,
 				UserName = user.UserName!,
 				Roles = roles.ToList()
@@ -95,6 +97,8 @@ namespace IdentityProvider.API.Controllers
 			{
 				Token = token,
 				UserId = user.Id,
+				FirstName = user.FirstName,
+				LastName = user.LastName,
 				Email = user.Email!,
 				UserName = user.UserName!,
 				Roles = roles.ToList()
