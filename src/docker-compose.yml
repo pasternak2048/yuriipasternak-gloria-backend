@@ -1,4 +1,7 @@
 services:
+  catalogdb:
+    image: mongo:latest
+
   identityproviderdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
@@ -14,3 +17,5 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
+volumes:
+  mongodb_catalog:

@@ -1,7 +1,10 @@
 ﻿using BuildingBlocks.Exceptions.Handler;
 using Catalog.API.Configurations;
+using Catalog.API.Data;
+using Catalog.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Driver;
 using System.Text;
 
 namespace Catalog.API.Extensions
@@ -49,6 +52,17 @@ namespace Catalog.API.Extensions
 			services.AddExceptionHandler<CustomExceptionHandler>();
 		}
 
+		public static IServiceCollection AddMongoServices(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddTransient<RealtyDataSeeder>();
+			services.AddTransient<DatabaseInitializer>();
+
+			var settings = configuration.GetSection("MongoSettings").Get<MongoSettings>();
+			services.AddSingleton(settings);
+			services.AddSingleton<IMongoClient>(_ => new MongoClient(settings.ConnectionString));
+			return services;
+		}
+
 		public static WebApplication UseExceptionHandlerServices(this WebApplication app)
 		{
 			app.UseExceptionHandler(options =>
@@ -57,6 +71,15 @@ namespace Catalog.API.Extensions
 			});
 
 			return app;
+		}
+
+		public static async Task InitialiseDatabaseAsync(this WebApplication app)
+		{
+			using var scope = app.Services.CreateScope();
+
+			var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
+
+			await initializer.InitializeAsync();
 		}
 	}
 }
