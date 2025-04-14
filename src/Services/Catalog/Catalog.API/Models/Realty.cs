@@ -4,7 +4,7 @@ using MongoDB.Bson;
 
 namespace Catalog.API.Models
 {
-	public class Realty
+	public class Realty : AuditableEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]

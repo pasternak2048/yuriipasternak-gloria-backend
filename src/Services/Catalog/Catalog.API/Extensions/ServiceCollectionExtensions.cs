@@ -1,85 +1,14 @@
-﻿using BuildingBlocks.Exceptions.Handler;
-using Catalog.API.Configurations;
-using Catalog.API.Data;
-using Catalog.API.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
-using System.Text;
-
-namespace Catalog.API.Extensions
+﻿namespace Catalog.API.Extensions
 {
 	public static class ServiceCollectionExtensions
 	{
-		public static void AddJwtServices(this IServiceCollection services, IConfiguration configuration)
+		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-				.AddJwtBearer(options =>
-				{
-					var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
-
-					options.RequireHttpsMetadata = false;
-					options.SaveToken = true;
-					options.TokenValidationParameters = new TokenValidationParameters
-					{
-						ValidateIssuer = true,
-						ValidateAudience = true,
-						ValidIssuer = jwtSettings.Issuer,
-						ValidAudience = jwtSettings.Audience,
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
-						ValidateIssuerSigningKey = true
-					};
-				});
-
-			services.AddAuthorization();
-		}
-
-		public static void AddCorsPolicy(this IServiceCollection services)
-		{
-			services.AddCors(opt =>
-			{
-				opt.AddDefaultPolicy(builder => builder
-					.AllowAnyOrigin()
-					.AllowAnyMethod()
-					.AllowAnyHeader());
-			});
-		}
-
-		public static void AddExceptionHandlerServices(this IServiceCollection services)
-		{
-			services.AddExceptionHandler<CustomExceptionHandler>();
-		}
-
-		public static IServiceCollection AddMongoServices(this IServiceCollection services, IConfiguration configuration)
-		{
-			services.AddTransient<RealtyDataSeeder>();
-			services.AddTransient<DatabaseInitializer>();
-
-			var settings = configuration.GetSection("MongoSettings").Get<MongoSettings>();
-			services.AddSingleton(settings);
-			services.AddSingleton<IMongoClient>(_ => new MongoClient(settings.ConnectionString));
-			return services;
-		}
-
-		public static WebApplication UseExceptionHandlerServices(this WebApplication app)
-		{
-			app.UseExceptionHandler(options =>
-			{
-
-			});
-
-			return app;
-		}
-
-		public static async Task InitialiseDatabaseAsync(this WebApplication app)
-		{
-			using var scope = app.Services.CreateScope();
-
-			var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer>();
-
-			await initializer.InitializeAsync();
+			services.AddCorsPolicy();
+			services.AddJwtAuthentication(configuration);
+			services.AddMongoInfrastructure(configuration);
+			services.AddHttpContextServices();
+			services.AddExceptionHandlerServices();
 		}
 	}
 }
