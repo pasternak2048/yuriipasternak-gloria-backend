@@ -7,3 +7,10 @@ services:
     build:
       context: .
       dockerfile: Services/IdentityProvider/IdentityProvider.API/Dockerfile
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+
