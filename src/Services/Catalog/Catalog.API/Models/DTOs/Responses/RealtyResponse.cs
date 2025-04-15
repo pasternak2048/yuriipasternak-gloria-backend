@@ -12,7 +12,7 @@ namespace Catalog.API.Models.DTOs.Responses
 
 		public HeatingType HeatingType { get; set; }
 
-		public RealtyStatus RealtyStatus { get; set; }
+		public RealtyStatus Status { get; set; }
 
 		public double Area { get; set; }
 
@@ -22,7 +22,7 @@ namespace Catalog.API.Models.DTOs.Responses
 
 		public int Baths { get; set; }
 
-		public DateTimeOffset BuildDate { get; set; }
+		public DateTime BuildDate { get; set; }
 
 		public string FullAddress { get; set; } = null!;
 	}

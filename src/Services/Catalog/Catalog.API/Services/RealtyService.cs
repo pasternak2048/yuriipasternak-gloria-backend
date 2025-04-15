@@ -37,7 +37,10 @@ namespace Catalog.API.Services
 			await _repository.CreateAsync(entity, cancellationToken);
 		}
 
-		public Task DeleteAsync(Guid id, CancellationToken cancellationToken) => _repository.DeleteAsync(id, cancellationToken);
+		public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+		{
+			return _repository.DeleteAsync(id, cancellationToken);
+		}
 
 		public async Task<PaginatedResult<RealtyResponse>> GetFilteredAsync(GetRealtiesRequest request, CancellationToken cancellationToken)
 		{
