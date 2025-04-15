@@ -1,4 +1,6 @@
-﻿using Catalog.API.Models.DTOs.Requests;
+﻿using BuildingBlocks.Pagination;
+using Catalog.API.Models.DTOs.Requests;
+using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,35 +17,43 @@ namespace Catalog.API.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
-		public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
+		public async Task<ActionResult<List<RealtyResponse>>> GetAll(CancellationToken cancellationToken)
 		{
-			var realties = await _realtyService.GetAllAsync(cancellationToken);
-			return Ok(realties);
+			var result = await _realtyService.GetAllAsync(cancellationToken);
+			return Ok(result);
 		}
 
-		[HttpGet("{id}")]
-		[Authorize]
-		public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
+		[HttpGet("{id:guid}")]
+		public async Task<ActionResult<RealtyResponse>> GetById(Guid id, CancellationToken cancellationToken)
 		{
-			var realty = await _realtyService.GetByIdAsync(id, cancellationToken);
-			return realty is null ? NotFound() : Ok(realty);
+			var result = await _realtyService.GetByIdAsync(id, cancellationToken);
+			if (result is null)
+				return NotFound();
+
+			return Ok(result);
 		}
 
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> Create([FromBody] CreateRealtyRequest request, CancellationToken cancellationToken)
+		public async Task<IActionResult> Create(CreateRealtyRequest request, CancellationToken cancellationToken)
 		{
 			await _realtyService.CreateAsync(request, cancellationToken);
-			return CreatedAtAction(nameof(GetAll), null);
+			return NoContent();
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("{id:guid}")]
 		[Authorize]
 		public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
 		{
 			await _realtyService.DeleteAsync(id, cancellationToken);
 			return NoContent();
+		}
+
+		[HttpGet("filtered")]
+		public async Task<ActionResult<PaginatedResult<RealtyResponse>>> GetFiltered([FromQuery] GetRealtiesRequest request, CancellationToken cancellationToken)
+		{
+			var result = await _realtyService.GetFilteredAsync(request, cancellationToken);
+			return Ok(result);
 		}
 	}
 }

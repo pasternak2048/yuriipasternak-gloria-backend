@@ -46,6 +46,12 @@ namespace BuildingBlocks.Exceptions.Handler
 					exception.GetType().Name,
 					context.Response.StatusCode = StatusCodes.Status401Unauthorized
 				),
+				ForbiddenAccessException =>
+				(
+					exception.Message,
+					exception.GetType().Name,
+					context.Response.StatusCode = StatusCodes.Status403Forbidden
+				),
 				_ =>
 				(
 					exception.Message,

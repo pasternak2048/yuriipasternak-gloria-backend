@@ -5,6 +5,7 @@ using Catalog.API.Models;
 using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Services.Interfaces;
 using AutoMapper;
+using BuildingBlocks.Exceptions;
 
 namespace Catalog.API.Services
 {
@@ -12,11 +13,13 @@ namespace Catalog.API.Services
 	{
 		private readonly IRealtyRepository _repository;
 		private readonly IMapper _mapper;
+		private readonly IUserContextService _userContextService;
 
-		public RealtyService(IRealtyRepository repository, IMapper mapper)
+		public RealtyService(IRealtyRepository repository, IMapper mapper, IUserContextService userContextService)
 		{
 			_repository = repository;
 			_mapper = mapper;
+			_userContextService = userContextService;
 		}
 
 		public async Task<List<RealtyResponse>> GetAllAsync(CancellationToken cancellationToken)
@@ -37,9 +40,22 @@ namespace Catalog.API.Services
 			await _repository.CreateAsync(entity, cancellationToken);
 		}
 
-		public Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 		{
-			return _repository.DeleteAsync(id, cancellationToken);
+			var realty = await _repository.GetByIdAsync(id, cancellationToken);
+			if (realty is null)
+			{
+				throw new NotFoundException($"Realty with id {id} not found.");
+			}
+
+			var currentUserId = _userContextService.GetUserId();
+
+			if (realty.CreatedBy != currentUserId)
+			{
+				throw new ForbiddenAccessException("You are not the owner of this realty.");
+			}
+
+			await _repository.DeleteAsync(id, cancellationToken);
 		}
 
 		public async Task<PaginatedResult<RealtyResponse>> GetFilteredAsync(GetRealtiesRequest request, CancellationToken cancellationToken)
