@@ -3,6 +3,7 @@ using Catalog.API.Services;
 using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Repositories;
 using System.Reflection;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace Catalog.API.Extensions
 {
@@ -16,10 +17,17 @@ namespace Catalog.API.Extensions
 			services.AddHttpContextServices();
 			services.AddExceptionHandlerServices();
 			services.AddSwaggerDocumentation();
+			services.AddDistributedCacheServices(configuration);
 
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddScoped<IRealtyService, RealtyService>();
-			services.AddScoped<IRealtyRepository, RealtyRepository>();
+			services.AddScoped<RealtyRepository>();
+			services.AddScoped<IRealtyRepository>(provider =>
+				new CachedRealtyRepository(
+					provider.GetRequiredService<RealtyRepository>(),
+					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
+				));
 		}
 	}
 }

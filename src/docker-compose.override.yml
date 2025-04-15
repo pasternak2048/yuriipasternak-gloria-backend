@@ -1,4 +1,14 @@
 services:
+  identityproviderdb:
+    container_name: identityproviderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=SwN12345678
+      - MSSQL_PID=Express
+    restart: always
+    ports:
+      - "1433:1433"
+
   catalogdb:
     container_name: catalogdb
     environment:
@@ -11,15 +21,11 @@ services:
     volumes:
       - mongodb_catalog:/data/db
 
-  identityproviderdb:
-    container_name: identityproviderdb
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=SwN12345678
-      - MSSQL_PID=Express
+  distributedcache:
+    container_name: distributedcache
     restart: always
     ports:
-      - "1433:1433"
+      - "6379:6379"
 
   identityprovider.api:
     environment:
@@ -37,13 +43,18 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   catalog.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
       - MongoSettings__ConnectionString=mongodb://root:example@catalogdb:27017
       - MongoSettings__DatabaseName=CatalogDb
+    depends_on:
+      - catalogdb
+      - distributedcache
     ports:
       - "6002:8080"
       - "6062:8081"

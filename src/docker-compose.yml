@@ -1,9 +1,12 @@
 services:
+  identityproviderdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
   catalogdb:
     image: mongo:latest
 
-  identityproviderdb:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  distributedcache:
+    image: redis
 
   identityprovider.api:
     image: ${DOCKER_REGISTRY-}identityproviderapi
