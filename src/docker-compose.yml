@@ -8,6 +8,12 @@ services:
   distributedcache:
     image: redis
 
+  yarpapigatewaydesktop:
+    image: ${DOCKER_REGISTRY-}yarpapigatewaydesktop
+    build:
+      context: .
+      dockerfile: ApiGateways/YarpApiGatewayDesktop/Dockerfile
+
   identityprovider.api:
     image: ${DOCKER_REGISTRY-}identityproviderapi
     build:

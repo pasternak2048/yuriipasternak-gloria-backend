@@ -10,6 +10,8 @@ var app = builder.Build();
 app.UseCustomMiddlewares();
 app.MapControllers();
 
+app.UseCors("AllowFromGateway");
+
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();

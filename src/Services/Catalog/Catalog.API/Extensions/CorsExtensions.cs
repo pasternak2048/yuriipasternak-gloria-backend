@@ -10,6 +10,14 @@
 					builder.AllowAnyOrigin()
 						   .AllowAnyMethod()
 						   .AllowAnyHeader());
+
+				options.AddPolicy("AllowFromGateway", policy =>
+				{
+					policy.WithOrigins("https://localhost:6061")
+						  .AllowAnyMethod()
+						  .AllowAnyHeader()
+						  .AllowCredentials();
+				});
 			});
 		}
 	}

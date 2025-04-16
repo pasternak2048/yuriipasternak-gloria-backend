@@ -4,12 +4,20 @@
 	{
 		public static void AddCorsPolicy(this IServiceCollection services)
 		{
-			services.AddCors(opt =>
+			services.AddCors(options =>
 			{
-				opt.AddDefaultPolicy(builder =>
+				options.AddDefaultPolicy(builder =>
 					builder.AllowAnyOrigin()
 						   .AllowAnyMethod()
 						   .AllowAnyHeader());
+
+				options.AddPolicy("AllowFromGateway", policy =>
+				 {
+					 policy.WithOrigins("https://localhost:6061")
+						   .AllowAnyMethod()
+						   .AllowAnyHeader()
+						   .AllowCredentials();
+				 });
 			});
 		}
 	}
