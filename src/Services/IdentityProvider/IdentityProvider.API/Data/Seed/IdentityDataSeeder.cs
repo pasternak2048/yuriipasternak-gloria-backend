@@ -36,6 +36,7 @@ namespace IdentityProvider.API.Data.Seed
 			{
 				var admin = new ApplicationUser
 				{
+					Id = Guid.Parse("2d5c1afc-a67f-4a26-b807-56c2fd43d10d"),
 					UserName = "admin",
 					Email = adminEmail,
 					EmailConfirmed = true,
@@ -53,6 +54,35 @@ namespace IdentityProvider.API.Data.Seed
 				{
 					var errors = string.Join(", ", result.Errors.Select(e => e.Description));
 					throw new Exception($"Admin creation error: {errors}");
+				}
+			}
+
+			// User
+			var userEmail = "pasternak2048@example.com";
+			var userUser = await userManager.FindByEmailAsync(userEmail);
+
+			if (userUser == null)
+			{
+				var user = new ApplicationUser
+				{
+					Id = Guid.Parse("1fef01ff-3306-4d4f-a69d-6b4776142ecd"),
+					UserName = "pasternak2048",
+					Email = userEmail,
+					EmailConfirmed = true,
+					FirstName = "Yurii",
+					LastName = "Pasternak"
+				};
+
+				var result = await userManager.CreateAsync(user, "11111111_Aa!");
+
+				if (result.Succeeded)
+				{
+					await userManager.AddToRoleAsync(user, "User");
+				}
+				else
+				{
+					var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+					throw new Exception($"User creation error: {errors}");
 				}
 			}
 		}

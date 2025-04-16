@@ -2,8 +2,29 @@ services:
   identityproviderdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
+  catalogdb:
+    image: mongo:latest
+
+  distributedcache:
+    image: redis
+
+  yarpapigatewaydesktop:
+    image: ${DOCKER_REGISTRY-}yarpapigatewaydesktop
+    build:
+      context: .
+      dockerfile: ApiGateways/YarpApiGatewayDesktop/Dockerfile
+
   identityprovider.api:
     image: ${DOCKER_REGISTRY-}identityproviderapi
     build:
       context: .
       dockerfile: Services/IdentityProvider/IdentityProvider.API/Dockerfile
+
+  catalog.api:
+    image: ${DOCKER_REGISTRY-}catalogapi
+    build:
+      context: .
+      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+
+volumes:
+  mongodb_catalog:
