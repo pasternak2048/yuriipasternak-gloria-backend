@@ -24,6 +24,8 @@ namespace Catalog.API.Models.DTOs.Responses
 
 		public DateTime BuildDate { get; set; }
 
-		public string FullAddress { get; set; } = null!;
+		public string FullAddress { get; set; } = string.Empty;
+
+		public string PhotoUrl { get; set; } = string.Empty;
 	}
 }

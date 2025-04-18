@@ -7,6 +7,8 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 app.UseCustomMiddlewares();
 
 app.MapControllers();

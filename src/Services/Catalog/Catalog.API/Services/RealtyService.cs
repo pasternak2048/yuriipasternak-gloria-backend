@@ -1,11 +1,11 @@
-﻿using BuildingBlocks.Pagination;
+﻿using AutoMapper;
+using BuildingBlocks.Exceptions;
+using BuildingBlocks.Pagination;
+using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
-using Catalog.API.Models;
 using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Services.Interfaces;
-using AutoMapper;
-using BuildingBlocks.Exceptions;
 
 namespace Catalog.API.Services
 {
@@ -63,6 +63,16 @@ namespace Catalog.API.Services
 			var (items, count) = await _repository.GetFilteredAsync(request.Type, request.Status, request.PageIndex * request.PageSize, request.PageSize, cancellationToken);
 			var mapped = items.Select(r => _mapper.Map<RealtyResponse>(r));
 			return new PaginatedResult<RealtyResponse>(request.PageIndex, request.PageSize, count, mapped);
+		}
+
+		public async Task UpdatePhotoUrlAsync(Guid id, string photoUrl, CancellationToken cancellationToken)
+		{
+			var realty = await _repository.GetByIdAsync(id, cancellationToken);
+			if (realty == null)
+				throw new NotFoundException("Realty not found");
+
+			realty.PhotoUrl = photoUrl;
+			await _repository.UpdateAsync(id, realty, cancellationToken);
 		}
 	}
 }

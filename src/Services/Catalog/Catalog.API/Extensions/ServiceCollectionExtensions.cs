@@ -4,6 +4,7 @@ using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Repositories;
 using System.Reflection;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.AspNetCore.Identity;
 
 namespace Catalog.API.Extensions
 {
@@ -27,7 +28,8 @@ namespace Catalog.API.Extensions
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
-				));
+			));
+			services.AddSingleton<IFileValidatorService, FileValidatorService>();
 		}
 	}
 }
