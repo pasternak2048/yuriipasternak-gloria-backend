@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Pagination;
+﻿using BuildingBlocks.Exceptions;
+using BuildingBlocks.Pagination;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Services.Interfaces;
@@ -10,10 +11,12 @@ namespace Catalog.API.Controllers
 	public class RealtyController : BaseApiController
 	{
 		private readonly IRealtyService _realtyService;
+		private readonly IFileValidatorService _fileValidatorService;
 
-		public RealtyController(IRealtyService realtyService)
+		public RealtyController(IRealtyService realtyService, IFileValidatorService fileValidatorService)
 		{
 			_realtyService = realtyService;
+			_fileValidatorService = fileValidatorService;
 		}
 
 		[HttpGet]
@@ -54,6 +57,49 @@ namespace Catalog.API.Controllers
 		{
 			var result = await _realtyService.GetFilteredAsync(request, cancellationToken);
 			return Ok(result);
+		}
+
+		[HttpPost("{id}/upload")]
+		[Authorize]
+		[Consumes("multipart/form-data")]
+		public async Task<IActionResult> UploadPhoto(Guid id, IFormFile file, CancellationToken cancellationToken)
+		{
+			if (file == null || file.Length == 0)
+			{
+				throw new BadRequestException("File is empty.");
+			}
+
+			if (!_fileValidatorService.IsValidImage(file))
+			{
+				throw new BadRequestException("Wrong file type or MIME-type.");
+			}
+
+			var ext = Path.GetExtension(file.FileName);
+			var fileName = $"{Guid.NewGuid()}{ext}";
+			var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+			if (!Directory.Exists(uploadPath))
+			{
+				Directory.CreateDirectory(uploadPath);
+			}
+
+			var filePath = Path.Combine(uploadPath, fileName);
+
+			using (var stream = new FileStream(filePath, FileMode.Create))
+			{
+				await file.CopyToAsync(stream, cancellationToken);
+			}
+
+			var realty = await _realtyService.GetByIdAsync(id, cancellationToken);
+			if (realty == null)
+			{
+				throw new NotFoundException("Realty", id);
+			}
+
+			realty.PhotoUrl = $"/uploads/{fileName}";
+			await _realtyService.UpdatePhotoUrlAsync(id, realty.PhotoUrl!, cancellationToken);
+
+			return Ok(new { photoUrl = realty.PhotoUrl });
 		}
 	}
 }
