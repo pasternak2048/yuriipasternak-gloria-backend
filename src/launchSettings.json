@@ -6,7 +6,8 @@
       "serviceActions": {
         "identityprovider.api": "StartDebugging",
         "catalog.api": "StartDebugging",
-        "yarpapigatewaydesktop": "StartDebugging"
+        "yarpapigatewaydesktop": "StartDebugging",
+        "photo.api": "StartDebugging"
       }
     }
   }
