@@ -4,29 +4,41 @@ namespace Photo.API.Services
 {
 	public class FileValidatorService : IFileValidatorService
 	{
-		private static readonly string[] AllowedExtensions = [".jpg", ".jpeg", ".png", ".gif"];
-		private static readonly string[] AllowedMimeTypes = ["image/jpeg", "image/png", "image/gif"];
+		private readonly HashSet<string> _allowedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+	{
+		".jpg", ".jpeg", ".png", ".webp", ".bmp"
+	};
+
+		private readonly HashSet<string> _allowedMimeTypes = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+	{
+		"image/jpeg", "image/png", "image/webp", "image/bmp"
+	};
+
+		private const long MaxFileSizeBytes = 5 * 1024 * 1024; // 5 MB
+
+		public bool IsValid(IFormFile file)
+		{
+			if (file == null || file.Length == 0 || file.Length > MaxFileSizeBytes)
+				return false;
+
+			if (!IsValidExtension(file.FileName))
+				return false;
+
+			if (!IsValidMimeType(file.ContentType))
+				return false;
+
+			return true;
+		}
 
 		public bool IsValidExtension(string fileName)
 		{
-			var extension = Path.GetExtension(fileName).ToLowerInvariant();
-			return AllowedExtensions.Contains(extension);
+			var extension = Path.GetExtension(fileName);
+			return _allowedExtensions.Contains(extension);
 		}
 
 		public bool IsValidMimeType(string contentType)
 		{
-			return AllowedMimeTypes.Contains(contentType);
-		}
-
-		public bool IsValidFile(IFormFile file)
-		{
-			if (file == null || file.Length == 0)
-				return false;
-
-			var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
-			var mimeType = file.ContentType;
-
-			return AllowedExtensions.Contains(extension) && AllowedMimeTypes.Contains(mimeType);
+			return _allowedMimeTypes.Contains(contentType);
 		}
 	}
 }

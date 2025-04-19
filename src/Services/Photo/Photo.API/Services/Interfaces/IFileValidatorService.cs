@@ -6,6 +6,6 @@
 
 		bool IsValidMimeType(string contentType);
 
-		bool IsValidFile(IFormFile file);
+		bool IsValid(IFormFile file);
 	}
 }

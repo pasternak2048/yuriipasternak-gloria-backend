@@ -18,20 +18,20 @@ namespace Photo.API.Services
 				throw new BadRequestException("File is null or empty.");
 
 			var folderPath = Path.Combine(_basePath, targetFolder);
-
 			if (!Directory.Exists(folderPath))
 			{
 				Directory.CreateDirectory(folderPath);
 			}
 
-			var filePath = Path.Combine(folderPath, file.FileName);
+			var uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+			var filePath = Path.Combine(folderPath, uniqueFileName);
 
-			using (var stream = new FileStream(filePath, FileMode.Create))
+			await using (var stream = new FileStream(filePath, FileMode.Create))
 			{
 				await file.CopyToAsync(stream, cancellationToken);
 			}
 
-			return $"/images/{targetFolder}/{file.FileName}";
+			return $"/images/{targetFolder}/{uniqueFileName}";
 		}
 	}
 }

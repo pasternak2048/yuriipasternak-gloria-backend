@@ -1,4 +1,5 @@
 ﻿using Photo.API.Models;
+using Photo.API.Models.DTOs.Requests;
 
 namespace Photo.API.Services.Interfaces
 {
@@ -11,5 +12,7 @@ namespace Photo.API.Services.Interfaces
 		Task RemovePhotosAsync(Guid realtyId, CancellationToken cancellationToken);
 
 		Task<string> SaveFileAsync(IFormFile file, string targetFolder, CancellationToken cancellationToken);
+
+		Task<RealtyPhotoMetadata> UploadRealtyPhotoAsync(UploadRealtyPhotoRequest request, CancellationToken cancellationToken);
 	}
 }
