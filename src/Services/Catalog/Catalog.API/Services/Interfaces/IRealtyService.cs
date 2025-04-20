@@ -15,7 +15,5 @@ namespace Catalog.API.Services.Interfaces
 		Task DeleteAsync(Guid id, CancellationToken cancellationToken);
 
 		Task<PaginatedResult<RealtyResponse>> GetFilteredAsync(GetRealtiesRequest request, CancellationToken cancellationToken);
-
-		Task UpdatePhotoUrlAsync(Guid id, string photoUrl, CancellationToken cancellationToken);
 	}
 }

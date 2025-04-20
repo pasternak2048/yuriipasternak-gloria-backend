@@ -64,15 +64,5 @@ namespace Catalog.API.Services
 			var mapped = items.Select(r => _mapper.Map<RealtyResponse>(r));
 			return new PaginatedResult<RealtyResponse>(request.PageIndex, request.PageSize, count, mapped);
 		}
-
-		public async Task UpdatePhotoUrlAsync(Guid id, string photoUrl, CancellationToken cancellationToken)
-		{
-			var realty = await _repository.GetByIdAsync(id, cancellationToken);
-			if (realty == null)
-				throw new NotFoundException("Realty not found");
-
-			realty.PhotoUrl = photoUrl;
-			await _repository.UpdateAsync(id, realty, cancellationToken);
-		}
 	}
 }
