@@ -2,6 +2,8 @@
 {
 	public interface IFileStorageService
 	{
-		Task<string> SaveFileAsync(IFormFile file, string targetFolder, CancellationToken cancellationToken);
+		Task<string> SaveFileAsync(Guid fileId, IFormFile file, string targetFolder, CancellationToken cancellationToken);
+
+		Task<string> GenerateThumbnailAsync(Guid fileId, IFormFile file, string targetFolder, CancellationToken cancellationToken);
 	}
 }

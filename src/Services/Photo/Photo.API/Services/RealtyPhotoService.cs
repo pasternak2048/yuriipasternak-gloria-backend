@@ -52,23 +52,23 @@ namespace Photo.API.Services
 			await _repository.DeleteByRealtyIdAsync(realtyId, cancellationToken);
 		}
 
-		public async Task<string> SaveFileAsync(IFormFile file, string targetFolder, CancellationToken cancellationToken)
-		{
-			return await _fileStorageService.SaveFileAsync(file, targetFolder, cancellationToken);
-		}
-
 		public async Task<RealtyPhotoMetadata> UploadRealtyPhotoAsync(UploadRealtyPhotoRequest request, CancellationToken cancellationToken)
 		{
 			if (!_fileValidatorService.IsValid(request.File))
 				throw new BadRequestException("Invalid image.");
 
-			var filePath = await SaveFileAsync(request.File, "realty", cancellationToken);
+			var fileId = Guid.NewGuid();
+
+			var filePath = await _fileStorageService.SaveFileAsync(fileId, request.File, "realty", cancellationToken);
+			var thumbnailPath = await _fileStorageService.GenerateThumbnailAsync(fileId, request.File, "realty", cancellationToken);
+
 			var metadata = new RealtyPhotoMetadata
 			{
 				RealtyId = request.RealtyId,
 				FileName = Path.GetFileName(filePath),
 				ContentType = request.File.ContentType,
-				Url = filePath
+				Url = filePath,
+				ThumbnailUrl = thumbnailPath
 			};
 
 			await AddPhotoAsync(metadata, cancellationToken);

@@ -11,12 +11,14 @@ namespace Photo.API.Models
 		public Guid Id { get; set; }
 
 		[BsonRepresentation(BsonType.String)]
-		public Guid RealtyId { get; set; } 
+		public Guid RealtyId { get; set; }
 
 		public string FileName { get; set; } = string.Empty;
 
 		public string ContentType { get; set; } = string.Empty;
 
 		public string Url { get; set; } = string.Empty;
+
+		public string ThumbnailUrl { get; set; } = string.Empty;
 	}
 }
