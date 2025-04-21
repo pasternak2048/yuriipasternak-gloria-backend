@@ -29,7 +29,6 @@ namespace Catalog.API.Extensions
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
 			));
-			services.AddSingleton<IFileValidatorService, FileValidatorService>();
 		}
 	}
 }

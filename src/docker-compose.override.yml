@@ -21,6 +21,18 @@ services:
     volumes:
       - mongodb_catalog:/data/db
 
+  photodb:
+    container_name: photodb
+    environment:
+      - MONGO_INITDB_DATABASE=PhotoDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongodb_photo:/data/db
+
   distributedcache:
     container_name: distributedcache
     restart: always
@@ -75,6 +87,24 @@ services:
     ports:
       - "6003:8080"
       - "6063:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  photo.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - MongoSettings__ConnectionString=mongodb://root:example@photodb:27017
+      - MongoSettings__DatabaseName=PhotoDb
+    depends_on:
+      - photodb
+    ports:
+      - "6009:8080"
+      - "6069:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

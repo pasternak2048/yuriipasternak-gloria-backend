@@ -30,7 +30,5 @@ namespace Catalog.API.Models
 		public DateTime BuildDate { get; set; }
 
 		public Address Address { get; set; } = new();
-
-		public string PhotoUrl { get; set; } = string.Empty;
 	}
 }
