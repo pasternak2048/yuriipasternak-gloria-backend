@@ -11,6 +11,8 @@ namespace Photo.API.Services.Interfaces
 
 		Task RemovePhotosAsync(Guid realtyId, CancellationToken cancellationToken);
 
+		Task RemovePhotoByIdAsync(Guid id, CancellationToken cancellationToken);
+
 		Task<RealtyPhotoMetadata> UploadRealtyPhotoAsync(UploadRealtyPhotoRequest request, CancellationToken cancellationToken);
 	}
 }

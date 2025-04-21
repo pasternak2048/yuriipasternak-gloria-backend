@@ -57,5 +57,15 @@ namespace Photo.API.Services
 
 			return $"/images/{targetFolder}/thumbnails/{thumbnailFileName}";
 		}
+
+		public Task DeleteFileAsync(string relativePath, CancellationToken cancellationToken)
+		{
+			var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", relativePath.TrimStart('/'));
+			if (File.Exists(fullPath))
+			{
+				File.Delete(fullPath);
+			}
+			return Task.CompletedTask;
+		}
 	}
 }

@@ -42,5 +42,13 @@ namespace Photo.API.Controllers
 			await _realtyPhotoService.RemovePhotosAsync(realtyId, cancellationToken);
 			return NoContent();
 		}
+
+		[Authorize]
+		[HttpDelete("photo/{id}")]
+		public async Task<IActionResult> DeletePhoto(Guid id, CancellationToken cancellationToken)
+		{
+			await _realtyPhotoService.RemovePhotoByIdAsync(id, cancellationToken);
+			return NoContent();
+		}
 	}
 }

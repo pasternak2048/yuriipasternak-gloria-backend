@@ -18,10 +18,20 @@ namespace Photo.API.Repositories
 			_userContextService = userContextService;
 		}
 
+		public async Task<RealtyPhotoMetadata?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+		{
+			return await _collection.Find(p => p.Id == id).FirstOrDefaultAsync(cancellationToken);
+		}
+
 		public async Task<IEnumerable<RealtyPhotoMetadata>> GetByRealtyIdAsync(Guid realtyId, CancellationToken cancellationToken)
 		{
 			var filter = Builders<RealtyPhotoMetadata>.Filter.Eq(p => p.RealtyId, realtyId);
 			return await _collection.Find(filter).ToListAsync(cancellationToken);
+		}
+
+		public async Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+		{
+			await _collection.DeleteOneAsync(p => p.Id == id, cancellationToken);
 		}
 
 		public async Task AddAsync(RealtyPhotoMetadata metadata, CancellationToken cancellationToken)
