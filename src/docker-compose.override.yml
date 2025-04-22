@@ -99,10 +99,12 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
       - MongoSettings__ConnectionString=mongodb://root:example@photodb:27017
       - MongoSettings__DatabaseName=PhotoDb
     depends_on:
       - photodb
+      - distributedcache
     ports:
       - "6009:8080"
       - "6069:8081"

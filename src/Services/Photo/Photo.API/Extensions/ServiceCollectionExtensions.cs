@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Extensions;
+using Microsoft.Extensions.Caching.Distributed;
 using Photo.API.Repositories;
 using Photo.API.Repositories.Interfaces;
 using Photo.API.Services;
@@ -16,14 +17,21 @@ namespace Photo.API.Extensions
 			services.AddExceptionHandlerServices();
 			services.AddSwaggerDocumentation("Catalog API");
 			services.AddMongoInfrastructure(configuration);
+			services.AddDistributedCache(configuration);
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IUserContextService, UserContextService>();
-			services.AddScoped<IRealtyPhotoRepository, RealtyPhotoRepository>();
 			services.AddScoped<IRealtyPhotoService, RealtyPhotoService>();
 			services.AddScoped<IFileStorageService, FileStorageService>();
 			services.AddSingleton<IFileValidatorService, FileValidatorService>();
+			services.AddScoped<RealtyPhotoRepository>();
+			services.AddScoped<IRealtyPhotoRepository>(provider =>
+				new CachedRealtyPhotoRepository(
+					provider.GetRequiredService<RealtyPhotoRepository>(),
+					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<ILogger<CachedRealtyPhotoRepository>>()
+			));
 		}
 	}
 }

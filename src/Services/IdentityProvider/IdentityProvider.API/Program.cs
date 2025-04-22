@@ -1,4 +1,3 @@
-using BuildingBlocks.Extensions;
 using IdentityProvider.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
