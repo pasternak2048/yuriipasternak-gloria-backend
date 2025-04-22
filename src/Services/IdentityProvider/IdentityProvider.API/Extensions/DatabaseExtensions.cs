@@ -1,5 +1,4 @@
-﻿using IdentityProvider.API.Data.Seed;
-using IdentityProvider.API.Data;
+﻿using IdentityProvider.API.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace IdentityProvider.API.Extensions

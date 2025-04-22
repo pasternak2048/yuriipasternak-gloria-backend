@@ -1,4 +1,4 @@
-﻿namespace Photo.API.Configurations
+﻿namespace BuildingBlocks.Configurations
 {
 	public class MongoSettings
 	{

@@ -1,4 +1,4 @@
-﻿namespace IdentityProvider.API.Configurations
+﻿namespace BuildingBlocks.Configurations
 {
 	public class JwtSettings
 	{

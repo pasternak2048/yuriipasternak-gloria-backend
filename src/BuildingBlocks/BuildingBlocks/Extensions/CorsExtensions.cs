@@ -1,4 +1,6 @@
-﻿namespace Catalog.API.Extensions
+﻿using Microsoft.Extensions.DependencyInjection;
+
+namespace BuildingBlocks.Extensions
 {
 	public static class CorsExtensions
 	{
@@ -6,18 +8,14 @@
 		{
 			services.AddCors(options =>
 			{
-				options.AddDefaultPolicy(builder =>
-					builder.AllowAnyOrigin()
-						   .AllowAnyMethod()
-						   .AllowAnyHeader());
+				options.AddDefaultPolicy(policy =>
+					policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 				options.AddPolicy("AllowFromGateway", policy =>
-				{
 					policy.WithOrigins("https://localhost:6061")
-						  .AllowAnyMethod()
 						  .AllowAnyHeader()
-						  .AllowCredentials();
-				});
+						  .AllowAnyMethod()
+						  .AllowCredentials());
 			});
 		}
 	}

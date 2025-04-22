@@ -1,8 +1,9 @@
-﻿using Photo.API.Services.Interfaces;
-using Photo.API.Services;
-using System.Reflection;
+﻿using BuildingBlocks.Extensions;
 using Photo.API.Repositories;
 using Photo.API.Repositories.Interfaces;
+using Photo.API.Services;
+using Photo.API.Services.Interfaces;
+using System.Reflection;
 
 namespace Photo.API.Extensions
 {
@@ -10,14 +11,15 @@ namespace Photo.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddCorsPolicy();
 			services.AddJwtAuthentication(configuration);
-			services.AddMongoInfrastructure(configuration);
-			services.AddHttpContextServices();
+			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
-			services.AddSwaggerDocumentation();
-
+			services.AddSwaggerDocumentation("Catalog API");
+			services.AddMongoInfrastructure(configuration);
+			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
+			services.AddHttpContextAccessor();
+			services.AddScoped<IUserContextService, UserContextService>();
 			services.AddScoped<IRealtyPhotoRepository, RealtyPhotoRepository>();
 			services.AddScoped<IRealtyPhotoService, RealtyPhotoService>();
 			services.AddScoped<IFileStorageService, FileStorageService>();
