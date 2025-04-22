@@ -1,9 +1,9 @@
-﻿using Catalog.API.Configurations;
-using Catalog.API.Models.Enums;
+﻿using Catalog.API.Models.Enums;
 using Catalog.API.Models;
 using Catalog.API.Repositories.Interfaces;
 using MongoDB.Driver;
 using Catalog.API.Services.Interfaces;
+using BuildingBlocks.Configurations;
 
 namespace Catalog.API.Repositories
 {

@@ -1,5 +1,5 @@
-﻿using MongoDB.Driver;
-using Photo.API.Configurations;
+﻿using BuildingBlocks.Configurations;
+using MongoDB.Driver;
 using Photo.API.Models;
 using Photo.API.Repositories.Interfaces;
 using Photo.API.Services.Interfaces;

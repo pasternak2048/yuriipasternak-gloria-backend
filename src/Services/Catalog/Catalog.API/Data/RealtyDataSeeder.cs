@@ -8,7 +8,7 @@ namespace Catalog.API.Data
 	{
 		private readonly IMongoCollection<Realty> _collection;
 
-		public RealtyDataSeeder(IMongoClient client, Configurations.MongoSettings settings)
+		public RealtyDataSeeder(IMongoClient client, BuildingBlocks.Configurations.MongoSettings settings)
 		{
 			var database = client.GetDatabase(settings.DatabaseName);
 			_collection = database.GetCollection<Realty>("realty");

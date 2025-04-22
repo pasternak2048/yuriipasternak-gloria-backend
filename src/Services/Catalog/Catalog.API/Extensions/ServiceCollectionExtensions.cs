@@ -1,10 +1,11 @@
-﻿using Catalog.API.Services.Interfaces;
-using Catalog.API.Services;
-using Catalog.API.Repositories.Interfaces;
+﻿using BuildingBlocks.Extensions;
+using Catalog.API.Data;
 using Catalog.API.Repositories;
-using System.Reflection;
+using Catalog.API.Repositories.Interfaces;
+using Catalog.API.Services;
+using Catalog.API.Services.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 
 namespace Catalog.API.Extensions
 {
@@ -12,15 +13,16 @@ namespace Catalog.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddCorsPolicy();
 			services.AddJwtAuthentication(configuration);
-			services.AddMongoInfrastructure(configuration);
-			services.AddHttpContextServices();
+			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
-			services.AddSwaggerDocumentation();
-			services.AddDistributedCacheServices(configuration);
-
+			services.AddSwaggerDocumentation("Catalog API");
+			services.AddMongoInfrastructure(configuration);
+			services.AddDistributedCache(configuration);
+			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
+			services.AddHttpContextAccessor();
+			services.AddScoped<IUserContextService, UserContextService>();
 			services.AddScoped<IRealtyService, RealtyService>();
 			services.AddScoped<RealtyRepository>();
 			services.AddScoped<IRealtyRepository>(provider =>
@@ -29,6 +31,8 @@ namespace Catalog.API.Extensions
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
 			));
+			services.AddTransient<RealtyDataSeeder>();
+			services.AddTransient<DatabaseInitializer>();
 		}
 	}
 }

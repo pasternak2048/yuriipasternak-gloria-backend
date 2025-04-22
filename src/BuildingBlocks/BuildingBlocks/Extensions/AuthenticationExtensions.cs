@@ -1,9 +1,11 @@
-﻿using IdentityProvider.API.Configurations;
+﻿using BuildingBlocks.Configurations;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace IdentityProvider.API.Extensions
+namespace BuildingBlocks.Extensions
 {
 	public static class AuthenticationExtensions
 	{

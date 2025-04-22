@@ -1,9 +1,9 @@
-﻿using Catalog.API.Configurations;
-using Catalog.API.Data;
-using Catalog.API.Services;
+﻿using BuildingBlocks.Configurations;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
-namespace Catalog.API.Extensions
+namespace BuildingBlocks.Extensions
 {
 	public static class MongoExtensions
 	{
@@ -12,9 +12,6 @@ namespace Catalog.API.Extensions
 			var settings = configuration.GetSection("MongoSettings").Get<MongoSettings>();
 			services.AddSingleton(settings);
 			services.AddSingleton<IMongoClient>(_ => new MongoClient(settings.ConnectionString));
-
-			services.AddTransient<RealtyDataSeeder>();
-			services.AddTransient<DatabaseInitializer>();
 		}
 	}
 }
