@@ -3,7 +3,7 @@ using Catalog.API.Models;
 using Catalog.API.Repositories.Interfaces;
 using MongoDB.Driver;
 using Catalog.API.Services.Interfaces;
-using BuildingBlocks.Configurations;
+using BuildingBlocks.Configuration;
 
 namespace Catalog.API.Repositories
 {

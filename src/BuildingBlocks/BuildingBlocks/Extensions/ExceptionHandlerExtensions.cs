@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Exceptions.Handler;
+﻿using BuildingBlocks.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.Extensions
@@ -7,7 +7,7 @@ namespace BuildingBlocks.Extensions
 	{
 		public static void AddExceptionHandlerServices(this IServiceCollection services)
 		{
-			services.AddExceptionHandler<CustomExceptionHandler>();
+			services.AddExceptionHandler<ExceptionHandlerMiddleware>();
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Configurations;
+﻿using BuildingBlocks.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;

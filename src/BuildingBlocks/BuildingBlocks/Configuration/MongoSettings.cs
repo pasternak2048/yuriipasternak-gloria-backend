@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Configurations
+﻿namespace BuildingBlocks.Configuration
 {
 	public class MongoSettings
 	{

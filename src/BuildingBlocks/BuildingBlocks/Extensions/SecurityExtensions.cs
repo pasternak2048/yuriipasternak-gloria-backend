@@ -1,6 +1,4 @@
 ﻿using BuildingBlocks.Security;
-using BuildingBlocks.Security.Interfaces;
-using BuildingBlocks.Security.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

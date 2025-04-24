@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Configurations;
+﻿using BuildingBlocks.Configuration;
 using IdentityProvider.API.Models.Identity;
 using IdentityProvider.API.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;

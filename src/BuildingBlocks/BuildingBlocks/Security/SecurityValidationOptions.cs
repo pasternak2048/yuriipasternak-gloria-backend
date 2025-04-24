@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.Configurations;
+﻿using BuildingBlocks.Configuration;
 
-namespace BuildingBlocks.Security.Models
+namespace BuildingBlocks.Security
 {
 	public class SecurityValidationOptions
 	{
