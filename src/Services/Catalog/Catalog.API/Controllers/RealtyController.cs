@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Exceptions;
 using BuildingBlocks.Pagination;
+using BuildingBlocks.Security;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Services.Interfaces;
@@ -18,6 +19,7 @@ namespace Catalog.API.Controllers
 		}
 
 		[HttpGet]
+		[ValidateSignature]
 		public async Task<ActionResult<List<RealtyResponse>>> GetAll(CancellationToken cancellationToken)
 		{
 			var result = await _realtyService.GetAllAsync(cancellationToken);
