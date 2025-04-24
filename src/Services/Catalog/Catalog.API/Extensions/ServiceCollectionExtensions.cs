@@ -19,6 +19,7 @@ namespace Catalog.API.Extensions
 			services.AddSwaggerDocumentation("Catalog API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
+			services.AddSignatureValidation(configuration);
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
