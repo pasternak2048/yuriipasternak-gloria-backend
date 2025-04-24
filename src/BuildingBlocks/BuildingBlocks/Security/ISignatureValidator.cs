@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace BuildingBlocks.Security.Interfaces
+namespace BuildingBlocks.Security
 {
 	public interface ISignatureValidator
 	{

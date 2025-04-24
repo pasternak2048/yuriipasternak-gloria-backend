@@ -1,6 +1,4 @@
 ﻿using BuildingBlocks.Exceptions;
-using BuildingBlocks.Security.Interfaces;
-using BuildingBlocks.Security.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;

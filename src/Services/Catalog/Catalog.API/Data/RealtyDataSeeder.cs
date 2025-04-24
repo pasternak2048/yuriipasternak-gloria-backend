@@ -1,6 +1,7 @@
 ﻿using Catalog.API.Models.Enums;
 using Catalog.API.Models;
 using MongoDB.Driver;
+using BuildingBlocks.Configuration;
 
 namespace Catalog.API.Data
 {
@@ -8,7 +9,7 @@ namespace Catalog.API.Data
 	{
 		private readonly IMongoCollection<Realty> _collection;
 
-		public RealtyDataSeeder(IMongoClient client, BuildingBlocks.Configurations.MongoSettings settings)
+		public RealtyDataSeeder(IMongoClient client, MongoSettings settings)
 		{
 			var database = client.GetDatabase(settings.DatabaseName);
 			_collection = database.GetCollection<Realty>("realty");

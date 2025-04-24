@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Configurations;
+﻿using BuildingBlocks.Configuration;
 using MongoDB.Driver;
 using Photo.API.Models;
 using Photo.API.Repositories.Interfaces;

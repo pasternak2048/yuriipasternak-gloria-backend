@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace BuildingBlocks.Exceptions.Handler
+namespace BuildingBlocks.Exceptions
 {
-	public class CustomExceptionHandler(ILogger<CustomExceptionHandler> logger) : IExceptionHandler
+	public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger) : IExceptionHandler
 	{
 		public async ValueTask<bool> TryHandleAsync(HttpContext context, Exception exception, CancellationToken cancellationToken)
 		{
