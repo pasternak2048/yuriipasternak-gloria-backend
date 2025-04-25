@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using View.Domain.Entities.Base;
+using View.Domain.Enums;
 
 namespace View.Domain.Entities
 {
@@ -24,5 +25,7 @@ namespace View.Domain.Entities
 		public string Location { get; set; } = string.Empty;
 
 		public string Notes { get; set; } = string.Empty;
+
+		public ViewStatus Status { get; set; } = ViewStatus.Pending;
 	}
 }
