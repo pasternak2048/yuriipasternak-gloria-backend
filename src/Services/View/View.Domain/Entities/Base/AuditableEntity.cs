@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Photo.API.Models.Base
+namespace View.Domain.Entities.Base
 {
 	public abstract class AuditableEntity
 	{
