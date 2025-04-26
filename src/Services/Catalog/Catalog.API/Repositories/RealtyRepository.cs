@@ -1,22 +1,22 @@
-﻿using Catalog.API.Models.Enums;
+﻿using BuildingBlocks.Configuration;
+using BuildingBlocks.Identity;
 using Catalog.API.Models;
+using Catalog.API.Models.Enums;
 using Catalog.API.Repositories.Interfaces;
 using MongoDB.Driver;
-using Catalog.API.Services.Interfaces;
-using BuildingBlocks.Configuration;
 
 namespace Catalog.API.Repositories
 {
 	public class RealtyRepository : IRealtyRepository
 	{
 		private readonly IMongoCollection<Realty> _collection;
-		private readonly IUserContextService _userContextService;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyRepository(IMongoClient client, MongoSettings settings, IUserContextService userContextService)
+		public RealtyRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
 		{
 			var database = client.GetDatabase(settings.DatabaseName);
 			_collection = database.GetCollection<Realty>("realty");
-			_userContextService = userContextService;
+			_userIdentityProvider = userIdentityProvider;
 		}
 
 		public async Task<List<Realty>> GetAllAsync(CancellationToken cancellationToken)
@@ -32,7 +32,7 @@ namespace Catalog.API.Repositories
 		public async Task CreateAsync(Realty realty, CancellationToken cancellationToken) 
 		{
 			realty.CreatedAt = DateTime.UtcNow;
-			realty.CreatedBy = _userContextService.GetUserId();
+			realty.CreatedBy = _userIdentityProvider.UserId;
 
 			await _collection.InsertOneAsync(realty, null, cancellationToken);
 		} 
@@ -40,7 +40,7 @@ namespace Catalog.API.Repositories
 		public async Task UpdateAsync(Guid id, Realty updated, CancellationToken cancellationToken)
 		{
 			updated.ModifiedAt = DateTime.UtcNow;
-			updated.ModifiedBy = _userContextService.GetUserId();
+			updated.ModifiedBy = _userIdentityProvider.UserId;
 
 			await _collection.ReplaceOneAsync(r => r.Id == id, updated, (ReplaceOptions?)null, cancellationToken);
 		}

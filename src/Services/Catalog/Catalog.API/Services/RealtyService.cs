@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Exceptions;
+using BuildingBlocks.Identity;
 using BuildingBlocks.Pagination;
 using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
@@ -13,13 +14,13 @@ namespace Catalog.API.Services
 	{
 		private readonly IRealtyRepository _repository;
 		private readonly IMapper _mapper;
-		private readonly IUserContextService _userContextService;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyService(IRealtyRepository repository, IMapper mapper, IUserContextService userContextService)
+		public RealtyService(IRealtyRepository repository, IMapper mapper, IUserIdentityProvider userIdentityProvider)
 		{
 			_repository = repository;
 			_mapper = mapper;
-			_userContextService = userContextService;
+			_userIdentityProvider = userIdentityProvider;
 		}
 
 		public async Task<List<RealtyResponse>> GetAllAsync(CancellationToken cancellationToken)
@@ -48,7 +49,7 @@ namespace Catalog.API.Services
 				throw new NotFoundException($"Realty with id {id} not found.");
 			}
 
-			var currentUserId = _userContextService.GetUserId();
+			var currentUserId = _userIdentityProvider.UserId;
 
 			if (realty.CreatedBy != currentUserId)
 			{

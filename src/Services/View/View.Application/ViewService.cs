@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
+using BuildingBlocks.Identity;
 using BuildingBlocks.Pagination;
 using View.Infrastructure.Persistence;
 using ViewEntity = View.Domain.Entities.View;
@@ -8,10 +9,12 @@ namespace View.Application
 	public class ViewService : IViewService
 	{
 		private readonly IViewRepository _repository;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public ViewService(IViewRepository repository	)
+		public ViewService(IViewRepository repository, IUserIdentityProvider userIdentityProvider)
 		{
 			_repository = repository;
+			_userIdentityProvider = userIdentityProvider;
 		}
 
 		public async Task<ViewEntity> CreateAsync(ViewEntity view, CancellationToken cancellationToken = default)
@@ -27,7 +30,7 @@ namespace View.Application
 			if (view == null)
 				return null;
 
-			if (view.ClientId != currentUserId && view.OwnerId != currentUserId)
+			if (view.ClientId != _userIdentityProvider.UserId && view.AgentId != _userIdentityProvider.UserId)
 				throw new ForbiddenAccessException("You are not authorized to view this item.");
 
 			return view;
@@ -38,7 +41,7 @@ namespace View.Application
 			var allViews = await _repository.GetPaginatedAsync(request, cancellationToken);
 
 			var filtered = allViews.Data
-				.Where(v => v.ClientId == currentUserId || v.AgentId == currentUserId)
+				.Where(v => v.ClientId == _userIdentityProvider.UserId || v.AgentId == _userIdentityProvider.UserId)
 				.ToList();
 
 			var result = new PaginatedResult<ViewEntity>(
@@ -56,7 +59,7 @@ namespace View.Application
 			var viewsForRealty = await _repository.GetByRealtyIdAsync(realtyId, request, cancellationToken);
 
 			var filtered = viewsForRealty.Data
-				.Where(v => v.ClientId == currentUserId || v.AgentId == currentUserId)
+				.Where(v => v.ClientId == _userIdentityProvider.UserId || v.AgentId == _userIdentityProvider.UserId)
 				.ToList();
 
 			var result = new PaginatedResult<ViewEntity>(
@@ -74,7 +77,7 @@ namespace View.Application
 			if (view == null)
 				throw new NotFoundException($"View with id {view.Id} not found");
 
-			if (view.ClientId != currentUserId && view.OwnerId != currentUserId)
+			if (view.ClientId != _userIdentityProvider.UserId && view.AgentId != _userIdentityProvider.UserId)
 				throw new ForbiddenAccessException("You are not allowed to delete this item.");
 
 			await _repository.UpdateAsync(view, cancellationToken);
@@ -88,7 +91,7 @@ namespace View.Application
 			if (view == null)
 				throw new NotFoundException($"View with id {id} not found");
 
-			if (view.ClientId != currentUserId && view.OwnerId != currentUserId)
+			if (view.ClientId != _userIdentityProvider.UserId && view.AgentId != _userIdentityProvider.UserId)
 				throw new ForbiddenAccessException("You are not allowed to delete this item.");
 
 			await _repository.DeleteAsync(id, cancellationToken);

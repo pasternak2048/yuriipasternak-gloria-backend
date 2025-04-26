@@ -13,6 +13,7 @@ namespace Catalog.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddCurrentUser();
 			services.AddJwtAuthentication(configuration);
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
@@ -23,7 +24,6 @@ namespace Catalog.API.Extensions
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IUserContextService, UserContextService>();
 			services.AddScoped<IRealtyService, RealtyService>();
 			services.AddScoped<RealtyRepository>();
 			services.AddScoped<IRealtyRepository>(provider =>

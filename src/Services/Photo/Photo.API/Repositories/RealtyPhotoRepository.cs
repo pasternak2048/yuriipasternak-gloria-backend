@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Configuration;
+using BuildingBlocks.Identity;
 using MongoDB.Driver;
 using Photo.API.Models;
 using Photo.API.Repositories.Interfaces;
@@ -9,13 +10,13 @@ namespace Photo.API.Repositories
 	public class RealtyPhotoRepository : IRealtyPhotoRepository
 	{
 		private readonly IMongoCollection<RealtyPhotoMetadata> _collection;
-		private readonly IUserContextService _userContextService;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyPhotoRepository(IMongoClient client, MongoSettings settings, IUserContextService userContextService)
+		public RealtyPhotoRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
 		{
 			var database = client.GetDatabase(settings.DatabaseName);
 			_collection = database.GetCollection<RealtyPhotoMetadata>("realty_photos");
-			_userContextService = userContextService;
+			_userIdentityProvider = userIdentityProvider;
 		}
 
 		public async Task<RealtyPhotoMetadata?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -37,7 +38,7 @@ namespace Photo.API.Repositories
 		public async Task AddAsync(RealtyPhotoMetadata metadata, CancellationToken cancellationToken)
 		{
 			metadata.CreatedAt = DateTime.UtcNow;
-			metadata.CreatedBy = _userContextService.GetUserId();
+			metadata.CreatedBy = _userIdentityProvider.UserId;
 
 			await _collection.InsertOneAsync(metadata, null, cancellationToken);
 		}

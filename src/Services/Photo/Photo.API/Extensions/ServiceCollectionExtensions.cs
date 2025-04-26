@@ -12,6 +12,7 @@ namespace Photo.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddCurrentUser();
 			services.AddJwtAuthentication(configuration);
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
@@ -21,7 +22,6 @@ namespace Photo.API.Extensions
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IUserContextService, UserContextService>();
 			services.AddScoped<IRealtyPhotoService, RealtyPhotoService>();
 			services.AddScoped<IFileStorageService, FileStorageService>();
 			services.AddSingleton<IFileValidatorService, FileValidatorService>();

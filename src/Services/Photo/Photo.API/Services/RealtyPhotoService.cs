@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
+using BuildingBlocks.Identity;
 using Photo.API.Models;
 using Photo.API.Models.DTOs.Requests;
 using Photo.API.Repositories.Interfaces;
@@ -9,18 +10,18 @@ namespace Photo.API.Services
 	public class RealtyPhotoService : IRealtyPhotoService
 	{
 		private readonly IRealtyPhotoRepository _repository;
-		private readonly IUserContextService _userContextService;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 		private readonly IFileStorageService _fileStorageService;
 		private readonly IFileValidatorService _fileValidatorService;
 
 		public RealtyPhotoService(
 			IRealtyPhotoRepository repository,
-			IUserContextService userContextService,
+			IUserIdentityProvider userIdentityProvider,
 			IFileStorageService fileStorageService,
 			IFileValidatorService fileValidatorService)
 		{
 			_repository = repository;
-			_userContextService = userContextService;
+			_userIdentityProvider = userIdentityProvider;
 			_fileStorageService = fileStorageService;
 			_fileValidatorService = fileValidatorService;
 		}
@@ -43,7 +44,7 @@ namespace Photo.API.Services
 				throw new NotFoundException($"Photos with realty id {realtyId} not found.");
 			}
 
-			var currentUserId = _userContextService.GetUserId();
+			var currentUserId = _userIdentityProvider.UserId;
 			if (!photos.All(p => p.CreatedBy == currentUserId))
 			{
 				throw new ForbiddenAccessException("You are not the owner of these photos.");
@@ -67,7 +68,7 @@ namespace Photo.API.Services
 			if (photo is null)
 				throw new NotFoundException($"Photo with id {id} not found.");
 
-			var currentUserId = _userContextService.GetUserId();
+			var currentUserId = _userIdentityProvider.UserId;
 			if (photo.CreatedBy != currentUserId)
 				throw new ForbiddenAccessException("You are not the owner of this photo.");
 
