@@ -1,16 +1,17 @@
-﻿using Catalog.API.Models;
-using Catalog.API.Models.Enums;
-using Catalog.API.Repositories.Interfaces;
+﻿using BuildingBlocks.Infrastructure;
+using BuildingBlocks.Pagination;
+using Catalog.API.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace Catalog.API.Repositories
 {
-	public class CachedRealtyRepository : IRealtyRepository
+	public class CachedRealtyRepository : IGenericRepository<Realty, RealtyFilters>
 	{
-		private readonly IRealtyRepository _inner;
+		private readonly IGenericRepository<Realty, RealtyFilters> _inner;
 		private readonly IDistributedCache _cache;
 		private readonly ILogger<CachedRealtyRepository> _logger;
+
 		private static readonly DistributedCacheEntryOptions _cacheOptions =
 			new DistributedCacheEntryOptions
 			{
@@ -18,7 +19,7 @@ namespace Catalog.API.Repositories
 			};
 
 		public CachedRealtyRepository(
-			IRealtyRepository inner,
+			IGenericRepository<Realty, RealtyFilters> inner,
 			IDistributedCache cache,
 			ILogger<CachedRealtyRepository> logger)
 		{
@@ -27,24 +28,7 @@ namespace Catalog.API.Repositories
 			_logger = logger;
 		}
 
-		// ---------------- GET ALL ----------------
-		public async Task<List<Realty>> GetAllAsync(CancellationToken cancellationToken)
-		{
-			const string cacheKey = "realty:all";
-			var cached = await _cache.GetStringAsync(cacheKey, cancellationToken);
-
-			if (!string.IsNullOrEmpty(cached))
-			{
-				_logger.LogInformation("Retrieved all realties from cache");
-				return JsonSerializer.Deserialize<List<Realty>>(cached) ?? [];
-			}
-
-			var realties = await _inner.GetAllAsync(cancellationToken);
-			await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(realties), _cacheOptions, cancellationToken);
-			return realties;
-		}
-
-		// ---------------- GET BY ID ----------------
+		// ---------- GET BY ID ----------
 		public async Task<Realty?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			var cacheKey = $"realty:{id}";
@@ -66,61 +50,50 @@ namespace Catalog.API.Repositories
 			return realty;
 		}
 
-		// ---------------- CREATE ----------------
-		public async Task CreateAsync(Realty realty, CancellationToken cancellationToken)
+		// ---------- GET PAGINATED ----------
+		public async Task<PaginatedResult<Realty>> GetPaginatedAsync(RealtyFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			await _inner.CreateAsync(realty, cancellationToken);
-
-			await _cache.RemoveAsync("realty:all", cancellationToken);
-		}
-
-		// ---------------- UPDATE ----------------
-		public async Task UpdateAsync(Guid id, Realty updated, CancellationToken cancellationToken)
-		{
-			await _inner.UpdateAsync(id, updated, cancellationToken);
-
-			var cacheKeyById = $"realty:{id}";
-			await _cache.RemoveAsync(cacheKeyById, cancellationToken);
-
-			var allKey = "realty:all";
-			await _cache.RemoveAsync(allKey, cancellationToken);
-		}
-
-		// ---------------- DELETE ----------------
-		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
-		{
-			await _inner.DeleteAsync(id, cancellationToken);
-			await _cache.RemoveAsync($"realty:{id}", cancellationToken);
-			await _cache.RemoveAsync("realty:all", cancellationToken);
-		}
-
-		// ---------------- GET FILTERED ----------------
-		public async Task<(List<Realty>, long)> GetFilteredAsync(RealtyType? type, RealtyStatus? status, int skip, int take, CancellationToken cancellationToken)
-		{
-			var cacheKey = $"realty:filtered:type={type?.ToString() ?? "any"}:status={status?.ToString() ?? "any"}:skip={skip}:take={take}";
-
+			var cacheKey = $"realty:paginated:{filters.CacheKey()}:page={pagination.PageIndex}:size={pagination.PageSize}";
 			var cached = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
 			if (!string.IsNullOrEmpty(cached))
 			{
-				_logger.LogInformation("Retrieved filtered realties from cache");
-				return JsonSerializer.Deserialize<FilteredCacheResult>(cached)?.ToTuple() ?? ([], 0);
+				_logger.LogInformation("Retrieved paginated realties from cache");
+				return JsonSerializer.Deserialize<PaginatedResult<Realty>>(cached) ?? PaginatedResult<Realty>.Empty;
 			}
 
-			var (items, count) = await _inner.GetFilteredAsync(type, status, skip, take, cancellationToken);
+			var result = await _inner.GetPaginatedAsync(filters, pagination, cancellationToken);
+			await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(result), _cacheOptions, cancellationToken);
 
-			var cacheObject = new FilteredCacheResult { Items = items, TotalCount = count };
-			await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(cacheObject), _cacheOptions, cancellationToken);
-
-			return (items, count);
+			return result;
 		}
 
-		private class FilteredCacheResult
+		// ---------- CREATE ----------
+		public async Task CreateAsync(Realty entity, CancellationToken cancellationToken)
 		{
-			public List<Realty> Items { get; set; } = [];
-			public long TotalCount { get; set; }
+			await _inner.CreateAsync(entity, cancellationToken);
+			await InvalidateCache(entity.Id, cancellationToken);
+		}
 
-			public (List<Realty>, long) ToTuple() => (Items, TotalCount);
+		// ---------- UPDATE ----------
+		public async Task UpdateAsync(Guid id, Realty updated, CancellationToken cancellationToken)
+		{
+			await _inner.UpdateAsync(id, updated, cancellationToken);
+			await InvalidateCache(id, cancellationToken);
+		}
+
+		// ---------- DELETE ----------
+		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+		{
+			await _inner.DeleteAsync(id, cancellationToken);
+			await InvalidateCache(id, cancellationToken);
+		}
+
+		// ---------- HELPER ----------
+		private async Task InvalidateCache(Guid id, CancellationToken cancellationToken)
+		{
+			await _cache.RemoveAsync($"realty:{id}", cancellationToken);
+			_logger.LogInformation("Invalidated cache for realty {Id} and related paginated data", id);
 		}
 	}
 }

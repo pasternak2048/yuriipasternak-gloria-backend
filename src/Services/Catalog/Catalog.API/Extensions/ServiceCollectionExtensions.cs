@@ -1,9 +1,11 @@
 ﻿using BuildingBlocks.Extensions;
+using BuildingBlocks.Infrastructure;
 using Catalog.API.Data;
+using Catalog.API.Models;
+using Catalog.API.Models.DTOs.Requests;
+using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Repositories;
-using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Services;
-using Catalog.API.Services.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
 
@@ -24,9 +26,9 @@ namespace Catalog.API.Extensions
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IRealtyService, RealtyService>();
+			services.AddScoped<IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>, RealtyService>();
 			services.AddScoped<RealtyRepository>();
-			services.AddScoped<IRealtyRepository>(provider =>
+			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
 				new CachedRealtyRepository(
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
