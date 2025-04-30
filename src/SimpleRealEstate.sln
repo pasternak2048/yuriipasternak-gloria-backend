@@ -39,6 +39,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Infrastructure", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "View.Contracts", "Services\View\View.Contracts\View.Contracts.csproj", "{31617EF3-033B-4040-B402-0D424CB959C6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DocumentStorage", "DocumentStorage", "{B48459BB-34E5-44A5-8B1D-FB0B95306F31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocumentStorage.API", "Services\DocumentStorage\DocumentStorage.API\DocumentStorage.API.csproj", "{7AF7AA93-1515-4954-9BE9-0672932901F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -89,6 +93,10 @@ Global
 		{31617EF3-033B-4040-B402-0D424CB959C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31617EF3-033B-4040-B402-0D424CB959C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31617EF3-033B-4040-B402-0D424CB959C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AF7AA93-1515-4954-9BE9-0672932901F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AF7AA93-1515-4954-9BE9-0672932901F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AF7AA93-1515-4954-9BE9-0672932901F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AF7AA93-1515-4954-9BE9-0672932901F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +116,8 @@ Global
 		{07DDB005-300A-4FC8-BB93-750F2842F809} = {F0487D6A-1C3D-444A-B462-A774AE0D4C25}
 		{CFC264C6-5D5D-477D-A4CF-1286A256C990} = {F0487D6A-1C3D-444A-B462-A774AE0D4C25}
 		{31617EF3-033B-4040-B402-0D424CB959C6} = {F0487D6A-1C3D-444A-B462-A774AE0D4C25}
+		{B48459BB-34E5-44A5-8B1D-FB0B95306F31} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7AF7AA93-1515-4954-9BE9-0672932901F7} = {B48459BB-34E5-44A5-8B1D-FB0B95306F31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BADCDB3A-6704-4EBC-8CAE-23DE013785F2}

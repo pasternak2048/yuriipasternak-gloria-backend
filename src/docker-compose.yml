@@ -35,6 +35,13 @@ services:
       context: .
       dockerfile: Services/Photo/Photo.API/Dockerfile
 
+  documentstorage.api:
+    image: ${DOCKER_REGISTRY-}documentstorageapi
+    build:
+      context: .
+      dockerfile: Services/DocumentStorage/DocumentStorage.API/Dockerfile
+
 volumes:
   mongodb_catalog:
   mongodb_photo:
+
