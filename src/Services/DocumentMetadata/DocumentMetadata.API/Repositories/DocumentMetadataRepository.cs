@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using DocumentMetadata.API.Models;
@@ -12,20 +11,20 @@ namespace DocumentMetadata.API.Repositories
 	public class DocumentMetadataRepository : IGenericRepository<DocumentMetadataEntity, DocumentMetadataFilters>
 	{
 		private readonly IMongoCollection<DocumentMetadataEntity> _collection;
-		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public DocumentMetadataRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
+		public DocumentMetadataRepository(IMongoClient client, MongoSettings settings)
 		{
 			var database = client.GetDatabase(settings.DatabaseName);
 			_collection = database.GetCollection<DocumentMetadataEntity>("document_metadata");
-			_userIdentityProvider = userIdentityProvider;
 		}
 
+		// ---------- GET BY ID ----------
 		public async Task<DocumentMetadataEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
 		}
 
+		// ---------- GET PAGINATED ----------
 		public async Task<PaginatedResult<DocumentMetadataEntity>> GetPaginatedAsync(DocumentMetadataFilters filters,
 			PaginatedRequest pagination,
 			CancellationToken cancellationToken)
@@ -40,17 +39,20 @@ namespace DocumentMetadata.API.Repositories
 			return new PaginatedResult<DocumentMetadataEntity>(pagination.PageIndex, pagination.PageSize, total, items);
 		}
 
+		// ---------- CREATE ----------
 		public async Task CreateAsync(DocumentMetadataEntity entity, CancellationToken cancellationToken)
 		{
 			await _collection.InsertOneAsync(entity, null, cancellationToken);
 		}
 
+		// ---------- UPDATE ----------
 		public async Task UpdateAsync(Guid id, DocumentMetadataEntity updated, CancellationToken cancellationToken)
 		{
 			
 			await _collection.ReplaceOneAsync(x => x.Id == id, updated, cancellationToken: cancellationToken);
 		}
 
+		// ---------- DELETE ----------
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await _collection.DeleteOneAsync(x => x.Id == id, cancellationToken);

@@ -6,6 +6,7 @@ using BuildingBlocks.Pagination;
 using DocumentMetadata.API.Models;
 using DocumentMetadata.API.Models.DTOs.Requests;
 using DocumentMetadata.API.Models.DTOs.Responses;
+using DocumentMetadata.API.Models.Enums;
 using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
 
 namespace DocumentMetadata.API.Services
@@ -23,14 +24,38 @@ namespace DocumentMetadata.API.Services
 			_userIdentityProvider = userIdentityProvider;
 		}
 
-		public async Task<DocumentMetadataResponse?> GetByIdAsync(Guid id, CancellationToken ct)
+		public async Task<DocumentMetadataResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
-			var entity = await _repository.GetByIdAsync(id, ct);
-			return entity is null ? null : _mapper.Map<DocumentMetadataResponse>(entity);
+			var entity = await _repository.GetByIdAsync(id, cancellationToken);
+
+			if(entity is null)
+			{
+				return null;
+			}
+
+			if(entity.DocumentType != DocumentType.RealtyImage && entity.DocumentType != DocumentType.UserAvatar)
+			{
+				if(entity.OwnerUserId != _userIdentityProvider.UserId)
+				{
+					throw new ForbiddenAccessException("You are not owner of this document.");
+				}
+			}
+
+			return _mapper.Map<DocumentMetadataResponse>(entity);
 		}
 
 		public async Task<PaginatedResult<DocumentMetadataResponse>> GetPaginatedAsync(DocumentMetadataFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
+			var currentUserId = _userIdentityProvider.UserId;
+
+			var isPhotoOrAvatar = filters.DocumentType == DocumentType.RealtyImage
+							   || filters.DocumentType == DocumentType.UserAvatar;
+
+			if (!isPhotoOrAvatar)
+			{
+				filters.OwnerUserId = currentUserId;
+			}
+
 			var result = await _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
 			var mapped = result.Data.Select(_mapper.Map<DocumentMetadataResponse>);
 			return new PaginatedResult<DocumentMetadataResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
