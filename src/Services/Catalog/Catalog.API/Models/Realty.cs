@@ -1,10 +1,11 @@
 ﻿using Catalog.API.Models.Enums;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using BuildingBlocks.Infrastructure;
 
 namespace Catalog.API.Models
 {
-	public class Realty : AuditableEntity
+	public class Realty : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]

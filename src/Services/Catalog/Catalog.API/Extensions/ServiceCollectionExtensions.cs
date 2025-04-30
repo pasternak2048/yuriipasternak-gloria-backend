@@ -1,9 +1,11 @@
 ﻿using BuildingBlocks.Extensions;
+using BuildingBlocks.Infrastructure;
 using Catalog.API.Data;
+using Catalog.API.Models;
+using Catalog.API.Models.DTOs.Requests;
+using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Repositories;
-using Catalog.API.Repositories.Interfaces;
 using Catalog.API.Services;
-using Catalog.API.Services.Interfaces;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
 
@@ -13,6 +15,7 @@ namespace Catalog.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddCurrentUser();
 			services.AddJwtAuthentication(configuration);
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
@@ -23,14 +26,13 @@ namespace Catalog.API.Extensions
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IUserContextService, UserContextService>();
-			services.AddScoped<IRealtyService, RealtyService>();
+			services.AddScoped<IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>, RealtyService>();
 			services.AddScoped<RealtyRepository>();
-			services.AddScoped<IRealtyRepository>(provider =>
-				new CachedRealtyRepository(
+			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
+				new CachedGenericRepository<Realty, RealtyFilters>(
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
-					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
+					provider.GetRequiredService<ILogger<CachedGenericRepository<Realty, RealtyFilters>>>()
 			));
 			services.AddTransient<RealtyDataSeeder>();
 			services.AddTransient<DatabaseInitializer>();

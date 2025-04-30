@@ -1,31 +1,25 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Exceptions;
+using BuildingBlocks.Identity;
+using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
-using Catalog.API.Repositories.Interfaces;
-using Catalog.API.Services.Interfaces;
 
 namespace Catalog.API.Services
 {
-	public class RealtyService : IRealtyService
+	public class RealtyService : IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>
 	{
-		private readonly IRealtyRepository _repository;
+		private readonly IGenericRepository<Realty, RealtyFilters> _repository;
 		private readonly IMapper _mapper;
-		private readonly IUserContextService _userContextService;
+		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyService(IRealtyRepository repository, IMapper mapper, IUserContextService userContextService)
+		public RealtyService(IGenericRepository<Realty, RealtyFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider)
 		{
 			_repository = repository;
 			_mapper = mapper;
-			_userContextService = userContextService;
-		}
-
-		public async Task<List<RealtyResponse>> GetAllAsync(CancellationToken cancellationToken)
-		{
-			var items = await _repository.GetAllAsync(cancellationToken);
-			return items.Select(r => _mapper.Map<RealtyResponse>(r)).ToList();
+			_userIdentityProvider = userIdentityProvider;
 		}
 
 		public async Task<RealtyResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -34,35 +28,32 @@ namespace Catalog.API.Services
 			return entity is null ? null : _mapper.Map<RealtyResponse>(entity);
 		}
 
-		public async Task CreateAsync(CreateRealtyRequest request, CancellationToken cancellationToken)
+		public async Task<PaginatedResult<RealtyResponse>> GetPaginatedAsync(RealtyFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
+		{
+			var result = await _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
+			var mapped = result.Data.Select(_mapper.Map<RealtyResponse>);
+			return new PaginatedResult<RealtyResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
+		}
+
+		public Task CreateAsync(CreateRealtyRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<Realty>(request);
-			await _repository.CreateAsync(entity, cancellationToken);
+			return _repository.CreateAsync(entity, cancellationToken);
+		}
+
+		public async Task UpdateAsync(Guid id, UpdateRealtyRequest request, CancellationToken cancellationToken)
+		{
+			var updated = _mapper.Map<Realty>(request);
+			await _repository.UpdateAsync(id, updated, cancellationToken);
 		}
 
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 		{
 			var realty = await _repository.GetByIdAsync(id, cancellationToken);
-			if (realty is null)
-			{
-				throw new NotFoundException($"Realty with id {id} not found.");
-			}
-
-			var currentUserId = _userContextService.GetUserId();
-
-			if (realty.CreatedBy != currentUserId)
-			{
-				throw new ForbiddenAccessException("You are not the owner of this realty.");
-			}
+			if (realty == null) throw new NotFoundException($"Realty with id {id} not found.");
+			if (realty.CreatedBy != _userIdentityProvider.UserId) throw new ForbiddenAccessException("You are not the owner.");
 
 			await _repository.DeleteAsync(id, cancellationToken);
-		}
-
-		public async Task<PaginatedResult<RealtyResponse>> GetFilteredAsync(GetRealtiesRequest request, CancellationToken cancellationToken)
-		{
-			var (items, count) = await _repository.GetFilteredAsync(request.Type, request.Status, request.PageIndex * request.PageSize, request.PageSize, cancellationToken);
-			var mapped = items.Select(r => _mapper.Map<RealtyResponse>(r));
-			return new PaginatedResult<RealtyResponse>(request.PageIndex, request.PageSize, count, mapped);
 		}
 	}
 }
