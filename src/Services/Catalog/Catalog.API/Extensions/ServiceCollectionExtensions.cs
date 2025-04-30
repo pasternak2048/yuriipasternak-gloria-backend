@@ -29,10 +29,10 @@ namespace Catalog.API.Extensions
 			services.AddScoped<IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>, RealtyService>();
 			services.AddScoped<RealtyRepository>();
 			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
-				new CachedRealtyRepository(
+				new CachedGenericRepository<Realty, RealtyFilters>(
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
-					provider.GetRequiredService<ILogger<CachedRealtyRepository>>()
+					provider.GetRequiredService<ILogger<CachedGenericRepository<Realty, RealtyFilters>>>()
 			));
 			services.AddTransient<RealtyDataSeeder>();
 			services.AddTransient<DatabaseInitializer>();

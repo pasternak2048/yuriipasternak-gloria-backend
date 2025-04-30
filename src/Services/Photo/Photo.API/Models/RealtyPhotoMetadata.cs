@@ -1,10 +1,11 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using Photo.API.Models.Base;
+using BuildingBlocks.Infrastructure;
 
 namespace Photo.API.Models
 {
-	public class RealtyPhotoMetadata : AuditableEntity
+	public class RealtyPhotoMetadata : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]

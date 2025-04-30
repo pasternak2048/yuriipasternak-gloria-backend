@@ -9,7 +9,7 @@ namespace Catalog.API.Models
 
 		public RealtyStatus? Status { get; set; }
 
-		public string CacheKey() =>
+		public override string CacheKey() =>
 		$"type={Type?.ToString() ?? "any"}:status={Status?.ToString() ?? "any"}";
 	}
 }

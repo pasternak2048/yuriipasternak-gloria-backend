@@ -2,7 +2,7 @@
 
 namespace Photo.API.Models.DTOs.Requests
 {
-	public class UploadRealtyPhotoRequest
+	public class CreateRealtyPhotoMetadataRequest
 	{
 		[Required]
 		public IFormFile File { get; set; }

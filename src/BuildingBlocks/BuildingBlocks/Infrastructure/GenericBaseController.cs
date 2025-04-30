@@ -8,8 +8,8 @@ namespace BuildingBlocks.Infrastructure
 	[ApiController]
 	[Route("api/[controller]")]
 	public abstract class GenericBaseController<TResponse, TCreateRequest, TUpdateRequest, TFilters> : ControllerBase
-	where TResponse : class
-	where TFilters : Filters
+		where TResponse : class
+		where TFilters : Filters
 	{
 		private readonly IGenericService<TResponse, TCreateRequest, TUpdateRequest, TFilters> _service;
 
@@ -37,7 +37,7 @@ namespace BuildingBlocks.Infrastructure
 
 		[HttpPost]
 		[Authorize]
-		public async Task<IActionResult> Create([FromBody] TCreateRequest request, CancellationToken cancellationToken)
+		public virtual async Task<IActionResult> Create([FromBody] TCreateRequest request, CancellationToken cancellationToken)
 		{
 			await _service.CreateAsync(request, cancellationToken);
 			return NoContent();
@@ -45,7 +45,7 @@ namespace BuildingBlocks.Infrastructure
 
 		[HttpPut("{id:guid}")]
 		[Authorize]
-		public async Task<IActionResult> Update(Guid id, [FromBody] TUpdateRequest request, CancellationToken cancellationToken)
+		public virtual async Task<IActionResult> Update(Guid id, [FromBody] TUpdateRequest request, CancellationToken cancellationToken)
 		{
 			await _service.UpdateAsync(id, request, cancellationToken);
 			return NoContent();
