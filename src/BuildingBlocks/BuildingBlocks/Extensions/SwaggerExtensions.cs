@@ -29,10 +29,51 @@ namespace BuildingBlocks.Extensions
 				};
 
 				c.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+
+				c.AddSecurityDefinition("X-Service-Signature", new OpenApiSecurityScheme
+				{
+					Description = "Service signature (SHA512) for request validation",
+					Name = "X-Service-Signature",
+					In = ParameterLocation.Header,
+					Type = SecuritySchemeType.ApiKey,
+					Scheme = "X-Service-Signature"
+				});
+
+				c.AddSecurityDefinition("X-Service-Name", new OpenApiSecurityScheme
+				{
+					Description = "Name of the calling service",
+					Name = "X-Service-Name",
+					In = ParameterLocation.Header,
+					Type = SecuritySchemeType.ApiKey,
+					Scheme = "X-Service-Name"
+				});
+
 				c.AddSecurityRequirement(new OpenApiSecurityRequirement
-			{
-				{ jwtSecurityScheme, Array.Empty<string>() }
-			});
+				{
+					{ jwtSecurityScheme, Array.Empty<string>() },
+					{
+						new OpenApiSecurityScheme
+						{
+							Reference = new OpenApiReference
+							{
+								Type = ReferenceType.SecurityScheme,
+								Id = "X-Service-Signature"
+							}
+						},
+						Array.Empty<string>()
+					},
+					{
+						new OpenApiSecurityScheme
+						{
+							Reference = new OpenApiReference
+							{
+								Type = ReferenceType.SecurityScheme,
+								Id = "X-Service-Name"
+							}
+						},
+						Array.Empty<string>()
+					}
+				});
 			});
 		}
 	}
