@@ -25,16 +25,13 @@ namespace Catalog.API.Repositories
 		// ---------- GET PAGINATED ----------
 		public async Task<PaginatedResult<Realty>> GetPaginatedAsync(RealtyFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			var builder = Builders<Realty>.Filter;
-			var filter = builder.Empty;
-
-			if (filters.Type.HasValue)
-				filter &= builder.Eq(r => r.Type, filters.Type);
-			if (filters.Status.HasValue)
-				filter &= builder.Eq(r => r.Status, filters.Status);
-
-			var total = await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
-			var items = await _collection.Find(filter).Skip(pagination.Skip).Limit(pagination.PageSize).ToListAsync(cancellationToken);
+			
+			var filter = BuildFilterDefinition(filters);
+			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
+			var items = await _collection.Find(filter)
+				.Skip(pagination.Skip)
+				.Limit(pagination.PageSize)
+				.ToListAsync(cancellationToken);
 
 			return new PaginatedResult<Realty>(pagination.PageIndex, pagination.PageSize, total, items);
 		}
@@ -58,5 +55,18 @@ namespace Catalog.API.Repositories
 		// ---------- DELETE ----------
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 			=> await _collection.DeleteOneAsync(r => r.Id == id, cancellationToken);
+
+		private static FilterDefinition<Realty> BuildFilterDefinition(RealtyFilters filters)
+		{
+			var builder = Builders<Realty>.Filter;
+			var filter = builder.Empty;
+
+			if (filters.Type.HasValue)
+				filter &= builder.Eq(r => r.Type, filters.Type);
+			if (filters.Status.HasValue)
+				filter &= builder.Eq(r => r.Status, filters.Status);
+
+			return filter;
+		}
 	}
 }

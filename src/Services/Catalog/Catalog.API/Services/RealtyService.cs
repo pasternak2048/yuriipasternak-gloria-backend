@@ -9,7 +9,7 @@ using Catalog.API.Models.DTOs.Responses;
 
 namespace Catalog.API.Services
 {
-	public class RealtyService : IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>
+	public class RealtyService : IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>
 	{
 		private readonly IGenericRepository<Realty, RealtyFilters> _repository;
 		private readonly IMapper _mapper;
@@ -35,13 +35,13 @@ namespace Catalog.API.Services
 			return new PaginatedResult<RealtyResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
 		}
 
-		public Task CreateAsync(CreateRealtyRequest request, CancellationToken cancellationToken)
+		public Task CreateAsync(RealtyCreateRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<Realty>(request);
 			return _repository.CreateAsync(entity, cancellationToken);
 		}
 
-		public async Task UpdateAsync(Guid id, UpdateRealtyRequest request, CancellationToken cancellationToken)
+		public async Task UpdateAsync(Guid id, RealtyUpdateRequest request, CancellationToken cancellationToken)
 		{
 			var updated = _mapper.Map<Realty>(request);
 			await _repository.UpdateAsync(id, updated, cancellationToken);

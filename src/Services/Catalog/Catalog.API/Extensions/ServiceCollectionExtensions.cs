@@ -26,7 +26,7 @@ namespace Catalog.API.Extensions
 			services.AddControllers();
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>, RealtyService>();
+			services.AddScoped<IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>, RealtyService>();
 			services.AddScoped<RealtyRepository>();
 			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
 				new CachedGenericRepository<Realty, RealtyFilters>(

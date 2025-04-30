@@ -2,13 +2,15 @@
 
 namespace Catalog.API.Models.DTOs.Requests
 {
-	public class CreateRealtyRequest
+	public class RealtyUpdateRequest
 	{
 		public RealtyType Type { get; set; }
 
 		public WallType WallType { get; set; }
 
 		public HeatingType HeatingType { get; set; }
+
+		public RealtyStatus RealtyStatus { get; set; } = RealtyStatus.Draft;
 
 		public double Area { get; set; }
 

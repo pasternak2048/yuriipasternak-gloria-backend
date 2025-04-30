@@ -12,12 +12,12 @@ namespace Catalog.API.MappingProfiles
 			CreateMap<Realty, RealtyResponse>()
 				.ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => FormatAddress(src.Address)));
 
-			CreateMap<CreateRealtyRequest, Realty>()
+			CreateMap<RealtyCreateRequest, Realty>()
 			.ForMember(dest => dest.Id, opt => opt.Ignore())
 			.ForMember(dest => dest.Status, opt => opt.Ignore())
 			.ForMember(dest => dest.BuildDate, opt => opt.MapFrom(src => src.BuildDate.UtcDateTime));
 
-			CreateMap<UpdateRealtyRequest, Realty>()
+			CreateMap<RealtyUpdateRequest, Realty>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.BuildDate, opt => opt.MapFrom(src => src.BuildDate.UtcDateTime));
 		}

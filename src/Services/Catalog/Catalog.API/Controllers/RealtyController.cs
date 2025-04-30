@@ -6,8 +6,8 @@ using Catalog.API.Models.DTOs.Responses;
 namespace Catalog.API.Controllers
 {
 	public class RealtyController
-		: GenericBaseController<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters>
+		: GenericBaseController<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>
 	{
-		public RealtyController(IGenericService<RealtyResponse, CreateRealtyRequest, UpdateRealtyRequest, RealtyFilters> service) : base(service) { }
+		public RealtyController(IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters> service) : base(service) { }
 	}
 }
