@@ -1,0 +1,76 @@
+﻿using BuildingBlocks.Configuration;
+using BuildingBlocks.Identity;
+using BuildingBlocks.Infrastructure;
+using BuildingBlocks.Pagination;
+using DocumentMetadata.API.Models;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
+using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
+
+namespace DocumentMetadata.API.Repositories
+{
+	public class DocumentMetadataRepository : IGenericRepository<DocumentMetadataEntity, DocumentMetadataFilters>
+	{
+		private readonly IMongoCollection<DocumentMetadataEntity> _collection;
+		private readonly IUserIdentityProvider _userIdentityProvider;
+
+		public DocumentMetadataRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
+		{
+			var database = client.GetDatabase(settings.DatabaseName);
+			_collection = database.GetCollection<DocumentMetadataEntity>("document_metadata");
+			_userIdentityProvider = userIdentityProvider;
+		}
+
+		public async Task<DocumentMetadataEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+		{
+			return await _collection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
+		}
+
+		public async Task<PaginatedResult<DocumentMetadataEntity>> GetPaginatedAsync(DocumentMetadataFilters filters,
+			PaginatedRequest pagination,
+			CancellationToken cancellationToken)
+		{
+			var filter = BuildFilterDefinition(filters);
+			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
+			var items = await _collection.Find(filter)
+				.Skip(pagination.Skip)
+				.Limit(pagination.PageSize)
+				.ToListAsync(cancellationToken);
+
+			return new PaginatedResult<DocumentMetadataEntity>(pagination.PageIndex, pagination.PageSize, total, items);
+		}
+
+		public async Task CreateAsync(DocumentMetadataEntity entity, CancellationToken cancellationToken)
+		{
+			await _collection.InsertOneAsync(entity, null, cancellationToken);
+		}
+
+		public async Task UpdateAsync(Guid id, DocumentMetadataEntity updated, CancellationToken cancellationToken)
+		{
+			
+			await _collection.ReplaceOneAsync(x => x.Id == id, updated, cancellationToken: cancellationToken);
+		}
+
+		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+		{
+			await _collection.DeleteOneAsync(x => x.Id == id, cancellationToken);
+		}
+
+		private static FilterDefinition<DocumentMetadataEntity> BuildFilterDefinition(DocumentMetadataFilters filters)
+		{
+			var builder = Builders<DocumentMetadataEntity>.Filter;
+			var filter = builder.Empty;
+
+			if (filters.OwnerUserId.HasValue)
+				filter &= builder.Eq(x => x.OwnerUserId, filters.OwnerUserId.Value);
+			if (filters.DocumentType.HasValue)
+				filter &= builder.Eq(x => x.DocumentType, filters.DocumentType.Value);
+			if (filters.OwnerObjectId.HasValue)
+				filter &= builder.Eq(x => x.OwnerObjectId, filters.OwnerObjectId.Value);
+			if (filters.OwnerObjectType.HasValue)
+				filter &= builder.Eq(x => x.OwnerObjectType, filters.OwnerObjectType.Value);
+
+			return filter;
+		}
+	}
+}

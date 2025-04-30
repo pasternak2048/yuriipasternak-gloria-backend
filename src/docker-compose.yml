@@ -5,7 +5,7 @@ services:
   catalogdb:
     image: mongo:latest
 
-  photodb:
+  documentmetadatadb:
     image: mongo:latest
 
   distributedcache:
@@ -29,19 +29,20 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
-  photo.api:
-    image: ${DOCKER_REGISTRY-}photoapi
-    build:
-      context: .
-      dockerfile: Services/Photo/Photo.API/Dockerfile
-
   documentstorage.api:
     image: ${DOCKER_REGISTRY-}documentstorageapi
     build:
       context: .
       dockerfile: Services/DocumentStorage/DocumentStorage.API/Dockerfile
 
+  documentmetadata.api:
+    image: ${DOCKER_REGISTRY-}documentmetadataapi
+    build:
+      context: .
+      dockerfile: Services/DocumentMetadata/DocumentMetadata.API/Dockerfile
+
 volumes:
   mongodb_catalog:
-  mongodb_photo:
+  mongodb_documentmetadata:
+
 

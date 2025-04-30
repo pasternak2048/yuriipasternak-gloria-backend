@@ -7,11 +7,11 @@ namespace DocumentStorage.API.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]
-	public class DocumentController : ControllerBase
+	public class DocumentStorageController : ControllerBase
 	{
 		private readonly IFileStorageService _fileStorageService;
 
-		public DocumentController(IFileStorageService fileStorageService)
+		public DocumentStorageController(IFileStorageService fileStorageService)
 		{
 			_fileStorageService = fileStorageService;
 		}

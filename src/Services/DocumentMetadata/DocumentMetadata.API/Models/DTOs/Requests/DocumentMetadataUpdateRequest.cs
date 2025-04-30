@@ -1,0 +1,23 @@
+﻿using DocumentMetadata.API.Models.Enums;
+
+namespace DocumentMetadata.API.Models.DTOs.Requests
+{
+	public class DocumentMetadataUpdateRequest
+	{
+		public string Url { get; set; } = string.Empty;
+
+		public string? ThumbnailUrl { get; set; }
+
+		public string FileName { get; set; } = string.Empty;
+
+		public string MimeType { get; set; } = string.Empty;
+
+		public Guid? OwnerUserId { get; set; }
+
+		public DocumentType DocumentType { get; set; }
+
+		public Guid OwnerObjectId { get; set; }
+
+		public OwnerObjectType OwnerObjectType { get; set; }
+	}
+}

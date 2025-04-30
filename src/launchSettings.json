@@ -8,7 +8,8 @@
         "catalog.api": "StartDebugging",
         "yarpapigatewaydesktop": "StartDebugging",
         "photo.api": "StartDebugging",
-        "documentstorage.api": "StartDebugging"
+        "documentstorage.api": "StartDebugging",
+        "documentmetadata.api": "StartDebugging"
       }
     }
   }

@@ -21,17 +21,17 @@ services:
     volumes:
       - mongodb_catalog:/data/db
 
-  photodb:
-    container_name: photodb
+  documentmetadatadb:
+    container_name: documentmetadatadb
     environment:
-      - MONGO_INITDB_DATABASE=PhotoDb
+      - MONGO_INITDB_DATABASE=DocumentMetadataDb
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
     ports:
       - "27018:27017"
     volumes:
-      - mongodb_photo:/data/db
+      - mongodb_documentmetadata:/data/db
 
   distributedcache:
     container_name: distributedcache
@@ -50,7 +50,7 @@ services:
     depends_on:
       - identityprovider.api
       - catalog.api
-      - photo.api
+      - documentmetadata.api
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -94,16 +94,16 @@ services:
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
-  photo.api:
+  documentmetadata.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ConnectionStrings__Redis=distributedcache:6379
-      - MongoSettings__ConnectionString=mongodb://root:example@photodb:27017
-      - MongoSettings__DatabaseName=PhotoDb
+      - MongoSettings__ConnectionString=mongodb://root:example@documentmetadatadb:27017
+      - MongoSettings__DatabaseName=DocumentMetadataDb
     depends_on:
-      - photodb
+      - documentmetadatadb
       - distributedcache
     ports:
       - "6009:8080"
