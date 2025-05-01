@@ -51,7 +51,7 @@ namespace DocumentMetadata.API.Services
 			var isPhotoOrAvatar = filters.DocumentType == DocumentType.RealtyImage
 							   || filters.DocumentType == DocumentType.UserAvatar;
 
-			if (!isPhotoOrAvatar)
+			if (!_userIdentityProvider.IsAdmin && !isPhotoOrAvatar)
 			{
 				filters.OwnerUserId = currentUserId;
 			}
