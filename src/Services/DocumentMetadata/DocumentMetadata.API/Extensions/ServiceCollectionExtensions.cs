@@ -8,6 +8,7 @@ using DocumentMetadata.API.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
 using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
+using System.Text.Json.Serialization;
 
 namespace DocumentMetadata.API.Extensions
 {
@@ -23,7 +24,11 @@ namespace DocumentMetadata.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
-			services.AddControllers();
+			services.AddControllers()
+				.AddJsonOptions(options =>
+				{
+					options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				});
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IGenericService<DocumentMetadataResponse, DocumentMetadataCreateRequest, DocumentMetadataUpdateRequest, DocumentMetadataFilters>, DocumentMetadataService>();
