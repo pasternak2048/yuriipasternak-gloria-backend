@@ -35,7 +35,7 @@ namespace DocumentMetadata.API.Services
 
 			if(entity.DocumentType != DocumentType.RealtyImage && entity.DocumentType != DocumentType.UserAvatar)
 			{
-				if(entity.OwnerUserId != _userIdentityProvider.UserId)
+				if(entity.OwnerUserId != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
 				{
 					throw new ForbiddenAccessException("You are not owner of this document.");
 				}
@@ -76,7 +76,7 @@ namespace DocumentMetadata.API.Services
 			var existing = await _repository.GetByIdAsync(id, cancellationToken)
 				?? throw new NotFoundException("Metadata not found");
 
-			if (existing.CreatedBy != _userIdentityProvider.UserId)
+			if (existing.CreatedBy != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
 				throw new ForbiddenAccessException("You are not the owner of this photo.");
 
 			_mapper.Map(request, existing);
@@ -89,7 +89,7 @@ namespace DocumentMetadata.API.Services
 			var existing = await _repository.GetByIdAsync(id, cancellationToken)
 				?? throw new NotFoundException("Metadata not found");
 
-			if (existing.CreatedBy != _userIdentityProvider.UserId)
+			if (existing.CreatedBy != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
 				throw new ForbiddenAccessException("You are not the owner of this photo.");
 
 			await _repository.DeleteAsync(id, cancellationToken);
