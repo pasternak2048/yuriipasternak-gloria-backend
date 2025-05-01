@@ -11,6 +11,7 @@ namespace IdentityProvider.API.Extensions
 		public static void AddIdentityCoreServices(this IServiceCollection services, IConfiguration configuration)
 		{
 			services.AddScoped<ITokenService, TokenService>();
+			services.AddScoped<IIdentityService, IdentityService>();
 
 			services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 			{
