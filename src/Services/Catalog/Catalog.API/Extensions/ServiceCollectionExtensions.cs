@@ -8,6 +8,7 @@ using Catalog.API.Repositories;
 using Catalog.API.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Catalog.API.Extensions
 {
@@ -23,7 +24,11 @@ namespace Catalog.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
-			services.AddControllers();
+			services.AddControllers()
+				.AddJsonOptions(options =>
+				{
+					options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				});
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>, RealtyService>();
