@@ -43,6 +43,11 @@ namespace Catalog.API.Services
 
 		public async Task UpdateAsync(Guid id, RealtyUpdateRequest request, CancellationToken cancellationToken)
 		{
+			var realty = await _repository.GetByIdAsync(id, cancellationToken);
+			if (realty == null) throw new NotFoundException($"Realty with id {id} not found.");
+			if (realty.CreatedBy != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
+				throw new ForbiddenAccessException("You are not the owner.");
+
 			var updated = _mapper.Map<Realty>(request);
 			await _repository.UpdateAsync(id, updated, cancellationToken);
 		}
@@ -51,7 +56,8 @@ namespace Catalog.API.Services
 		{
 			var realty = await _repository.GetByIdAsync(id, cancellationToken);
 			if (realty == null) throw new NotFoundException($"Realty with id {id} not found.");
-			if (realty.CreatedBy != _userIdentityProvider.UserId) throw new ForbiddenAccessException("You are not the owner.");
+			if (realty.CreatedBy != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
+				throw new ForbiddenAccessException("You are not the owner.");
 
 			await _repository.DeleteAsync(id, cancellationToken);
 		}

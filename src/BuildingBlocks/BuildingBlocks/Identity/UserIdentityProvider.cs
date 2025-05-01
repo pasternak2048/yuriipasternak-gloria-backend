@@ -27,5 +27,13 @@ namespace BuildingBlocks.Identity
 				return userId;
 			}
 		}
+
+		public bool IsAdmin
+		{
+			get 
+			{
+				return _httpContextAccessor.HttpContext?.User?.IsInRole("Admin") ?? false;
+			} 
+		} 
 	}
 }

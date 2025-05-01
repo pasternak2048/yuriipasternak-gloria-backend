@@ -3,5 +3,7 @@
 	public interface IUserIdentityProvider
 	{
 		Guid? UserId { get; }
+
+		bool IsAdmin { get; }
 	}
 }
