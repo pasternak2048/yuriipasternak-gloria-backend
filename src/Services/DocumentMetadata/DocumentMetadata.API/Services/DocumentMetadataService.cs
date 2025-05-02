@@ -53,6 +53,11 @@ namespace DocumentMetadata.API.Services
 
 			if (!_userIdentityProvider.IsAdmin && !isPhotoOrAvatar)
 			{
+				if(currentUserId == null)
+				{
+					throw new UnauthorizedException("Unauthorized access");
+				}
+
 				filters.OwnerUserId = currentUserId;
 			}
 
