@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Controllers;
+using BuildingBlocks.Infrastructure;
 using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;

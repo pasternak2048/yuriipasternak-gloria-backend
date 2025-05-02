@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Controllers;
+using BuildingBlocks.Infrastructure;
 using DocumentMetadata.API.Models;
 using DocumentMetadata.API.Models.DTOs.Requests;
 using DocumentMetadata.API.Models.DTOs.Responses;

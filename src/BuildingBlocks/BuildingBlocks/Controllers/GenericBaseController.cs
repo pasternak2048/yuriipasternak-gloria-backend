@@ -1,9 +1,10 @@
 ﻿using BuildingBlocks.Filtering;
+using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BuildingBlocks.Infrastructure
+namespace BuildingBlocks.Controllers
 {
 	[ApiController]
 	[Route("api/[controller]")]

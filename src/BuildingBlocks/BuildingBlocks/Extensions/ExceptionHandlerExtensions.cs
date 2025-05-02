@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Exceptions;
+﻿using BuildingBlocks.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BuildingBlocks.Extensions

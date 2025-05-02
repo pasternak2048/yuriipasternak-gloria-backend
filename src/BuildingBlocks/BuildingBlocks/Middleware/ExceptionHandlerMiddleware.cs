@@ -1,10 +1,11 @@
-﻿using FluentValidation;
+﻿using BuildingBlocks.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace BuildingBlocks.Exceptions
+namespace BuildingBlocks.Middleware
 {
 	public class ExceptionHandlerMiddleware(ILogger<ExceptionHandlerMiddleware> logger) : IExceptionHandler
 	{
