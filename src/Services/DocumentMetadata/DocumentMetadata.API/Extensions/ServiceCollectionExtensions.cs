@@ -2,13 +2,13 @@
 using BuildingBlocks.Infrastructure;
 using DocumentMetadata.API.Models.DTOs.Requests;
 using DocumentMetadata.API.Models.DTOs.Responses;
-using DocumentMetadata.API.Models;
 using DocumentMetadata.API.Repositories;
 using DocumentMetadata.API.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
-using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
+using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 using System.Text.Json.Serialization;
+using DocumentMetadata.API.Models.Filters;
 
 namespace DocumentMetadata.API.Extensions
 {

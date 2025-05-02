@@ -3,7 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using BuildingBlocks.Infrastructure.Entities;
 
-namespace DocumentMetadata.API.Models
+namespace DocumentMetadata.API.Models.Entities
 {
 	public class DocumentMetadata : AuditableEntity, IEntity
 	{

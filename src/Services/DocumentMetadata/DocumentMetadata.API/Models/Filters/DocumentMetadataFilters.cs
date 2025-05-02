@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Filtering;
 using DocumentMetadata.API.Models.Enums;
 
-namespace DocumentMetadata.API.Models
+namespace DocumentMetadata.API.Models.Filters
 {
 	public class DocumentMetadataFilters : BaseFilters
 	{
