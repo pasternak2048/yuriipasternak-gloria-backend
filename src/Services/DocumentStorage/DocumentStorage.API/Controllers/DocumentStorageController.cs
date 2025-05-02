@@ -1,5 +1,6 @@
 ﻿using BuildingBlocks.Security;
-using DocumentStorage.API.Models;
+using DocumentStorage.API.Models.DTOs.Requests;
+using DocumentStorage.API.Models.DTOs.Responses;
 using DocumentStorage.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,9 +10,9 @@ namespace DocumentStorage.API.Controllers
 	[Route("api/[controller]")]
 	public class DocumentStorageController : ControllerBase
 	{
-		private readonly IFileStorageService _fileStorageService;
+		private readonly IDocumentStorageService _fileStorageService;
 
-		public DocumentStorageController(IFileStorageService fileStorageService)
+		public DocumentStorageController(IDocumentStorageService fileStorageService)
 		{
 			_fileStorageService = fileStorageService;
 		}
@@ -21,8 +22,8 @@ namespace DocumentStorage.API.Controllers
 		/// </summary>
 		[ValidateSignature]
 		[HttpPost("upload")]
-		public async Task<ActionResult<FileStorageResult>> UploadAsync(
-			[FromForm] DocumentUploadRequest request,
+		public async Task<ActionResult<DocumentStorageResponse>> UploadAsync(
+			[FromForm] DocumentStorageUploadRequest request,
 			CancellationToken cancellationToken)
 		{
 			if (request.File == null || request.File.Length == 0)

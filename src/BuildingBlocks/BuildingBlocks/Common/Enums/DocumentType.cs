@@ -1,4 +1,4 @@
-﻿namespace DocumentMetadata.API.Models.Enums
+﻿namespace BuildingBlocks.Common.Enums
 {
 	public enum DocumentType
 	{

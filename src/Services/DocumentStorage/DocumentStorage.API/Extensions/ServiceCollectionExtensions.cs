@@ -14,7 +14,7 @@ namespace DocumentStorage.API.Extensions
 			services.AddSwaggerDocumentation("Document Storage API");
 			services.AddSignatureValidation(configuration);
 			services.AddControllers();
-			services.AddScoped<IFileStorageService, FileStorageService>();
+			services.AddScoped<IDocumentStorageService, DocumentStorageService>();
 			services.AddScoped<IFileValidatorService, FileValidatorService>();
 		}
 	}

@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using BuildingBlocks.Infrastructure.Entities;
+using BuildingBlocks.Common.Enums;
 
 namespace DocumentMetadata.API.Models.Entities
 {

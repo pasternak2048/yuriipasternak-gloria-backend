@@ -1,6 +1,6 @@
-﻿namespace DocumentStorage.API.Models
+﻿namespace DocumentStorage.API.Models.DTOs.Responses
 {
-	public class FileStorageResult
+	public class DocumentStorageResponse
 	{
 		public string Url { get; set; } = string.Empty;
 

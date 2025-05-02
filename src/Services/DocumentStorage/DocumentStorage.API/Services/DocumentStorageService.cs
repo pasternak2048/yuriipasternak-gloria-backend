@@ -1,23 +1,24 @@
-﻿using BuildingBlocks.Exceptions;
-using DocumentStorage.API.Models;
+﻿using BuildingBlocks.Common.Enums;
+using BuildingBlocks.Exceptions;
+using DocumentStorage.API.Models.DTOs.Responses;
 using DocumentStorage.API.Services.Interfaces;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 
 namespace DocumentStorage.API.Services
 {
-	public class FileStorageService : IFileStorageService
+	public class DocumentStorageService : IDocumentStorageService
 	{
 		private readonly string _basePath;
 		private readonly IFileValidatorService _validator;
 
-		public FileStorageService(IWebHostEnvironment environment, IFileValidatorService validator)
+		public DocumentStorageService(IWebHostEnvironment environment, IFileValidatorService validator)
 		{
 			_basePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "documents");
 			_validator = validator;
 		}
 
-		public async Task<FileStorageResult> SaveFileAsync(Guid fileId, IFormFile file, DocumentType documentType, CancellationToken cancellationToken)
+		public async Task<DocumentStorageResponse> SaveFileAsync(Guid fileId, IFormFile file, DocumentType documentType, CancellationToken cancellationToken)
 		{
 			if (!_validator.IsValid(file, documentType))
 				throw new BadRequestException("Invalid file. It may be too large or have an unsupported format.");
@@ -42,7 +43,7 @@ namespace DocumentStorage.API.Services
 				thumbnailUrl = await GenerateThumbnailAsync(fileId, file, subFolder, cancellationToken);
 			}
 
-			return new FileStorageResult
+			return new DocumentStorageResponse
 			{
 				Url = relativeUrl,
 				ThumbnailUrl = thumbnailUrl,

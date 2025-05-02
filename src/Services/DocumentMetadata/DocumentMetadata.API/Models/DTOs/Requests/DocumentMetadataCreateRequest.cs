@@ -1,4 +1,5 @@
-﻿using DocumentMetadata.API.Models.Enums;
+﻿using BuildingBlocks.Common.Enums;
+using DocumentMetadata.API.Models.Enums;
 
 namespace DocumentMetadata.API.Models.DTOs.Requests
 {

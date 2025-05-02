@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Filtering;
+﻿using BuildingBlocks.Common.Enums;
+using BuildingBlocks.Filtering;
 using DocumentMetadata.API.Models.Enums;
 
 namespace DocumentMetadata.API.Models.Filters

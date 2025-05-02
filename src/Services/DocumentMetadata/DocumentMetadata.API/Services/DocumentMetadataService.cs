@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
