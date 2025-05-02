@@ -5,7 +5,7 @@ namespace BuildingBlocks.Infrastructure
 {
 	public interface IGenericService<TResponse, TCreateRequest, TUpdateRequest, TFilters>
 	where TResponse : class
-	where TFilters : Filters
+	where TFilters : BaseFilters
 	{
 		Task<TResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 

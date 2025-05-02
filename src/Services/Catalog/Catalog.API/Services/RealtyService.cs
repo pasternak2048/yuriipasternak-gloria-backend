@@ -3,9 +3,10 @@ using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
-using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
+using Catalog.API.Models.Entities;
+using Catalog.API.Models.Filters;
 
 namespace Catalog.API.Services
 {

@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IdentityProvider.API.Controllers
 {
-	public class AuthController : BaseApiController
+	[ApiController]
+	[Route("[controller]")]
+	public class AuthController : ControllerBase
 	{
 		private readonly IIdentityService _identityService;
 

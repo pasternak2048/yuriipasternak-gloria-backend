@@ -1,10 +1,15 @@
-﻿using BuildingBlocks.Common.Enums;
-using DocumentMetadata.API.Models.Enums;
+﻿using DocumentMetadata.API.Models.Enums;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using BuildingBlocks.Infrastructure.Entities;
+using BuildingBlocks.Common.Enums;
 
-namespace DocumentMetadata.API.Models.DTOs.Responses
+namespace DocumentMetadata.API.Models.Entities
 {
-	public class DocumentMetadataResponse
+	public class DocumentMetadata : AuditableEntity, IEntity
 	{
+		[BsonId]
+		[BsonRepresentation(BsonType.String)]
 		public Guid Id { get; set; }
 
 		public string Url { get; set; } = string.Empty;
@@ -15,10 +20,12 @@ namespace DocumentMetadata.API.Models.DTOs.Responses
 
 		public string MimeType { get; set; } = string.Empty;
 
+		[BsonRepresentation(BsonType.String)]
 		public Guid? OwnerUserId { get; set; }
 
 		public DocumentType DocumentType { get; set; }
 
+		[BsonRepresentation(BsonType.String)]
 		public Guid OwnerObjectId { get; set; }
 
 		public OwnerObjectType OwnerObjectType { get; set; }

@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Filtering;
+using BuildingBlocks.Infrastructure.Entities;
 using BuildingBlocks.Pagination;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
@@ -8,7 +9,7 @@ namespace BuildingBlocks.Infrastructure
 {
 	public class CachedGenericRepository<T, TFilters> : IGenericRepository<T, TFilters>
 		where T : class, IEntity
-		where TFilters : Filters
+		where TFilters : BaseFilters
 	{
 		private readonly IGenericRepository<T, TFilters> _inner;
 		private readonly IDistributedCache _cache;

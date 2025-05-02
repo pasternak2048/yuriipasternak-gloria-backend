@@ -1,10 +1,10 @@
 ﻿using BuildingBlocks.Configuration;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
-using DocumentMetadata.API.Models;
+using DocumentMetadata.API.Models.Filters;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
-using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
+using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 
 namespace DocumentMetadata.API.Repositories
 {

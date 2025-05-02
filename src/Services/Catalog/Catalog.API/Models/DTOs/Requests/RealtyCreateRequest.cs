@@ -1,4 +1,6 @@
-﻿using Catalog.API.Models.Enums;
+﻿using BuildingBlocks.Common.DTOs;
+using Catalog.API.Models.Entities;
+using Catalog.API.Models.Enums;
 
 namespace Catalog.API.Models.DTOs.Requests
 {

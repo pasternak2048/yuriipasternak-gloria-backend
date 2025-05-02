@@ -1,9 +1,10 @@
 ﻿using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using Catalog.API.Data;
-using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
+using Catalog.API.Models.Entities;
+using Catalog.API.Models.Filters;
 using Catalog.API.Repositories;
 using Catalog.API.Services;
 using Microsoft.Extensions.Caching.Distributed;

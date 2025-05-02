@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DocumentMetadata.API.Models.DTOs.Requests;
 using DocumentMetadata.API.Models.DTOs.Responses;
-using DocumentMetadataEntity = DocumentMetadata.API.Models.DocumentMetadata;
+using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 
 namespace DocumentMetadata.API.MappingProfiles
 {
