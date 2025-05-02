@@ -2,6 +2,7 @@
 using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.Entities;
+using BuildingBlocks.Common.DTOs;
 
 namespace Catalog.API.Mapping
 {
