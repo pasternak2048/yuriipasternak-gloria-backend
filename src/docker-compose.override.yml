@@ -21,6 +21,18 @@ services:
     volumes:
       - mongodb_catalog:/data/db
 
+  advertdb:
+    container_name: advertdb
+    environment:
+      - MONGO_INITDB_DATABASE=AdvertDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - mongodb_advert:/data/db
+
   documentmetadatadb:
     container_name: documentmetadatadb
     environment:
@@ -29,7 +41,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
     ports:
-      - "27018:27017"
+      - "27022:27017"
     volumes:
       - mongodb_documentmetadata:/data/db
 
@@ -50,7 +62,9 @@ services:
     depends_on:
       - identityprovider.api
       - catalog.api
+      - advert.api
       - documentmetadata.api
+      - documentstorage.api
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -88,6 +102,26 @@ services:
     ports:
       - "6003:8080"
       - "6063:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  advert.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@advertdb:27017
+      - MongoSettings__DatabaseName=AdvertDb
+    depends_on:
+      - advertdb
+      - distributedcache
+    ports:
+      - "6004:8080"
+      - "6064:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

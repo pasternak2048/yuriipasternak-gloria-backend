@@ -15,7 +15,7 @@ namespace Catalog.API.Repositories
 
 		public RealtyRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
 		{
-			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<Realty>("realty");
+			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<Realty>("realties");
 			_userIdentityProvider = userIdentityProvider;
 		}
 

@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Persistence.Mongo;
-using Catalog.API.Models.Entities;
+using AdvertEntity = Advert.API.Models.Entities.Advert;
 
-namespace Catalog.API.Extensions
+namespace Advert.API.Extensions
 {
 	public static class MiddlewareApplicationExtensions
 	{
@@ -18,12 +18,12 @@ namespace Catalog.API.Extensions
 				app.UseSwagger();
 				app.UseSwaggerUI(options =>
 				{
-					options.SwaggerEndpoint("/swagger/v1/swagger.json", "Catalog API v1");
+					options.SwaggerEndpoint("/swagger/v1/swagger.json", "Advert API v1");
 					options.RoutePrefix = string.Empty;
 				});
 
 				using var scope = app.Services.CreateScope();
-				var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer<Realty>>();
+				var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer<AdvertEntity>>();
 				await initializer.InitializeAsync();
 			}
 		}

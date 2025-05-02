@@ -1,0 +1,33 @@
+﻿using Advert.API.Models.Enums;
+using BuildingBlocks.Common.Enums;
+using BuildingBlocks.Infrastructure.Entities;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using BuildingBlocks.Common.DTOs;
+
+namespace Advert.API.Models.Entities
+{
+	public class Advert : AuditableEntity, IEntity
+	{
+		[BsonId]
+		[BsonRepresentation(BsonType.String)]
+		public Guid Id { get; set; }
+
+		[BsonRepresentation(BsonType.String)]
+		public Guid RealtyId { get; set; }
+
+		public AdvertType AdvertType { get; set; }
+
+		public decimal Price { get; set; }
+
+		public CurrencyCode Currency { get; set; } = CurrencyCode.UAH;
+
+		public string Title { get; set; } = string.Empty;
+
+		public string? Description { get; set; }
+
+		public AdvertStatus Status { get; set; } = AdvertStatus.Active;
+
+		public Address Address { get; set; } = new();
+	}
+}
