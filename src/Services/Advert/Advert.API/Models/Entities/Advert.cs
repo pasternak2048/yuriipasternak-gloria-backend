@@ -3,6 +3,7 @@ using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Infrastructure.Entities;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using BuildingBlocks.Common.DTOs;
 
 namespace Advert.API.Models.Entities
 {
@@ -26,5 +27,7 @@ namespace Advert.API.Models.Entities
 		public string? Description { get; set; }
 
 		public AdvertStatus Status { get; set; } = AdvertStatus.Active;
+
+		public Address Address { get; set; } = new();
 	}
 }

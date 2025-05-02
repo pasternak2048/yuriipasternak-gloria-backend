@@ -26,5 +26,7 @@ namespace Advert.API.Models.DTOs.Responses
 		public DateTime? ModifiedAt { get; set; }
 
 		public Guid CreatedBy { get; set; }
+
+		public string FullAddress { get; set; } = string.Empty;
 	}
 }

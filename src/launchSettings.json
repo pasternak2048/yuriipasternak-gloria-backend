@@ -7,9 +7,9 @@
         "identityprovider.api": "StartDebugging",
         "catalog.api": "StartDebugging",
         "yarpapigatewaydesktop": "StartDebugging",
-        "photo.api": "StartDebugging",
         "documentstorage.api": "StartDebugging",
-        "documentmetadata.api": "StartDebugging"
+        "documentmetadata.api": "StartDebugging",
+        "advert.api": "StartDebugging"
       }
     }
   }

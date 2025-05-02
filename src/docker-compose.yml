@@ -5,6 +5,9 @@ services:
   catalogdb:
     image: mongo:latest
 
+  advertdb:
+    image: mongo:latest
+
   documentmetadatadb:
     image: mongo:latest
 
@@ -29,6 +32,12 @@ services:
       context: .
       dockerfile: Services/Catalog/Catalog.API/Dockerfile
 
+  advert.api:
+    image: ${DOCKER_REGISTRY-}advertapi
+    build:
+      context: .
+      dockerfile: Services/Advert/Advert.API/Dockerfile
+
   documentstorage.api:
     image: ${DOCKER_REGISTRY-}documentstorageapi
     build:
@@ -43,6 +52,5 @@ services:
 
 volumes:
   mongodb_catalog:
+  mongodb_advert:
   mongodb_documentmetadata:
-
-

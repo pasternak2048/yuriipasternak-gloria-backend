@@ -1,6 +1,11 @@
+using Advert.API.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.RegisterApplicationServices(builder.Configuration);
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+await app.UseCustomMiddlewares();
 
 app.Run();

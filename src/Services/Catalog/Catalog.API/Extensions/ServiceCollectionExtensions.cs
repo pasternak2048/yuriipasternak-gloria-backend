@@ -1,5 +1,7 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Configuration;
+using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
+using BuildingBlocks.Persistence.Mongo;
 using Catalog.API.Data;
 using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.DTOs.Responses;
@@ -8,6 +10,7 @@ using Catalog.API.Models.Filters;
 using Catalog.API.Repositories;
 using Catalog.API.Services;
 using Microsoft.Extensions.Caching.Distributed;
+using MongoDB.Driver;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
@@ -40,8 +43,16 @@ namespace Catalog.API.Extensions
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<Realty, RealtyFilters>>>()
 			));
-			services.AddTransient<RealtyDataSeeder>();
-			services.AddTransient<DatabaseInitializer>();
+			services.AddTransient<DatabaseInitializer<Realty>>();
+			services.AddSingleton<ICollectionSeeder<Realty>, RealtySeeder>();
+			services.AddSingleton<MongoCollectionSeeder<Realty>>(provider =>
+			{
+				var client = provider.GetRequiredService<IMongoClient>();
+				var settings = provider.GetRequiredService<MongoSettings>();
+				var seeder = provider.GetRequiredService<ICollectionSeeder<Realty>>();
+
+				return new MongoCollectionSeeder<Realty>(client, settings, "realties", seeder);
+			});
 		}
 	}
 }
