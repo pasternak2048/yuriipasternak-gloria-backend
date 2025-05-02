@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Catalog.API.Models.DTOs.Responses;
-using Catalog.API.Models;
 using Catalog.API.Models.DTOs.Requests;
+using Catalog.API.Models.Entities;
 
-namespace Catalog.API.MappingProfiles
+namespace Catalog.API.Mapping
 {
 	public class RealtyProfile : Profile
 	{

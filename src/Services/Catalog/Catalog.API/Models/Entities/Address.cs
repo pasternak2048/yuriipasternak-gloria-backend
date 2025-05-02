@@ -1,4 +1,4 @@
-﻿namespace Catalog.API.Models
+﻿namespace Catalog.API.Models.Entities
 {
 	public class Address
 	{

@@ -3,7 +3,7 @@ using DocumentMetadata.API.Models.Enums;
 
 namespace DocumentMetadata.API.Models
 {
-	public class DocumentMetadataFilters : Filters
+	public class DocumentMetadataFilters : BaseFilters
 	{
 		public Guid? OwnerUserId { get; set; }
 

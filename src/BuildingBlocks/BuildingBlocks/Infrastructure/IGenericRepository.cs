@@ -5,7 +5,7 @@ namespace BuildingBlocks.Infrastructure
 {
 	public interface IGenericRepository<TEntity, TFilters>
 	where TEntity : class
-	where TFilters : Filters
+	where TFilters : BaseFilters
 	{
 		Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 

@@ -1,9 +1,9 @@
 ﻿using BuildingBlocks.Filtering;
 using Catalog.API.Models.Enums;
 
-namespace Catalog.API.Models
+namespace Catalog.API.Models.Filters
 {
-	public class RealtyFilters : Filters
+	public class RealtyFilters : BaseFilters
 	{
 		public RealtyType? Type { get; set; }
 

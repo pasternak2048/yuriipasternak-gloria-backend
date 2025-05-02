@@ -1,9 +1,9 @@
 ﻿using Catalog.API.Models.Enums;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using BuildingBlocks.Infrastructure;
+using BuildingBlocks.Infrastructure.Entities;
 
-namespace Catalog.API.Models
+namespace Catalog.API.Models.Entities
 {
 	public class Realty : AuditableEntity, IEntity
 	{

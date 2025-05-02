@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Infrastructure.Entities;
 using Offer.API.Models.Enums;
 
 namespace Offer.API.Models

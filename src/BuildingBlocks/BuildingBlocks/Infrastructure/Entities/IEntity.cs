@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Infrastructure
+﻿namespace BuildingBlocks.Infrastructure.Entities
 {
 	public interface IEntity
 	{

@@ -1,6 +1,6 @@
 ﻿namespace BuildingBlocks.Filtering
 {
-	public abstract class Filters
+	public abstract class BaseFilters
 	{
 		public abstract string CacheKey();
 	}

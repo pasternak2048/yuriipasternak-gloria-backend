@@ -2,7 +2,8 @@
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
-using Catalog.API.Models;
+using Catalog.API.Models.Entities;
+using Catalog.API.Models.Filters;
 using MongoDB.Driver;
 
 namespace Catalog.API.Repositories

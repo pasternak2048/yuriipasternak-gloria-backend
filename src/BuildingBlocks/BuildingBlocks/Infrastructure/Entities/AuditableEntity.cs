@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace DocumentMetadata.API.Models
+namespace BuildingBlocks.Infrastructure.Entities
 {
 	public abstract class AuditableEntity
 	{

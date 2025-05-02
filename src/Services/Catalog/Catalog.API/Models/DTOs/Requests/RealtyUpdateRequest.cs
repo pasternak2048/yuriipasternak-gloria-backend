@@ -1,4 +1,5 @@
-﻿using Catalog.API.Models.Enums;
+﻿using Catalog.API.Models.Entities;
+using Catalog.API.Models.Enums;
 
 namespace Catalog.API.Models.DTOs.Requests
 {

@@ -2,6 +2,7 @@
 using Catalog.API.Models;
 using MongoDB.Driver;
 using BuildingBlocks.Configuration;
+using Catalog.API.Models.Entities;
 
 namespace Catalog.API.Data
 {

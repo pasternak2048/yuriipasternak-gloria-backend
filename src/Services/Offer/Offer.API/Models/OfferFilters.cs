@@ -3,7 +3,7 @@ using Offer.API.Models.Enums;
 
 namespace Offer.API.Models
 {
-	public class OfferFilters : Filters
+	public class OfferFilters : BaseFilters
 	{
 		public Guid? RealtyId { get; set; }
 

@@ -10,7 +10,7 @@ namespace BuildingBlocks.Controllers
 	[Route("api/[controller]")]
 	public abstract class GenericBaseController<TResponse, TCreateRequest, TUpdateRequest, TFilters> : ControllerBase
 		where TResponse : class
-		where TFilters : Filters
+		where TFilters : BaseFilters
 	{
 		private readonly IGenericService<TResponse, TCreateRequest, TUpdateRequest, TFilters> _service;
 
