@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
 using BuildingBlocks.Infrastructure.Entities;
+using BuildingBlocks.Common.DTOs;
 
 namespace Catalog.API.Models.Entities
 {

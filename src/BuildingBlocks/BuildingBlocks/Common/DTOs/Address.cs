@@ -1,4 +1,4 @@
-﻿namespace Offer.API.Models
+﻿namespace BuildingBlocks.Common.DTOs
 {
 	public class Address
 	{
