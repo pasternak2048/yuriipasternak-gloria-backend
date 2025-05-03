@@ -1,4 +1,5 @@
-﻿using Advert.API.Models.DTOs.Requests;
+﻿using Advert.API.Messaging;
+using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Filters;
 using AutoMapper;
@@ -6,6 +7,7 @@ using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
+using Contracts.Events;
 using AdvertEntity = Advert.API.Models.Entities.Advert;
 
 namespace Advert.API.Services
@@ -15,12 +17,14 @@ namespace Advert.API.Services
 		private readonly IGenericRepository<AdvertEntity, AdvertFilters> _repository;
 		private readonly IMapper _mapper;
 		private readonly IUserIdentityProvider _userIdentityProvider;
+		private readonly IAdvertEventPublisher _eventPublisher;
 
-		public AdvertService(IGenericRepository<AdvertEntity, AdvertFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider)
+		public AdvertService(IGenericRepository<AdvertEntity, AdvertFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider, IAdvertEventPublisher eventPublisher)
 		{
 			_repository = repository;
 			_mapper = mapper;
 			_userIdentityProvider = userIdentityProvider;
+			_eventPublisher = eventPublisher;
 		}
 
 		public async Task<AdvertResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -36,10 +40,19 @@ namespace Advert.API.Services
 			return new PaginatedResult<AdvertResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
 		}
 
-		public Task CreateAsync(AdvertCreateRequest request, CancellationToken cancellationToken)
+		public async Task CreateAsync(AdvertCreateRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<AdvertEntity>(request);
-			return _repository.CreateAsync(entity, cancellationToken);
+
+			entity.Id = Guid.NewGuid();
+			entity.CreatedAt = DateTime.UtcNow;
+			entity.CreatedBy = _userIdentityProvider.UserId;
+
+			await _repository.CreateAsync(entity, cancellationToken);
+
+			var @event = _mapper.Map<AdvertCreatedEvent>(entity);
+
+			await _eventPublisher.PublishAdvertCreatedAsync(@event);
 		}
 
 		public async Task UpdateAsync(Guid id, AdvertUpdateRequest request, CancellationToken cancellationToken)

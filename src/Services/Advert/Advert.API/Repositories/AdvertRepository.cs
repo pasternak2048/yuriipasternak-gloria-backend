@@ -61,6 +61,8 @@ namespace Advert.API.Repositories
 			var builder = Builders<AdvertEntity>.Filter;
 			var filter = builder.Empty;
 
+			if (filters.RealtyId.HasValue)
+				filter &= builder.Eq(a => a.RealtyId, filters.RealtyId);
 			if (filters.AdvertType.HasValue)
 				filter &= builder.Eq(a => a.AdvertType, filters.AdvertType);
 			if (filters.Status.HasValue)
