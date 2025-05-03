@@ -9,7 +9,9 @@ using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Persistence.Mongo;
+using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -27,9 +29,22 @@ namespace Advert.API.Extensions
 			services.AddExceptionHandlerServices();
 			services.AddSwaggerDocumentation("Advert API");
 			services.AddMongoInfrastructure(configuration);
-			services.AddRabbitMq(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+			services.AddMassTransit(x =>
+			{
+				x.UsingRabbitMq((context, cfg) =>
+				{
+					var settings = context.GetRequiredService<IOptions<RabbitMqSettings>>().Value;
+
+					cfg.Host(settings.Host, settings.VirtualHost, h =>
+					{
+						h.Username(settings.Username);
+						h.Password(settings.Password);
+					});
+				});
+			});
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{

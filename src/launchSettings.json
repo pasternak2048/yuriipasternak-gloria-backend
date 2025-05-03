@@ -9,7 +9,8 @@
         "yarpapigatewaydesktop": "StartDebugging",
         "documentstorage.api": "StartDebugging",
         "documentmetadata.api": "StartDebugging",
-        "advert.api": "StartDebugging"
+        "advert.api": "StartDebugging",
+        "notification.api": "StartDebugging"
       }
     }
   }
