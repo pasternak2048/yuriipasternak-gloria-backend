@@ -1,4 +1,5 @@
 ﻿using Advert.API.Data;
+using Advert.API.Messaging;
 using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Filters;
@@ -26,6 +27,7 @@ namespace Advert.API.Extensions
 			services.AddExceptionHandlerServices();
 			services.AddSwaggerDocumentation("Advert API");
 			services.AddMongoInfrastructure(configuration);
+			services.AddRabbitMq(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
 			services.AddControllers()
@@ -35,6 +37,7 @@ namespace Advert.API.Extensions
 				});
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
+			services.AddScoped<IAdvertEventPublisher, AdvertEventPublisher>();
 			services.AddScoped<IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>, AdvertService>();
 			services.AddScoped<AdvertRepository>();
 			services.AddScoped<IGenericRepository<AdvertEntity, AdvertFilters>>(provider =>
