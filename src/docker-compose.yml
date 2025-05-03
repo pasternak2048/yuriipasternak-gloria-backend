@@ -53,6 +53,12 @@ services:
       context: .
       dockerfile: Services/DocumentMetadata/DocumentMetadata.API/Dockerfile
 
+  notification.api:
+    image: ${DOCKER_REGISTRY-}notificationapi
+    build:
+      context: .
+      dockerfile: Services/Notification/Notification.API/Dockerfile
+
 volumes:
   mongodb_catalog:
   mongodb_advert:
