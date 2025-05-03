@@ -9,6 +9,10 @@ namespace Advert.API.Models.Filters
 
 		public AdvertType? AdvertType { get; set; }
 
+		public decimal? MinPrice { get; set; }
+
+		public decimal? MaxPrice { get; set; }
+
 		public AdvertStatus? Status { get; set; }
 
 		public string? City { get; set; }
@@ -22,10 +26,13 @@ namespace Advert.API.Models.Filters
 		public override string CacheKey() =>
 			$"realty={RealtyId?.ToString() ?? "any"}:" +
 			$"type={AdvertType?.ToString() ?? "any"}:" +
+			$"minPrice={MinPrice?.ToString() ?? "any"}:" +
+			$"maxPrice={MaxPrice?.ToString() ?? "any"}:" +
 			$"status={Status?.ToString() ?? "any"}:" +
 			$"city={City ?? "any"}:" +
 			$"region={Region ?? "any"}:" +
-			$"street={Street ?? "any"}" +
+			$"street={Street ?? "any"}:" +
 			$"zipCode={ZipCode ?? "any"}";
+			
 	}
 }

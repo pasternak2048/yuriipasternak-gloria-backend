@@ -65,6 +65,10 @@ namespace Advert.API.Repositories
 				filter &= builder.Eq(a => a.AdvertType, filters.AdvertType);
 			if (filters.Status.HasValue)
 				filter &= builder.Eq(a => a.Status, filters.Status);
+			if (filters.MinPrice.HasValue)
+				filter &= builder.Gte(a => a.Price, filters.MinPrice.Value);
+			if (filters.MaxPrice.HasValue)
+				filter &= builder.Lte(a => a.Price, filters.MaxPrice.Value);
 			if (!string.IsNullOrEmpty(filters.Street))
 				filter &= builder.Eq(a => a.Address.Street, filters.Street);
 			if (!string.IsNullOrEmpty(filters.City))
