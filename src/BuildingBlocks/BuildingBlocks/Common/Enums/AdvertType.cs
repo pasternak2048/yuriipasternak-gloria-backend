@@ -1,4 +1,4 @@
-﻿namespace Advert.API.Models.Enums
+﻿namespace BuildingBlocks.Common.Enums
 {
 	public enum AdvertType
 	{

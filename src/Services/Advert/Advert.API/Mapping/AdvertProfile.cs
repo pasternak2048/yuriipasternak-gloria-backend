@@ -1,8 +1,8 @@
 ﻿using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
-using Advert.API.Models.Enums;
 using AutoMapper;
 using BuildingBlocks.Common.DTOs;
+using BuildingBlocks.Common.Enums;
 using Contracts.Events;
 using AdvertEntity = Advert.API.Models.Entities.Advert;
 

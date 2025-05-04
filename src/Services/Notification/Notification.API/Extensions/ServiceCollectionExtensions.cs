@@ -3,6 +3,12 @@ using BuildingBlocks.Extensions;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using Notification.API.Events.Consumers.Advert;
+using Notification.API.Repositories;
+using Notification.API.Repositories.Interfaces;
+using Notification.API.Services;
+using Notification.API.Services.Interfaces;
+using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace Notification.API.Extensions
 {
@@ -10,11 +16,14 @@ namespace Notification.API.Extensions
 	{
 		public static void RegisterApplicationServices(this IServiceCollection services, IConfiguration configuration)
 		{
+			services.AddCurrentUser();
+			services.AddJwtAuthentication(configuration);
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
-			services.AddSwaggerDocumentation("Notification API");
-			services.AddControllers();
-			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
+			services.AddSwaggerDocumentation("Advert API");
+			services.AddMongoInfrastructure(configuration);
+			services.AddDistributedCache(configuration);
+			services.AddSignatureValidation(configuration);
 			services.AddMassTransit(x =>
 			{
 				x.AddConsumer<AdvertCreatedEventConsumer>();
@@ -35,6 +44,17 @@ namespace Notification.API.Extensions
 					});
 				});
 			});
+			services.AddControllers()
+				.AddJsonOptions(options =>
+				{
+					options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+				});
+			services.AddAutoMapper(Assembly.GetExecutingAssembly());
+			services.AddHttpContextAccessor();
+			services.AddScoped<INotificationRepository, NotificationRepository>();
+			services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+			services.AddScoped<INotificationService, NotificationService>();
+			services.AddScoped<ISubscriptionService, SubscriptionService>();
 		}
 	}
 }

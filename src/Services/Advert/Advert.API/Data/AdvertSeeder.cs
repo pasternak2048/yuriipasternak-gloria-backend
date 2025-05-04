@@ -1,5 +1,4 @@
-﻿using Advert.API.Models.Enums;
-using BuildingBlocks.Common.DTOs;
+﻿using BuildingBlocks.Common.DTOs;
 using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Persistence.Mongo;
 using MongoDB.Driver;

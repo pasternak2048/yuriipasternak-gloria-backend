@@ -8,7 +8,11 @@ namespace Contracts.Events
 
 		public Guid RealtyId { get; set; }
 
+		public AdvertType AdvertType { get; set; } = AdvertType.Rent;
+
 		public string Title { get; set; } = string.Empty;
+
+		public string Street { get; set; } = string.Empty;
 
 		public string City { get; set; } = string.Empty;
 

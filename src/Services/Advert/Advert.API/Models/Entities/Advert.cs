@@ -1,9 +1,8 @@
-﻿using Advert.API.Models.Enums;
+﻿using BuildingBlocks.Common.DTOs;
 using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Infrastructure.Entities;
-using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using BuildingBlocks.Common.DTOs;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Advert.API.Models.Entities
 {
