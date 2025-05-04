@@ -2,7 +2,7 @@
 using Subscription.API.Models.DTOs.Requests;
 using Subscription.API.Models.Entities;
 
-namespace Subscription.API.Services
+namespace Subscription.API.Services.Interfaces
 {
 	public interface IAdvertSubscriptionService
 	{

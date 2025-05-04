@@ -17,7 +17,7 @@ namespace Subscription.API.Repositories
 		{
 			_collection = client
 				.GetDatabase(settings.DatabaseName)
-				.GetCollection<AdvertSubscriptionEntity>("subscriptions");
+				.GetCollection<AdvertSubscriptionEntity>("subscriptions_advert");
 
 			_userIdentityProvider = userIdentityProvider;
 		}
