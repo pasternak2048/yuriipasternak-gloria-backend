@@ -36,9 +36,20 @@ namespace Subscription.API.Services
 			return entity is null ? null : _mapper.Map<SubscriptionResponse>(entity);
 		}
 
-		public async Task<PaginatedResult<SubscriptionResponse>> GetPaginatedAsync(SubscriptionFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
+		public async Task<PaginatedResult<SubscriptionResponse>> GetPaginatedAsync(
+			SubscriptionFilters filters,
+			PaginatedRequest pagination,
+			CancellationToken cancellationToken)
 		{
-			filters.UserId ??= _userIdentityProvider.UserId;
+			if(_userIdentityProvider.UserId == null)
+			{
+				throw new UnauthorizedException("You are not authorized.");
+			}
+
+			if (!_userIdentityProvider.IsAdmin)
+			{
+				filters.UserId = _userIdentityProvider.UserId;
+			}
 
 			var result = await _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
 			var mapped = result.Data.Select(_mapper.Map<SubscriptionResponse>);
