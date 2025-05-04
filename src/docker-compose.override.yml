@@ -33,6 +33,18 @@ services:
     volumes:
       - mongodb_advert:/data/db
 
+  notificationdb:
+    container_name: notificationdb
+    environment:
+      - MONGO_INITDB_DATABASE=NotificationDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27030:27017
+    volumes:
+      - mongodb_notification:/data/db
+
   documentmetadatadb:
     container_name: documentmetadatadb
     environment:
@@ -172,12 +184,17 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   notification.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@notificationdb:27017
+      - MongoSettings__DatabaseName=NotificationDb
     depends_on:
+      - notificationdb
       - messagebroker
     ports:
       - "6015:8080"

@@ -11,6 +11,9 @@ services:
   documentmetadatadb:
     image: mongo:latest
 
+  notificationdb:
+    image: mongo:latest
+
   distributedcache:
     image: redis
 
@@ -62,4 +65,5 @@ services:
 volumes:
   mongodb_catalog:
   mongodb_advert:
+  mongodb_notification:
   mongodb_documentmetadata:

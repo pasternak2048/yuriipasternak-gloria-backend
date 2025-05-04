@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Notification.API.Models.DTOs.Requests;
 using Notification.API.Services.Interfaces;
 
@@ -15,6 +16,7 @@ namespace Notification.API.Controllers
 			_subscriptionService = subscriptionService;
 		}
 
+		[Authorize]
 		[HttpPost]
 		public async Task<IActionResult> Create([FromBody] CreateSubscriptionRequest request, CancellationToken cancellationToken)
 		{
