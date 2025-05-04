@@ -1,4 +1,4 @@
-﻿namespace Notification.API.Models.Enums
+﻿namespace BuildingBlocks.Common.Enums
 {
 	public enum NotificationEventType
 	{

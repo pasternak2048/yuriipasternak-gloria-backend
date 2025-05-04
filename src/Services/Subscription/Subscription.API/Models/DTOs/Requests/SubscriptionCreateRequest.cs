@@ -1,9 +1,9 @@
-﻿using Notification.API.Models.Enums;
+﻿using BuildingBlocks.Common.Enums;
 using System.Text.Json;
 
-namespace Notification.API.Models.DTOs.Requests
+namespace Subscription.API.Models.DTOs.Requests
 {
-	public class CreateSubscriptionRequest
+	public class SubscriptionCreateRequest
 	{
 		public NotificationEventType EventType { get; set; }
 

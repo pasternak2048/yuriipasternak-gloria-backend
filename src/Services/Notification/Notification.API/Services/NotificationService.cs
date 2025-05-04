@@ -1,4 +1,4 @@
-﻿using Notification.API.Repositories.Interfaces;
+﻿using Notification.API.Repositories;
 using Notification.API.Services.Interfaces;
 using NotificationEntity = Notification.API.Models.Entities.Notification;
 

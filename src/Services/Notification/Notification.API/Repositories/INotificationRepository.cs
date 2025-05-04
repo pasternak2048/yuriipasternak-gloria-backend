@@ -1,6 +1,6 @@
 ﻿using NotificationEntity = Notification.API.Models.Entities.Notification;
 
-namespace Notification.API.Repositories.Interfaces
+namespace Notification.API.Repositories
 {
 	public interface INotificationRepository
 	{

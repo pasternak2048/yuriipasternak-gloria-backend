@@ -1,7 +1,7 @@
-﻿using BuildingBlocks.Infrastructure.Entities;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BuildingBlocks.Common.Enums;
+using BuildingBlocks.Infrastructure.Entities;
 using MongoDB.Bson;
-using Notification.API.Models.Enums;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Notification.API.Models.Entities
 {

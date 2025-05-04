@@ -4,7 +4,6 @@ using MassTransit;
 using Microsoft.Extensions.Options;
 using Notification.API.Events.Consumers.Advert;
 using Notification.API.Repositories;
-using Notification.API.Repositories.Interfaces;
 using Notification.API.Services;
 using Notification.API.Services.Interfaces;
 using System.Reflection;
@@ -20,30 +19,30 @@ namespace Notification.API.Extensions
 			services.AddJwtAuthentication(configuration);
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
-			services.AddSwaggerDocumentation("Advert API");
+			services.AddSwaggerDocumentation("Notification API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
-			services.AddMassTransit(x =>
-			{
-				x.AddConsumer<AdvertCreatedEventConsumer>();
+			//services.AddMassTransit(x =>
+			//{
+			//	x.AddConsumer<AdvertCreatedEventConsumer>();
 
-				x.UsingRabbitMq((context, cfg) =>
-				{
-					var settings = context.GetRequiredService<IOptions<RabbitMqSettings>>().Value;
+			//	x.UsingRabbitMq((context, cfg) =>
+			//	{
+			//		var settings = context.GetRequiredService<IOptions<RabbitMqSettings>>().Value;
 
-					cfg.Host(settings.Host, settings.VirtualHost, h =>
-					{
-						h.Username(settings.Username);
-						h.Password(settings.Password);
-					});
+			//		cfg.Host(settings.Host, settings.VirtualHost, h =>
+			//		{
+			//			h.Username(settings.Username);
+			//			h.Password(settings.Password);
+			//		});
 
-					cfg.ReceiveEndpoint("advert-created-event", e =>
-					{
-						e.ConfigureConsumer<AdvertCreatedEventConsumer>(context);
-					});
-				});
-			});
+			//		cfg.ReceiveEndpoint("advert-created-event", e =>
+			//		{
+			//			e.ConfigureConsumer<AdvertCreatedEventConsumer>(context);
+			//		});
+			//	});
+			//});
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{
@@ -52,9 +51,7 @@ namespace Notification.API.Extensions
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<INotificationRepository, NotificationRepository>();
-			services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
 			services.AddScoped<INotificationService, NotificationService>();
-			services.AddScoped<ISubscriptionService, SubscriptionService>();
 		}
 	}
 }

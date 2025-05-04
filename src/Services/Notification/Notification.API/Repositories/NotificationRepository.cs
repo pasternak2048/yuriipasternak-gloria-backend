@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Configuration;
 using MongoDB.Driver;
-using Notification.API.Repositories.Interfaces;
 using NotificationEntity = Notification.API.Models.Entities.Notification;
 
 namespace Notification.API.Repositories

@@ -1,11 +1,11 @@
-﻿using BuildingBlocks.Infrastructure.Entities;
+﻿using BuildingBlocks.Common.Enums;
+using BuildingBlocks.Infrastructure.Entities;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
-using Notification.API.Models.Enums;
 
-namespace Notification.API.Models.Entities
+namespace Subscription.API.Models.Entities
 {
-	public class NotificationSubscription : IEntity
+	public class SubscriptionEntity : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]
@@ -16,7 +16,5 @@ namespace Notification.API.Models.Entities
 		public NotificationEventType EventType { get; set; }
 
 		public string FilterJson { get; set; } = string.Empty;
-
-		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 	}
 }
