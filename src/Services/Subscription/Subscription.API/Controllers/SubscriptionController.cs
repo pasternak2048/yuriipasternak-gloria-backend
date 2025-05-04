@@ -10,10 +10,10 @@ namespace Subscription.API.Controllers
 	[ApiController]
 	[Route("api/[controller]")]
 	public class SubscriptionController
-	: GenericBaseController<SubscriptionResponse, SubscriptionCreateRequest, SubscriptionUpdateRequest, SubscriptionFilters>
+	: GenericBaseController<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters>
 	{
 		public SubscriptionController(
-			IGenericService<SubscriptionResponse, SubscriptionCreateRequest, SubscriptionUpdateRequest, SubscriptionFilters> service)
+			IGenericService<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters> service)
 			: base(service)
 		{
 		}

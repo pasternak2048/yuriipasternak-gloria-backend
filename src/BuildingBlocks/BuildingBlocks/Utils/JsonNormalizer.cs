@@ -20,7 +20,8 @@ namespace BuildingBlocks.Utils
 			{
 				PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
 				WriteIndented = false,
-				DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+				DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+				Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
 			};
 		}
 	}

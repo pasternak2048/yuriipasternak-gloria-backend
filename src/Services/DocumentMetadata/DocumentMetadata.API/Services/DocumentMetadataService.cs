@@ -71,7 +71,7 @@ namespace DocumentMetadata.API.Services
 		{
 			var entity = _mapper.Map<DocumentMetadataEntity>(request);
 			entity.Id = Guid.NewGuid();
-			entity.CreatedBy = _userIdentityProvider.UserId;
+			entity.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			entity.OwnerUserId = _userIdentityProvider.UserId;
 			entity.CreatedAt = DateTime.UtcNow;
 			await _repository.CreateAsync(entity, cancellationToken);

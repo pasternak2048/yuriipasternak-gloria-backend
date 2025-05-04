@@ -32,15 +32,15 @@ namespace Subscription.API.Extensions
 				});
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
-			services.AddScoped<IGenericService<SubscriptionResponse, SubscriptionCreateRequest, SubscriptionUpdateRequest, SubscriptionFilters>, SubscriptionService>();
+			services.AddScoped<IGenericService<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters>, AdvertSubscriptionService>();
 			services.AddScoped<CacheStampManager>();
-			services.AddScoped<SubscriptionRepository>();
-			services.AddScoped<IGenericRepository<SubscriptionEntity, SubscriptionFilters>>(provider =>
-				new CachedGenericRepository<SubscriptionEntity, SubscriptionFilters>(
-					provider.GetRequiredService<SubscriptionRepository>(),
+			services.AddScoped<AdvertSubscriptionRepository>();
+			services.AddScoped<IGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters>>(provider =>
+				new CachedGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters>(
+					provider.GetRequiredService<AdvertSubscriptionRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<CacheStampManager>(),
-					provider.GetRequiredService<ILogger<CachedGenericRepository<SubscriptionEntity, SubscriptionFilters>>>()
+					provider.GetRequiredService<ILogger<CachedGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters>>>()
 			));
 		}
 	}

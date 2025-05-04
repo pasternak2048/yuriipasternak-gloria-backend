@@ -41,7 +41,7 @@ namespace Catalog.API.Repositories
 		public async Task CreateAsync(Realty realty, CancellationToken cancellationToken)
 		{
 			realty.CreatedAt = DateTime.UtcNow;
-			realty.CreatedBy = _userIdentityProvider.UserId;
+			realty.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			await _collection.InsertOneAsync(realty, null, cancellationToken);
 		}
 

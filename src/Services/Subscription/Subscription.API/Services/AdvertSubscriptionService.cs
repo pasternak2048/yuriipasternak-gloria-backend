@@ -10,18 +10,18 @@ using Subscription.API.Models.Filters;
 
 namespace Subscription.API.Services
 {
-	public class SubscriptionService : IGenericService<
-		SubscriptionResponse,
-		SubscriptionCreateRequest,
-		SubscriptionUpdateRequest,
-		SubscriptionFilters>
+	public class AdvertSubscriptionService : IGenericService<
+		AdvertSubscriptionResponse,
+		AdvertSubscriptionCreateRequest,
+		AdvertSubscriptionUpdateRequest,
+		AdvertSubscriptionFilters>
 	{
-		private readonly IGenericRepository<SubscriptionEntity, SubscriptionFilters> _repository;
+		private readonly IGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters> _repository;
 		private readonly IMapper _mapper;
 		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public SubscriptionService(
-			IGenericRepository<SubscriptionEntity, SubscriptionFilters> repository,
+		public AdvertSubscriptionService(
+			IGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters> repository,
 			IMapper mapper,
 			IUserIdentityProvider userIdentityProvider)
 		{
@@ -30,14 +30,14 @@ namespace Subscription.API.Services
 			_userIdentityProvider = userIdentityProvider;
 		}
 
-		public async Task<SubscriptionResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+		public async Task<AdvertSubscriptionResponse?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			var entity = await _repository.GetByIdAsync(id, cancellationToken);
-			return entity is null ? null : _mapper.Map<SubscriptionResponse>(entity);
+			return entity is null ? null : _mapper.Map<AdvertSubscriptionResponse>(entity);
 		}
 
-		public async Task<PaginatedResult<SubscriptionResponse>> GetPaginatedAsync(
-			SubscriptionFilters filters,
+		public async Task<PaginatedResult<AdvertSubscriptionResponse>> GetPaginatedAsync(
+			AdvertSubscriptionFilters filters,
 			PaginatedRequest pagination,
 			CancellationToken cancellationToken)
 		{
@@ -52,23 +52,23 @@ namespace Subscription.API.Services
 			}
 
 			var result = await _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
-			var mapped = result.Data.Select(_mapper.Map<SubscriptionResponse>);
-			return new PaginatedResult<SubscriptionResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
+			var mapped = result.Data.Select(_mapper.Map<AdvertSubscriptionResponse>);
+			return new PaginatedResult<AdvertSubscriptionResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
 		}
 
-		public async Task CreateAsync(SubscriptionCreateRequest request, CancellationToken cancellationToken)
+		public async Task CreateAsync(AdvertSubscriptionCreateRequest request, CancellationToken cancellationToken)
 		{
-			var entity = _mapper.Map<SubscriptionEntity>(request);
+			var entity = _mapper.Map<AdvertSubscriptionEntity>(request);
 
 			entity.Id = Guid.NewGuid();
 			entity.CreatedAt = DateTime.UtcNow;
-			entity.CreatedBy = _userIdentityProvider.UserId;
+			entity.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			entity.UserId = _userIdentityProvider.UserId.GetValueOrDefault();
 
 			await _repository.CreateAsync(entity, cancellationToken);
 		}
 
-		public async Task UpdateAsync(Guid id, SubscriptionUpdateRequest request, CancellationToken cancellationToken)
+		public async Task UpdateAsync(Guid id, AdvertSubscriptionUpdateRequest request, CancellationToken cancellationToken)
 		{
 			var subscription = await _repository.GetByIdAsync(id, cancellationToken);
 			if (subscription == null)
@@ -77,7 +77,7 @@ namespace Subscription.API.Services
 			if (subscription.UserId != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
 				throw new ForbiddenAccessException("You are not the owner.");
 
-			var updated = _mapper.Map<SubscriptionEntity>(request);
+			var updated = _mapper.Map<AdvertSubscriptionEntity>(request);
 			updated.Id = subscription.Id;
 			updated.CreatedAt = subscription.CreatedAt;
 			updated.CreatedBy = subscription.CreatedBy;
