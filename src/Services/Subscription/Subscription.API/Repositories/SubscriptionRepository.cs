@@ -68,11 +68,12 @@ namespace Subscription.API.Repositories
 			var builder = Builders<SubscriptionEntity>.Filter;
 			var filter = builder.Empty;
 
+			if (filters.UserId.HasValue)
+				filter &= builder.Eq(x => x.UserId, filters.UserId.Value);
 			if (filters.EventType.HasValue)
 				filter &= builder.Eq(x => x.EventType, filters.EventType.Value);
-
 			if (!string.IsNullOrEmpty(filters.FilterJson))
-				filter &= builder.Eq(x => x.FilterJson, filters.FilterJson);
+				filter &= builder.Eq(x =>  x.FilterJson, filters.FilterJson);
 
 			return filter;
 		}

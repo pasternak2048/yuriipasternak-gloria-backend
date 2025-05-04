@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Filtering;
+﻿using BuildingBlocks.Caching;
+using BuildingBlocks.Filtering;
 using BuildingBlocks.Infrastructure.Entities;
 using BuildingBlocks.Pagination;
 using Microsoft.Extensions.Caching.Distributed;
@@ -8,11 +9,12 @@ using System.Text.Json;
 namespace BuildingBlocks.Infrastructure
 {
 	public class CachedGenericRepository<T, TFilters> : IGenericRepository<T, TFilters>
-		where T : class, IEntity
-		where TFilters : BaseFilters
+	where T : class, IEntity
+	where TFilters : BaseFilters
 	{
 		private readonly IGenericRepository<T, TFilters> _inner;
 		private readonly IDistributedCache _cache;
+		private readonly CacheStampManager _stampManager;
 		private readonly ILogger<CachedGenericRepository<T, TFilters>> _logger;
 
 		private static readonly DistributedCacheEntryOptions CacheOptions = new()
@@ -23,14 +25,15 @@ namespace BuildingBlocks.Infrastructure
 		public CachedGenericRepository(
 			IGenericRepository<T, TFilters> inner,
 			IDistributedCache cache,
+			CacheStampManager stampManager,
 			ILogger<CachedGenericRepository<T, TFilters>> logger)
 		{
 			_inner = inner;
 			_cache = cache;
+			_stampManager = stampManager;
 			_logger = logger;
 		}
 
-		// ---------- GET BY ID ----------
 		public async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
 			var cacheKey = $"{typeof(T).Name}:id:{id}";
@@ -54,10 +57,11 @@ namespace BuildingBlocks.Infrastructure
 			return entity;
 		}
 
-		// ---------- GET PAGINATED ----------
 		public async Task<PaginatedResult<T>> GetPaginatedAsync(TFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			var cacheKey = $"{typeof(T).Name}:filter:{filters.CacheKey()}:page:{pagination.PageIndex}:{pagination.PageSize}";
+			var stamp = await _stampManager.GetStampAsync(typeof(T).Name, cancellationToken);
+
+			var cacheKey = $"{typeof(T).Name}:v:{stamp}:filter:{filters.CacheKey()}:page:{pagination.PageIndex}:{pagination.PageSize}";
 			var cached = await _cache.GetStringAsync(cacheKey, cancellationToken);
 
 			if (!string.IsNullOrEmpty(cached))
@@ -75,16 +79,24 @@ namespace BuildingBlocks.Infrastructure
 			return result;
 		}
 
-		// ---------- CREATE ----------
-		public Task CreateAsync(T entity, CancellationToken cancellationToken) =>
-			_inner.CreateAsync(entity, cancellationToken);
+		public async Task CreateAsync(T entity, CancellationToken cancellationToken)
+		{
+			await _inner.CreateAsync(entity, cancellationToken);
+			await _stampManager.BumpStampAsync(typeof(T).Name, cancellationToken);
+		}
 
-		// ---------- UPDATE ----------
-		public Task UpdateAsync(Guid id, T entity, CancellationToken cancellationToken) =>
-			_inner.UpdateAsync(id, entity, cancellationToken);
+		public async Task UpdateAsync(Guid id, T entity, CancellationToken cancellationToken)
+		{
+			await _inner.UpdateAsync(id, entity, cancellationToken);
+			await _cache.RemoveAsync($"{typeof(T).Name}:id:{id}", cancellationToken);
+			await _stampManager.BumpStampAsync(typeof(T).Name, cancellationToken);
+		}
 
-		// ---------- DELETE ----------
-		public Task DeleteAsync(Guid id, CancellationToken cancellationToken) =>
-			_inner.DeleteAsync(id, cancellationToken);
+		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
+		{
+			await _inner.DeleteAsync(id, cancellationToken);
+			await _cache.RemoveAsync($"{typeof(T).Name}:id:{id}", cancellationToken);
+			await _stampManager.BumpStampAsync(typeof(T).Name, cancellationToken);
+		}
 	}
 }

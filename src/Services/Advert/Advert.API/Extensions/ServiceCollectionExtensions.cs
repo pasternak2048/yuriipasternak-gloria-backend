@@ -5,6 +5,7 @@ using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Filters;
 using Advert.API.Repositories;
 using Advert.API.Services;
+using BuildingBlocks.Caching;
 using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
@@ -54,11 +55,13 @@ namespace Advert.API.Extensions
 			services.AddHttpContextAccessor();
 			services.AddScoped<IAdvertEventPublisher, AdvertEventPublisher>();
 			services.AddScoped<IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>, AdvertService>();
+			services.AddScoped<CacheStampManager>();
 			services.AddScoped<AdvertRepository>();
 			services.AddScoped<IGenericRepository<AdvertEntity, AdvertFilters>>(provider =>
 				new CachedGenericRepository<AdvertEntity, AdvertFilters>(
 					provider.GetRequiredService<AdvertRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<AdvertEntity, AdvertFilters>>>()
 			));
 			services.AddTransient<DatabaseInitializer<AdvertEntity>>();

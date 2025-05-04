@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Caching;
+using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using Microsoft.Extensions.Caching.Distributed;
 using Subscription.API.Models.DTOs.Requests;
@@ -32,11 +33,13 @@ namespace Subscription.API.Extensions
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IGenericService<SubscriptionResponse, SubscriptionCreateRequest, SubscriptionUpdateRequest, SubscriptionFilters>, SubscriptionService>();
+			services.AddScoped<CacheStampManager>();
 			services.AddScoped<SubscriptionRepository>();
 			services.AddScoped<IGenericRepository<SubscriptionEntity, SubscriptionFilters>>(provider =>
 				new CachedGenericRepository<SubscriptionEntity, SubscriptionFilters>(
 					provider.GetRequiredService<SubscriptionRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<SubscriptionEntity, SubscriptionFilters>>>()
 			));
 		}

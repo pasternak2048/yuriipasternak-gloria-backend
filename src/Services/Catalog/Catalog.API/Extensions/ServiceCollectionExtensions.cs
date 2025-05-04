@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Configuration;
+﻿using BuildingBlocks.Caching;
+using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Persistence.Mongo;
@@ -36,11 +37,13 @@ namespace Catalog.API.Extensions
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>, RealtyService>();
+			services.AddScoped<CacheStampManager>();
 			services.AddScoped<RealtyRepository>();
 			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
 				new CachedGenericRepository<Realty, RealtyFilters>(
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<Realty, RealtyFilters>>>()
 			));
 			services.AddTransient<DatabaseInitializer<Realty>>();
