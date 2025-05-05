@@ -1,9 +1,12 @@
-﻿using BuildingBlocks.Controllers;
+﻿using AutoMapper;
+using BuildingBlocks.Controllers;
 using BuildingBlocks.Infrastructure;
+using Contracts.Events;
 using Microsoft.AspNetCore.Mvc;
 using Subscription.API.Models.DTOs.Requests;
 using Subscription.API.Models.DTOs.Responses;
 using Subscription.API.Models.Filters;
+using Subscription.API.Services;
 
 namespace Subscription.API.Controllers
 {
@@ -12,10 +15,25 @@ namespace Subscription.API.Controllers
 	public class SubscriptionController
 		: GenericBaseController<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters>
 	{
+		private readonly AdvertSubscriptionMatchingService _matchingService;
+		private readonly IMapper _mapper;
+
 		public SubscriptionController(
-			IGenericService<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters> service)
+			IGenericService<AdvertSubscriptionResponse, AdvertSubscriptionCreateRequest, AdvertSubscriptionUpdateRequest, AdvertSubscriptionFilters> service,
+			AdvertSubscriptionMatchingService matchingService,
+			IMapper mapper)
 			: base(service)
 		{
+			_matchingService = matchingService;
+			_mapper = mapper;
+		}
+
+		[HttpPost("matching/advert")]
+		public async Task<IActionResult> GetMatchingAdvertSubscriptions([FromBody] AdvertCreatedEvent @event, CancellationToken cancellationToken)
+		{
+			var matches = await _matchingService.GetMatchingSubscriptionsAsync(@event, cancellationToken);
+			var response = matches.Select(_mapper.Map<AdvertSubscriptionResponse>);
+			return Ok(response);
 		}
 	}
 }

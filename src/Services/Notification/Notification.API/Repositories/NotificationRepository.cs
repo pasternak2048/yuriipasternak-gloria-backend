@@ -14,9 +14,9 @@ namespace Notification.API.Repositories
 			_collection = database.GetCollection<NotificationEntity>("notifications");
 		}
 
-		public Task CreateAsync(NotificationEntity notification, CancellationToken cancellationToken)
+		public async Task CreateAsync(NotificationEntity notification, CancellationToken cancellationToken)
 		{
-			return _collection.InsertOneAsync(notification, null, cancellationToken);
+			await _collection.InsertOneAsync(notification, null, cancellationToken);
 		}
 	}
 }

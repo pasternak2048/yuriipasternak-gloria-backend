@@ -31,6 +31,7 @@ namespace Subscription.API.Extensions
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{
+					options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
 					options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 				});
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());

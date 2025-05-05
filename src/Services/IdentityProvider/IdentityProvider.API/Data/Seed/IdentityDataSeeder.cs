@@ -85,6 +85,35 @@ namespace IdentityProvider.API.Data.Seed
 					throw new Exception($"User creation error: {errors}");
 				}
 			}
+
+			// User
+			var user2Email = "alex2048@example.com";
+			var user2User = await userManager.FindByEmailAsync(user2Email);
+
+			if (user2User == null)
+			{
+				var user = new ApplicationUser
+				{
+					Id = Guid.Parse("1fef01ff-3306-4d4f-a69d-6b4776142ecc"),
+					UserName = "alex2048",
+					Email = user2Email,
+					EmailConfirmed = true,
+					FirstName = "Olga",
+					LastName = "Aleksandrovych"
+				};
+
+				var result = await userManager.CreateAsync(user, "11111111_Aa!");
+
+				if (result.Succeeded)
+				{
+					await userManager.AddToRoleAsync(user, "User");
+				}
+				else
+				{
+					var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+					throw new Exception($"User creation error: {errors}");
+				}
+			}
 		}
 	}
 }

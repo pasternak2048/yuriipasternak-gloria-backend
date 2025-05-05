@@ -11,6 +11,7 @@ namespace Notification.API.Models.Entities
 		[BsonRepresentation(BsonType.String)]
 		public Guid Id { get; set; }
 
+		[BsonRepresentation(BsonType.String)]
 		public Guid UserId { get; set; }
 
 		public NotificationEventType EventType { get; set; }
