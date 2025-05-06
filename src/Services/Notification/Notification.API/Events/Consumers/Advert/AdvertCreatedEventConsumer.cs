@@ -2,8 +2,8 @@
 using Contracts.Events;
 using MassTransit;
 using Notification.API.ExternalServices.Subscription;
+using Notification.API.Models.Entities;
 using Notification.API.Services.Interfaces;
-using NotificationEntity = Notification.API.Models.Entities.Notification;
 
 namespace Notification.API.Events.Consumers.Advert
 {
@@ -30,7 +30,6 @@ namespace Notification.API.Events.Consumers.Advert
 			{
 				_logger.LogInformation("[NOTIFICATION] Matched subscription for user {UserId} | Advert: {Title}, {Region}, {City}, {Street}, {Price}{Currency}",
 					subscription.UserId, @event.Title, @event.Region, @event.City, @event.Street, @event.Price, @event.Currency);
-
 
 				var notification = new NotificationEntity
 				{

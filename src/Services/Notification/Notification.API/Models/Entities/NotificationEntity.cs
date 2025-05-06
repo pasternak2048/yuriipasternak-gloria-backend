@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Notification.API.Models.Entities
 {
-	public class Notification : IEntity
+	public class NotificationEntity : IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]
