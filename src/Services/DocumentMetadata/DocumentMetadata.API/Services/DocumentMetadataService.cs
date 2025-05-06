@@ -6,9 +6,8 @@ using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using DocumentMetadata.API.Models.DTOs.Requests;
 using DocumentMetadata.API.Models.DTOs.Responses;
-using DocumentMetadata.API.Models.Enums;
+using DocumentMetadata.API.Models.Entities;
 using DocumentMetadata.API.Models.Filters;
-using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 
 namespace DocumentMetadata.API.Services
 {

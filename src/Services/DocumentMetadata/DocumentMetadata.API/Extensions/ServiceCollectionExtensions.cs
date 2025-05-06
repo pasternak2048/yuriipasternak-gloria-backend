@@ -6,10 +6,10 @@ using DocumentMetadata.API.Repositories;
 using DocumentMetadata.API.Services;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
-using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 using System.Text.Json.Serialization;
 using DocumentMetadata.API.Models.Filters;
 using BuildingBlocks.Caching;
+using DocumentMetadata.API.Models.Entities;
 
 namespace DocumentMetadata.API.Extensions
 {
