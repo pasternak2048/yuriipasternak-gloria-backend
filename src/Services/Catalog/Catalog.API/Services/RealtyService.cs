@@ -12,11 +12,11 @@ namespace Catalog.API.Services
 {
 	public class RealtyService : IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>
 	{
-		private readonly IGenericRepository<Realty, RealtyFilters> _repository;
+		private readonly IGenericRepository<RealtyEntity, RealtyFilters> _repository;
 		private readonly IMapper _mapper;
 		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyService(IGenericRepository<Realty, RealtyFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider)
+		public RealtyService(IGenericRepository<RealtyEntity, RealtyFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider)
 		{
 			_repository = repository;
 			_mapper = mapper;
@@ -38,7 +38,7 @@ namespace Catalog.API.Services
 
 		public Task CreateAsync(RealtyCreateRequest request, CancellationToken cancellationToken)
 		{
-			var entity = _mapper.Map<Realty>(request);
+			var entity = _mapper.Map<RealtyEntity>(request);
 			return _repository.CreateAsync(entity, cancellationToken);
 		}
 
@@ -49,7 +49,7 @@ namespace Catalog.API.Services
 			if (realty.CreatedBy != _userIdentityProvider.UserId && !_userIdentityProvider.IsAdmin)
 				throw new ForbiddenAccessException("You are not the owner.");
 
-			var updated = _mapper.Map<Realty>(request);
+			var updated = _mapper.Map<RealtyEntity>(request);
 			await _repository.UpdateAsync(id, updated, cancellationToken);
 		}
 

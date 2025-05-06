@@ -6,7 +6,7 @@ using BuildingBlocks.Common.DTOs;
 
 namespace Catalog.API.Models.Entities
 {
-	public class Realty : AuditableEntity, IEntity
+	public class RealtyEntity : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]

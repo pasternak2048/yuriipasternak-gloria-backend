@@ -39,22 +39,22 @@ namespace Catalog.API.Extensions
 			services.AddScoped<IGenericService<RealtyResponse, RealtyCreateRequest, RealtyUpdateRequest, RealtyFilters>, RealtyService>();
 			services.AddScoped<CacheStampManager>();
 			services.AddScoped<RealtyRepository>();
-			services.AddScoped<IGenericRepository<Realty, RealtyFilters>>(provider =>
-				new CachedGenericRepository<Realty, RealtyFilters>(
+			services.AddScoped<IGenericRepository<RealtyEntity, RealtyFilters>>(provider =>
+				new CachedGenericRepository<RealtyEntity, RealtyFilters>(
 					provider.GetRequiredService<RealtyRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<CacheStampManager>(),
-					provider.GetRequiredService<ILogger<CachedGenericRepository<Realty, RealtyFilters>>>()
+					provider.GetRequiredService<ILogger<CachedGenericRepository<RealtyEntity, RealtyFilters>>>()
 			));
-			services.AddTransient<DatabaseInitializer<Realty>>();
-			services.AddSingleton<ICollectionSeeder<Realty>, RealtySeeder>();
-			services.AddSingleton<MongoCollectionSeeder<Realty>>(provider =>
+			services.AddTransient<DatabaseInitializer<RealtyEntity>>();
+			services.AddSingleton<ICollectionSeeder<RealtyEntity>, RealtySeeder>();
+			services.AddSingleton<MongoCollectionSeeder<RealtyEntity>>(provider =>
 			{
 				var client = provider.GetRequiredService<IMongoClient>();
 				var settings = provider.GetRequiredService<MongoSettings>();
-				var seeder = provider.GetRequiredService<ICollectionSeeder<Realty>>();
+				var seeder = provider.GetRequiredService<ICollectionSeeder<RealtyEntity>>();
 
-				return new MongoCollectionSeeder<Realty>(client, settings, "realties", seeder);
+				return new MongoCollectionSeeder<RealtyEntity>(client, settings, "realties", seeder);
 			});
 		}
 	}
