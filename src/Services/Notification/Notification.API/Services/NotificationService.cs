@@ -1,4 +1,8 @@
-﻿using Notification.API.Models.Entities;
+﻿using BuildingBlocks.Exceptions;
+using BuildingBlocks.Identity;
+using BuildingBlocks.Pagination;
+using Notification.API.Models.Entities;
+using Notification.API.Models.Filters;
 using Notification.API.Repositories;
 using Notification.API.Services.Interfaces;
 
@@ -7,15 +11,51 @@ namespace Notification.API.Services
 	public class NotificationService : INotificationService
 	{
 		private readonly INotificationRepository _repository;
+		private readonly IUserIdentityProvider _user;
 
-		public NotificationService(INotificationRepository repository)
+		public NotificationService(INotificationRepository repository, IUserIdentityProvider user)
 		{
 			_repository = repository;
+			_user = user;
 		}
 
 		public Task CreateAsync(NotificationEntity notification, CancellationToken cancellationToken)
 		{
 			return _repository.CreateAsync(notification, cancellationToken);
+		}
+
+		public Task<PaginatedResult<NotificationEntity>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
+		{
+			if(_user.UserId is null)
+			{
+				throw new UnauthorizedException("You are not authorized.");
+			}
+
+			if (!_user.IsAdmin)
+				filters.UserId = _user.UserId;
+
+			return _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
+		}
+
+		public async Task<NotificationEntity?> MarkAsReadAsync(Guid id, CancellationToken cancellationToken)
+		{
+			var notification = await _repository.GetByIdAsync(id, cancellationToken);
+			if (notification == null) return null;
+
+			if (notification.UserId != _user.UserId && !_user.IsAdmin)
+				throw new ForbiddenAccessException("You are not allowed to mark this notification as read.");
+
+			return await _repository.MarkAsReadAsync(id, cancellationToken);
+		}
+
+		public Task<int> MarkAllAsReadAsync(CancellationToken cancellationToken)
+		{
+			if (_user.UserId is null)
+			{
+				throw new UnauthorizedException("You are not authorized.");
+			}
+
+			return _repository.MarkAllAsReadAsync(_user.UserId.GetValueOrDefault(), cancellationToken);
 		}
 	}
 }
