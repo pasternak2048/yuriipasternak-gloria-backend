@@ -1,10 +1,10 @@
-﻿using Advert.API.Models.Filters;
+﻿using Advert.API.Models.Entities;
+using Advert.API.Models.Filters;
 using BuildingBlocks.Configuration;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using MongoDB.Driver;
-using AdvertEntity = Advert.API.Models.Entities.Advert;
 
 namespace Advert.API.Repositories
 {

@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Advert.API.Models.Entities
 {
-	public class Advert : AuditableEntity, IEntity
+	public class AdvertEntity : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]
