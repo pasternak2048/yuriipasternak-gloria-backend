@@ -11,6 +11,12 @@ services:
   documentmetadatadb:
     image: mongo:latest
 
+  notificationdb:
+    image: mongo:latest
+
+  subscriptiondb:
+    image: mongo:latest
+
   distributedcache:
     image: redis
 
@@ -59,7 +65,15 @@ services:
       context: .
       dockerfile: Services/Notification/Notification.API/Dockerfile
 
+  subscription.api:
+    image: ${DOCKER_REGISTRY-}subscriptionapi
+    build:
+      context: .
+      dockerfile: Services/Subscription/Subscription.API/Dockerfile
+
 volumes:
   mongodb_catalog:
   mongodb_advert:
+  mongodb_notification:
+  mongodb_subscription:
   mongodb_documentmetadata:

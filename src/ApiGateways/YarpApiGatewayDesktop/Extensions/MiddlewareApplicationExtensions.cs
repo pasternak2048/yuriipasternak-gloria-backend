@@ -16,6 +16,7 @@
 				options.SwaggerEndpoint("https://localhost:6069/swagger/v1/swagger.json", "Document Metadata API");
 				options.SwaggerEndpoint("https://localhost:6070/swagger/v1/swagger.json", "Document Storage API");
 				options.SwaggerEndpoint("https://localhost:6075/swagger/v1/swagger.json", "Notification API");
+				options.SwaggerEndpoint("https://localhost:6076/swagger/v1/swagger.json", "Subscription API");
 				options.DocumentTitle = "API Gateway Swagger";
 				options.RoutePrefix = string.Empty;
 			});

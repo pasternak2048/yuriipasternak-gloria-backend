@@ -46,7 +46,7 @@ namespace Advert.API.Services
 
 			entity.Id = Guid.NewGuid();
 			entity.CreatedAt = DateTime.UtcNow;
-			entity.CreatedBy = _userIdentityProvider.UserId;
+			entity.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 
 			await _repository.CreateAsync(entity, cancellationToken);
 

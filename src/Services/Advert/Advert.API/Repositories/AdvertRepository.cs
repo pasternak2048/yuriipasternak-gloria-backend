@@ -40,7 +40,7 @@ namespace Advert.API.Repositories
 		public async Task CreateAsync(AdvertEntity advert, CancellationToken cancellationToken)
 		{
 			advert.CreatedAt = DateTime.UtcNow;
-			advert.CreatedBy = _userIdentityProvider.UserId;
+			advert.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			await _collection.InsertOneAsync(advert, null, cancellationToken);
 		}
 

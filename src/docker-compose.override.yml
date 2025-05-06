@@ -45,6 +45,30 @@ services:
     volumes:
       - mongodb_documentmetadata:/data/db
 
+  notificationdb:
+    container_name: notificationdb
+    environment:
+      - MONGO_INITDB_DATABASE=NotificationDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27031:27017
+    volumes:
+      - mongodb_notification:/data/db
+
+  subscriptiondb:
+    container_name: subscriptiondb
+    environment:
+      - MONGO_INITDB_DATABASE=SubscriptiondbDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27032:27017
+    volumes:
+      - mongodb_subscription:/data/db
+
   distributedcache:
     container_name: distributedcache
     restart: always
@@ -172,16 +196,40 @@ services:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
   notification.api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@notificationdb:27017
+      - MongoSettings__DatabaseName=NotificationDb
     depends_on:
+      - notificationdb
       - messagebroker
     ports:
       - "6015:8080"
       - "6075:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  subscription.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@subscriptiondb:27017
+      - MongoSettings__DatabaseName=SubscriptionDb
+    depends_on:
+      - subscriptiondb
+    ports:
+      - "6016:8080"
+      - "6076:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro

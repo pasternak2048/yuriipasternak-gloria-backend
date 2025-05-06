@@ -1,5 +1,4 @@
-﻿using Advert.API.Models.Enums;
-using BuildingBlocks.Common.Enums;
+﻿using BuildingBlocks.Common.Enums;
 
 namespace Advert.API.Models.DTOs.Responses
 {

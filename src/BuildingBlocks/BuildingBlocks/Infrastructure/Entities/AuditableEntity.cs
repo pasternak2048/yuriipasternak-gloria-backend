@@ -6,7 +6,7 @@ namespace BuildingBlocks.Infrastructure.Entities
 	public abstract class AuditableEntity
 	{
 		[BsonRepresentation(BsonType.String)]
-		public Guid? CreatedBy { get; set; }
+		public Guid CreatedBy { get; set; }
 
 		public DateTime CreatedAt { get; set; }
 

@@ -9,6 +9,7 @@ using System.Reflection;
 using DocumentMetadataEntity = DocumentMetadata.API.Models.Entities.DocumentMetadata;
 using System.Text.Json.Serialization;
 using DocumentMetadata.API.Models.Filters;
+using BuildingBlocks.Caching;
 
 namespace DocumentMetadata.API.Extensions
 {
@@ -32,11 +33,13 @@ namespace DocumentMetadata.API.Extensions
 			services.AddAutoMapper(Assembly.GetExecutingAssembly());
 			services.AddHttpContextAccessor();
 			services.AddScoped<IGenericService<DocumentMetadataResponse, DocumentMetadataCreateRequest, DocumentMetadataUpdateRequest, DocumentMetadataFilters>, DocumentMetadataService>();
+			services.AddScoped<CacheStampManager>();
 			services.AddScoped<DocumentMetadataRepository>();
 			services.AddScoped<IGenericRepository<DocumentMetadataEntity, DocumentMetadataFilters>>(provider =>
 				new CachedGenericRepository<DocumentMetadataEntity, DocumentMetadataFilters>(
 					provider.GetRequiredService<DocumentMetadataRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
+					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<DocumentMetadataEntity, DocumentMetadataFilters>>>()
 			));
 		}

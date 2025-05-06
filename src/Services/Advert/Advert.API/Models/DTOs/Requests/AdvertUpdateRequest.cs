@@ -1,4 +1,4 @@
-﻿using Advert.API.Models.Enums;
+﻿using BuildingBlocks.Common.DTOs;
 using BuildingBlocks.Common.Enums;
 
 namespace Advert.API.Models.DTOs.Requests
@@ -16,5 +16,7 @@ namespace Advert.API.Models.DTOs.Requests
 		public string? Description { get; set; }
 
 		public AdvertStatus Status { get; set; }
+
+		public Address Address { get; set; } = new();
 	}
 }

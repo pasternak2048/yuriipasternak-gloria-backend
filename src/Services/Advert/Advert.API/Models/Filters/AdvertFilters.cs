@@ -1,4 +1,4 @@
-﻿using Advert.API.Models.Enums;
+﻿using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Filtering;
 
 namespace Advert.API.Models.Filters
