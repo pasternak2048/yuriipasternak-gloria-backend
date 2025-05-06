@@ -9,6 +9,12 @@ namespace Notification.API.ExternalServices.Subscription
 	{
 		private readonly HttpClient _http;
 
+		private static readonly JsonSerializerOptions _jsonOptions = new()
+		{
+			PropertyNameCaseInsensitive = true,
+			Converters = { new JsonStringEnumConverter() }
+		};
+
 		public SubscriptionClient(HttpClient http)
 		{
 			_http = http;
@@ -25,13 +31,7 @@ namespace Notification.API.ExternalServices.Subscription
 
 			var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
-			var options = new JsonSerializerOptions
-			{
-				PropertyNameCaseInsensitive = true,
-				Converters = { new JsonStringEnumConverter() }
-			};
-
-			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionResponse>>(content, options);
+			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionResponse>>(content, _jsonOptions);
 
 			return result ?? Array.Empty<AdvertSubscriptionResponse>();
 		}
