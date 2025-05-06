@@ -7,7 +7,7 @@ using MongoDB.Driver;
 
 namespace Catalog.API.Data
 {
-	public class RealtySeeder : ICollectionSeeder<Realty>
+	public class RealtySeeder : ICollectionSeeder<RealtyEntity>
 	{
 		private readonly List<Guid> RealtyIds = new()
 		{
@@ -38,12 +38,12 @@ namespace Catalog.API.Data
 			Guid.Parse("00000000-0000-0000-0000-000000000025")
 		};
 
-		public async Task SeedAsync(IMongoCollection<Realty> collection)
+		public async Task SeedAsync(IMongoCollection<RealtyEntity> collection)
 		{
-			var items = new List<Realty>();
+			var items = new List<RealtyEntity>();
 			for (int i = 0; i < RealtyIds.Count; i++)
 			{
-				items.Add(new Realty
+				items.Add(new RealtyEntity
 				{
 					Id = RealtyIds[i],
 					CreatedBy = Guid.Parse("1fef01ff-3306-4d4f-a69d-6b4776142ecd"),

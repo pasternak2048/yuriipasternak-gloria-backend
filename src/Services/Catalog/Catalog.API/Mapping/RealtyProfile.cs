@@ -10,15 +10,15 @@ namespace Catalog.API.Mapping
 	{
 		public RealtyProfile()
 		{
-			CreateMap<Realty, RealtyResponse>()
+			CreateMap<RealtyEntity, RealtyResponse>()
 				.ForMember(dest => dest.FullAddress, opt => opt.MapFrom(src => FormatAddress(src.Address)));
 
-			CreateMap<RealtyCreateRequest, Realty>()
+			CreateMap<RealtyCreateRequest, RealtyEntity>()
 			.ForMember(dest => dest.Id, opt => opt.Ignore())
 			.ForMember(dest => dest.Status, opt => opt.Ignore())
 			.ForMember(dest => dest.BuildDate, opt => opt.MapFrom(src => src.BuildDate.UtcDateTime));
 
-			CreateMap<RealtyUpdateRequest, Realty>()
+			CreateMap<RealtyUpdateRequest, RealtyEntity>()
 				.ForMember(dest => dest.Id, opt => opt.Ignore())
 				.ForMember(dest => dest.BuildDate, opt => opt.MapFrom(src => src.BuildDate.UtcDateTime));
 		}

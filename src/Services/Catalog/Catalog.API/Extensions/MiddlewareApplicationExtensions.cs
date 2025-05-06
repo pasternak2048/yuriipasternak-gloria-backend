@@ -23,7 +23,7 @@ namespace Catalog.API.Extensions
 				});
 
 				using var scope = app.Services.CreateScope();
-				var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer<Realty>>();
+				var initializer = scope.ServiceProvider.GetRequiredService<DatabaseInitializer<RealtyEntity>>();
 				await initializer.InitializeAsync();
 			}
 		}
