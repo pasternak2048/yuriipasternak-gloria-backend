@@ -2,7 +2,7 @@
 
 namespace Notification.API.Models.Filters.Advert
 {
-	public class AdvertCreatedFilter
+	public class AdvertCreatedFilters
 	{
 		public string? Street { get; set; }
 

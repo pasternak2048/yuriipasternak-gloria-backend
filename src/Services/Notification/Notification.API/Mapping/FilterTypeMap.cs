@@ -8,7 +8,7 @@ namespace Notification.API.Mapping
 		public static Type GetFilterType(NotificationEventType eventType) =>
 			eventType switch
 			{
-				NotificationEventType.AdvertCreated => typeof(AdvertCreatedFilter),
+				NotificationEventType.AdvertCreated => typeof(AdvertCreatedFilters),
 				_ => throw new NotSupportedException()
 			};
 	}
