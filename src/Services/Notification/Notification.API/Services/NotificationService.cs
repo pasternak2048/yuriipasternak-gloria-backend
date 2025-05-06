@@ -1,6 +1,6 @@
-﻿using Notification.API.Repositories;
+﻿using Notification.API.Models.Entities;
+using Notification.API.Repositories;
 using Notification.API.Services.Interfaces;
-using NotificationEntity = Notification.API.Models.Entities.Notification;
 
 namespace Notification.API.Services
 {
