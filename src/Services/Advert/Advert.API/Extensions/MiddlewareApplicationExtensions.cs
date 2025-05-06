@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Persistence.Mongo;
-using AdvertEntity = Advert.API.Models.Entities.Advert;
+﻿using Advert.API.Models.Entities;
+using BuildingBlocks.Persistence.Mongo;
 
 namespace Advert.API.Extensions
 {

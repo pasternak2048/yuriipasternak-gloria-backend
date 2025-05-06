@@ -2,6 +2,7 @@
 using Advert.API.Messaging;
 using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
+using Advert.API.Models.Entities;
 using Advert.API.Models.Filters;
 using Advert.API.Repositories;
 using Advert.API.Services;
@@ -16,7 +17,6 @@ using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using AdvertEntity = Advert.API.Models.Entities.Advert;
 
 namespace Advert.API.Extensions
 {

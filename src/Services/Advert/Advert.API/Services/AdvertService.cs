@@ -1,6 +1,7 @@
 ﻿using Advert.API.Messaging;
 using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
+using Advert.API.Models.Entities;
 using Advert.API.Models.Filters;
 using AutoMapper;
 using BuildingBlocks.Exceptions;
@@ -8,7 +9,6 @@ using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using Contracts.Events;
-using AdvertEntity = Advert.API.Models.Entities.Advert;
 
 namespace Advert.API.Services
 {
