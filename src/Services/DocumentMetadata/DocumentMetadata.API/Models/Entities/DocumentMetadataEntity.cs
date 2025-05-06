@@ -6,7 +6,7 @@ using BuildingBlocks.Common.Enums;
 
 namespace DocumentMetadata.API.Models.Entities
 {
-	public class DocumentMetadata : AuditableEntity, IEntity
+	public class DocumentMetadataEntity : AuditableEntity, IEntity
 	{
 		[BsonId]
 		[BsonRepresentation(BsonType.String)]
