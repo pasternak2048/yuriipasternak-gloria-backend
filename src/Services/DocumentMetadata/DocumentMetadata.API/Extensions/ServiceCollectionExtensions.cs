@@ -10,6 +10,8 @@ using System.Text.Json.Serialization;
 using DocumentMetadata.API.Models.Filters;
 using BuildingBlocks.Caching;
 using DocumentMetadata.API.Models.Entities;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace DocumentMetadata.API.Extensions
 {
@@ -25,6 +27,8 @@ namespace DocumentMetadata.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			services.AddFluentValidationAutoValidation();
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{
