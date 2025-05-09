@@ -29,6 +29,7 @@ namespace Advert.API.Repositories
 			var filter = BuildFilterDefinition(filters);
 			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
 			var items = await _collection.Find(filter)
+				.SortByDescending(r => r.CreatedAt)
 				.Skip(pagination.Skip)
 				.Limit(pagination.PageSize)
 				.ToListAsync(cancellationToken);

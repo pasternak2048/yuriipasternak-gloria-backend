@@ -33,6 +33,7 @@ namespace Subscription.API.Repositories
 
 			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
 			var items = await _collection.Find(filter)
+				.SortByDescending(r => r.CreatedAt)
 				.Skip(pagination.Skip)
 				.Limit(pagination.PageSize)
 				.ToListAsync(cancellationToken);
