@@ -2,6 +2,7 @@
 using Contracts.Events;
 using MassTransit;
 using Notification.API.ExternalServices.Subscription;
+using Notification.API.Models.DTOs.Requests;
 using Notification.API.Models.Entities;
 using Notification.API.Services.Interfaces;
 
@@ -31,15 +32,12 @@ namespace Notification.API.Events.Consumers.Advert
 				_logger.LogInformation("[NOTIFICATION] Matched subscription for user {UserId} | Advert: {Title}, {Region}, {City}, {Street}, {Price}{Currency}",
 					subscription.UserId, @event.Title, @event.Region, @event.City, @event.Street, @event.Price, @event.Currency);
 
-				var notification = new NotificationEntity
+				var notification = new NotificationCreateRequest
 				{
-					Id = Guid.NewGuid(),
 					UserId = subscription.UserId,
 					EventType = NotificationEventType.AdvertCreated,
 					Title = $"New advert in {@event.City} — {@event.Title}",
-					Message = $"Price: {@event.Price} {@event.Currency}",
-					CreatedAt = DateTime.UtcNow,
-					IsRead = false
+					Message = $"Price: {@event.Price} {@event.Currency}"
 				};
 
 				await _notificationService.CreateAsync(notification, context.CancellationToken);

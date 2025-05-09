@@ -1,4 +1,5 @@
 ﻿using BuildingBlocks.Pagination;
+using Notification.API.Models.DTOs.Requests;
 using Notification.API.Models.Entities;
 using Notification.API.Models.Filters;
 
@@ -6,7 +7,7 @@ namespace Notification.API.Services.Interfaces
 {
 	public interface INotificationService
 	{
-		Task CreateAsync(NotificationEntity notification, CancellationToken cancellationToken);
+		Task CreateAsync(NotificationCreateRequest request, CancellationToken cancellationToken);
 
 		Task<PaginatedResult<NotificationEntity>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken);
 
