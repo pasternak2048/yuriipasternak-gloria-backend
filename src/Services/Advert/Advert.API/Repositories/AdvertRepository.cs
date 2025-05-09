@@ -1,7 +1,6 @@
 ﻿using Advert.API.Models.Entities;
 using Advert.API.Models.Filters;
 using BuildingBlocks.Configuration;
-using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using MongoDB.Driver;
@@ -11,12 +10,10 @@ namespace Advert.API.Repositories
 	public class AdvertRepository : IGenericRepository<AdvertEntity, AdvertFilters>
 	{
 		private readonly IMongoCollection<AdvertEntity> _collection;
-		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public AdvertRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
+		public AdvertRepository(IMongoClient client, MongoSettings settings)
 		{
 			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<AdvertEntity>("adverts");
-			_userIdentityProvider = userIdentityProvider;
 		}
 
 		// ---------- GET BY ID ----------
@@ -40,16 +37,12 @@ namespace Advert.API.Repositories
 		// ---------- CREATE ----------
 		public async Task CreateAsync(AdvertEntity advert, CancellationToken cancellationToken)
 		{
-			advert.CreatedAt = DateTime.UtcNow;
-			advert.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			await _collection.InsertOneAsync(advert, null, cancellationToken);
 		}
 
 		// ---------- UPDATE ----------
 		public async Task UpdateAsync(Guid id, AdvertEntity updated, CancellationToken cancellationToken)
 		{
-			updated.ModifiedAt = DateTime.UtcNow;
-			updated.ModifiedBy = _userIdentityProvider.UserId;
 			await _collection.ReplaceOneAsync(a => a.Id == id, updated, (ReplaceOptions?)null, cancellationToken);
 		}
 

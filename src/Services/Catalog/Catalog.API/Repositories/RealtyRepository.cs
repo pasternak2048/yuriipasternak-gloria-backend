@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using Catalog.API.Models.Entities;
@@ -11,12 +10,10 @@ namespace Catalog.API.Repositories
 	public class RealtyRepository : IGenericRepository<RealtyEntity, RealtyFilters>
 	{
 		private readonly IMongoCollection<RealtyEntity> _collection;
-		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public RealtyRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
+		public RealtyRepository(IMongoClient client, MongoSettings settings)
 		{
 			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<RealtyEntity>("realties");
-			_userIdentityProvider = userIdentityProvider;
 		}
 
 		// ---------- GET BY ID ----------
@@ -41,16 +38,12 @@ namespace Catalog.API.Repositories
 		// ---------- CREATE ----------
 		public async Task CreateAsync(RealtyEntity realty, CancellationToken cancellationToken)
 		{
-			realty.CreatedAt = DateTime.UtcNow;
-			realty.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			await _collection.InsertOneAsync(realty, null, cancellationToken);
 		}
 
 		// ---------- UPDATE ----------
 		public async Task UpdateAsync(Guid id, RealtyEntity updated, CancellationToken cancellationToken)
 		{
-			updated.ModifiedAt = DateTime.UtcNow;
-			updated.ModifiedBy = _userIdentityProvider.UserId;
 			await _collection.ReplaceOneAsync(r => r.Id == id, updated, (ReplaceOptions?)null, cancellationToken);
 		}
 

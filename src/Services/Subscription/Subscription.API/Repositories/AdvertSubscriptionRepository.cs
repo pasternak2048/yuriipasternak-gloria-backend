@@ -11,15 +11,12 @@ namespace Subscription.API.Repositories
 	public class AdvertSubscriptionRepository : IGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters>
 	{
 		private readonly IMongoCollection<AdvertSubscriptionEntity> _collection;
-		private readonly IUserIdentityProvider _userIdentityProvider;
 
-		public AdvertSubscriptionRepository(IMongoClient client, MongoSettings settings, IUserIdentityProvider userIdentityProvider)
+		public AdvertSubscriptionRepository(IMongoClient client, MongoSettings settings)
 		{
 			_collection = client
 				.GetDatabase(settings.DatabaseName)
 				.GetCollection<AdvertSubscriptionEntity>("subscriptions_advert");
-
-			_userIdentityProvider = userIdentityProvider;
 		}
 
 		// ---------- GET BY ID ----------
@@ -44,18 +41,12 @@ namespace Subscription.API.Repositories
 		// ---------- CREATE ----------
 		public async Task CreateAsync(AdvertSubscriptionEntity entity, CancellationToken cancellationToken)
 		{
-			entity.CreatedAt = DateTime.UtcNow;
-			entity.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
-
 			await _collection.InsertOneAsync(entity, null, cancellationToken);
 		}
 
 		// ---------- UPDATE ----------
 		public async Task UpdateAsync(Guid id, AdvertSubscriptionEntity updated, CancellationToken cancellationToken)
 		{
-			updated.ModifiedAt = DateTime.UtcNow;
-			updated.ModifiedBy = _userIdentityProvider.UserId;
-
 			await _collection.ReplaceOneAsync(x => x.Id == id, updated, (ReplaceOptions?)null, cancellationToken);
 		}
 

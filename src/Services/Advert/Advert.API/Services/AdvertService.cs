@@ -63,6 +63,8 @@ namespace Advert.API.Services
 				throw new ForbiddenAccessException("You are not the owner.");
 
 			var updated = _mapper.Map<AdvertEntity>(request);
+			updated.ModifiedAt = DateTime.UtcNow;
+			updated.ModifiedBy = _userIdentityProvider.UserId.GetValueOrDefault();
 			await _repository.UpdateAsync(id, updated, cancellationToken);
 		}
 

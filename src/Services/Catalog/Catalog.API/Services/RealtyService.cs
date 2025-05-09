@@ -39,6 +39,9 @@ namespace Catalog.API.Services
 		public Task CreateAsync(RealtyCreateRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<RealtyEntity>(request);
+			entity.CreatedAt = DateTime.UtcNow;
+			entity.CreatedBy = _userIdentityProvider.UserId.GetValueOrDefault();
+
 			return _repository.CreateAsync(entity, cancellationToken);
 		}
 
@@ -50,6 +53,9 @@ namespace Catalog.API.Services
 				throw new ForbiddenAccessException("You are not the owner.");
 
 			var updated = _mapper.Map<RealtyEntity>(request);
+			updated.ModifiedAt = DateTime.UtcNow;
+			updated.ModifiedBy = _userIdentityProvider.UserId;
+
 			await _repository.UpdateAsync(id, updated, cancellationToken);
 		}
 
