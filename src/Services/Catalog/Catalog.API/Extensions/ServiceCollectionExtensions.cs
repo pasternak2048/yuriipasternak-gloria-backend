@@ -10,6 +10,8 @@ using Catalog.API.Models.Entities;
 using Catalog.API.Models.Filters;
 using Catalog.API.Repositories;
 using Catalog.API.Services;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.Extensions.Caching.Distributed;
 using MongoDB.Driver;
 using System.Reflection;
@@ -29,6 +31,8 @@ namespace Catalog.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			services.AddFluentValidationAutoValidation();
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{
