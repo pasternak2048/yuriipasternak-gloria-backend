@@ -13,6 +13,8 @@ using Subscription.API.Repositories.Interfaces;
 using Subscription.API.Services;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 
 namespace Subscription.API.Extensions
 {
@@ -28,6 +30,8 @@ namespace Subscription.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			services.AddFluentValidationAutoValidation();
 			services.AddControllers()
 				.AddJsonOptions(options =>
 				{
