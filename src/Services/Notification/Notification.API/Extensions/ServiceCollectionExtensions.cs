@@ -1,5 +1,7 @@
 ﻿using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using Notification.API.Events.Consumers.Advert;
@@ -24,6 +26,8 @@ namespace Notification.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
 			services.AddHttpClient<SubscriptionClient>(client =>
 			{

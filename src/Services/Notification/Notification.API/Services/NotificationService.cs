@@ -1,6 +1,8 @@
-﻿using BuildingBlocks.Exceptions;
+﻿using AutoMapper;
+using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Pagination;
+using Notification.API.Models.DTOs.Requests;
 using Notification.API.Models.Entities;
 using Notification.API.Models.Filters;
 using Notification.API.Repositories;
@@ -12,16 +14,20 @@ namespace Notification.API.Services
 	{
 		private readonly INotificationRepository _repository;
 		private readonly IUserIdentityProvider _user;
+		private readonly IMapper _mapper;
 
-		public NotificationService(INotificationRepository repository, IUserIdentityProvider user)
+		public NotificationService(INotificationRepository repository, IUserIdentityProvider user, IMapper mapper)
 		{
 			_repository = repository;
 			_user = user;
+			_mapper = mapper;
 		}
 
-		public Task CreateAsync(NotificationEntity notification, CancellationToken cancellationToken)
+		public Task CreateAsync(NotificationCreateRequest request, CancellationToken cancellationToken)
 		{
-			return _repository.CreateAsync(notification, cancellationToken);
+			var entity = _mapper.Map<NotificationEntity>(request);
+
+			return _repository.CreateAsync(entity, cancellationToken);
 		}
 
 		public Task<PaginatedResult<NotificationEntity>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
