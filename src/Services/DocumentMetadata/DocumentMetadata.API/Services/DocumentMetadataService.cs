@@ -85,6 +85,8 @@ namespace DocumentMetadata.API.Services
 				throw new ForbiddenAccessException("You are not the owner of this photo.");
 
 			_mapper.Map(request, existing);
+
+			existing.ModifiedBy = _userIdentityProvider.UserId;
 			existing.ModifiedAt = DateTime.UtcNow;
 			await _repository.UpdateAsync(id, existing, cancellationToken);
 		}

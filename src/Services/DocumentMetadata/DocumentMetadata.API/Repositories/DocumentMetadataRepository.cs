@@ -49,7 +49,6 @@ namespace DocumentMetadata.API.Repositories
 		// ---------- UPDATE ----------
 		public async Task UpdateAsync(Guid id, DocumentMetadataEntity updated, CancellationToken cancellationToken)
 		{
-			
 			await _collection.ReplaceOneAsync(x => x.Id == id, updated, cancellationToken: cancellationToken);
 		}
 

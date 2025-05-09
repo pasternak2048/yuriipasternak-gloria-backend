@@ -26,6 +26,7 @@ namespace Notification.API.Services
 		public Task CreateAsync(NotificationCreateRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<NotificationEntity>(request);
+			entity.CreatedAt = DateTime.UtcNow;
 
 			return _repository.CreateAsync(entity, cancellationToken);
 		}
