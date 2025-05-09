@@ -11,6 +11,8 @@ using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Persistence.Mongo;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using MassTransit;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
@@ -32,6 +34,8 @@ namespace Advert.API.Extensions
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
 			services.AddSignatureValidation(configuration);
+			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
 			services.AddMassTransit(x =>
 			{
