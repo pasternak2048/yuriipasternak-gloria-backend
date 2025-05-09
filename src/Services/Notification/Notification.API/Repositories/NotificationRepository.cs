@@ -28,6 +28,7 @@ namespace Notification.API.Repositories
 
 			var total = await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 			var items = await _collection.Find(filter)
+				.SortByDescending(r => r.CreatedAt)
 				.Skip(pagination.Skip)
 				.Limit(pagination.PageSize)
 				.ToListAsync(cancellationToken);
