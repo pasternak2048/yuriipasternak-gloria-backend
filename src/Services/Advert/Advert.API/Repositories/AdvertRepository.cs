@@ -1,13 +1,13 @@
 ﻿using Advert.API.Models.Entities;
 using Advert.API.Models.Filters;
+using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Configuration;
-using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using MongoDB.Driver;
 
 namespace Advert.API.Repositories
 {
-	public class AdvertRepository : IGenericRepository<AdvertEntity, AdvertFilters>
+	public class AdvertRepository : IAdvertRepository
 	{
 		private readonly IMongoCollection<AdvertEntity> _collection;
 
@@ -49,6 +49,15 @@ namespace Advert.API.Repositories
 		// ---------- DELETE ----------
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 			=> await _collection.DeleteOneAsync(a => a.Id == id, cancellationToken);
+
+		public async Task<bool> ExistsActiveOrInactiveAsync(Guid realtyId, CancellationToken cancellationToken)
+		{
+			var builder = Builders<AdvertEntity>.Filter;
+			var filter = builder.Eq(a => a.RealtyId, realtyId) &
+						 builder.In(a => a.Status, new[] { AdvertStatus.Active, AdvertStatus.Inactive });
+
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
+		}
 
 		private static FilterDefinition<AdvertEntity> BuildFilterDefinition(AdvertFilters filters)
 		{

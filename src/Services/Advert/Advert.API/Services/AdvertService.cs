@@ -3,23 +3,25 @@ using Advert.API.Models.DTOs.Requests;
 using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Entities;
 using Advert.API.Models.Filters;
+using Advert.API.Repositories;
 using AutoMapper;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Pagination;
 using Contracts.Events;
+using FluentValidation;
 
 namespace Advert.API.Services
 {
 	public class AdvertService : IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>
 	{
-		private readonly IGenericRepository<AdvertEntity, AdvertFilters> _repository;
+		private readonly IAdvertRepository _repository;
 		private readonly IMapper _mapper;
 		private readonly IUserIdentityProvider _userIdentityProvider;
 		private readonly IAdvertEventPublisher _eventPublisher;
 
-		public AdvertService(IGenericRepository<AdvertEntity, AdvertFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider, IAdvertEventPublisher eventPublisher)
+		public AdvertService(IAdvertRepository repository, IMapper mapper, IUserIdentityProvider userIdentityProvider, IAdvertEventPublisher eventPublisher)
 		{
 			_repository = repository;
 			_mapper = mapper;
@@ -42,6 +44,10 @@ namespace Advert.API.Services
 
 		public async Task CreateAsync(AdvertCreateRequest request, CancellationToken cancellationToken)
 		{
+			var alreadyExists = await _repository.ExistsActiveOrInactiveAsync(request.RealtyId, cancellationToken);
+			if (alreadyExists)
+				throw new ValidationException("An active or inactive advert for this realty already exists.");
+
 			var entity = _mapper.Map<AdvertEntity>(request);
 
 			entity.Id = Guid.NewGuid();
@@ -51,7 +57,6 @@ namespace Advert.API.Services
 			await _repository.CreateAsync(entity, cancellationToken);
 
 			var @event = _mapper.Map<AdvertCreatedEvent>(entity);
-
 			await _eventPublisher.PublishAdvertCreatedAsync(@event);
 		}
 

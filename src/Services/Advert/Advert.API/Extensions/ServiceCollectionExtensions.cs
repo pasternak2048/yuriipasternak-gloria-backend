@@ -61,13 +61,15 @@ namespace Advert.API.Extensions
 			services.AddScoped<IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>, AdvertService>();
 			services.AddScoped<CacheStampManager>();
 			services.AddScoped<AdvertRepository>();
+			services.AddScoped<IAdvertRepository>(sp => sp.GetRequiredService<AdvertRepository>());
 			services.AddScoped<IGenericRepository<AdvertEntity, AdvertFilters>>(provider =>
 				new CachedGenericRepository<AdvertEntity, AdvertFilters>(
-					provider.GetRequiredService<AdvertRepository>(),
+					provider.GetRequiredService<IAdvertRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<AdvertEntity, AdvertFilters>>>()
-			));
+				)
+			);
 			services.AddTransient<DatabaseInitializer<AdvertEntity>>();
 			services.AddSingleton<ICollectionSeeder<AdvertEntity>, AdvertSeeder>();
 			services.AddSingleton<MongoCollectionSeeder<AdvertEntity>>(provider =>
