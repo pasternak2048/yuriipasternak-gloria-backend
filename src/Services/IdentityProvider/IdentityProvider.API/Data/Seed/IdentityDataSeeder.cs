@@ -1,4 +1,4 @@
-﻿using IdentityProvider.API.Models.Identity;
+﻿using IdentityProvider.API.Models.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

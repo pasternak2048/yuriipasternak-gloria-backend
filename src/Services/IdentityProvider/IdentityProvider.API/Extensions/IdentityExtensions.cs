@@ -1,8 +1,8 @@
 ﻿using IdentityProvider.API.Data;
-using IdentityProvider.API.Models.Identity;
 using IdentityProvider.API.Services.Interfaces;
 using IdentityProvider.API.Services;
 using Microsoft.AspNetCore.Identity;
+using IdentityProvider.API.Models.Entities.Identity;
 
 namespace IdentityProvider.API.Extensions
 {
@@ -10,7 +10,9 @@ namespace IdentityProvider.API.Extensions
 	{
 		public static void AddIdentityCoreServices(this IServiceCollection services, IConfiguration configuration)
 		{
-			services.AddScoped<ITokenService, TokenService>();
+			services.AddScoped<IJwtTokenService, JwtTokenService>();
+			services.AddScoped<IRefreshTokenGenerator, RefreshTokenGenerator>();
+			services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 			services.AddScoped<IIdentityService, IdentityService>();
 
 			services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
@@ -25,8 +27,8 @@ namespace IdentityProvider.API.Extensions
 				options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
 				options.User.RequireUniqueEmail = true;
 			})
-			.AddEntityFrameworkStores<IdentityProviderDbContext>()
-			.AddDefaultTokenProviders();
+				.AddEntityFrameworkStores<IdentityProviderDbContext>()
+				.AddDefaultTokenProviders();
 		}
 	}
 }

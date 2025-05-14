@@ -8,11 +8,11 @@ namespace IdentityProvider.API.Extensions
 	{
 		public async static Task UseCustomMiddlewares(this WebApplication app)
 		{
+			app.UseRouting();
 			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseExceptionHandler(_ => { });
 			app.UseCors("AllowFromGateway");
-
 			app.MapControllers();
 
 			if (app.Environment.IsDevelopment())

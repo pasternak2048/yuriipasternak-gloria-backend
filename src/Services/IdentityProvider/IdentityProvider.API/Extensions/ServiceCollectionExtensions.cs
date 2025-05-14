@@ -12,6 +12,7 @@ namespace IdentityProvider.API.Extensions
 			services.AddSwaggerDocumentation("Identity Provider API");
 			services.AddIdentityCoreServices(configuration);
 			services.AddDatabaseInfrastructure(configuration);
+			services.AddSignatureValidation(configuration);
 			services.AddControllers();
 		}
 	}
