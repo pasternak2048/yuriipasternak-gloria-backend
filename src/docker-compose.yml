@@ -27,49 +27,49 @@ services:
     image: ${DOCKER_REGISTRY-}yarpapigatewaydesktop
     build:
       context: .
-      dockerfile: ApiGateways/YarpApiGatewayDesktop/Dockerfile
+      dockerfile: backend/ApiGateways/YarpApiGatewayDesktop/Dockerfile
 
   identityprovider.api:
     image: ${DOCKER_REGISTRY-}identityproviderapi
     build:
       context: .
-      dockerfile: Services/IdentityProvider/IdentityProvider.API/Dockerfile
+      dockerfile: backend/Services/IdentityProvider/IdentityProvider.API/Dockerfile
 
   catalog.api:
     image: ${DOCKER_REGISTRY-}catalogapi
     build:
       context: .
-      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+      dockerfile: backend/Services/Catalog/Catalog.API/Dockerfile
 
   advert.api:
     image: ${DOCKER_REGISTRY-}advertapi
     build:
       context: .
-      dockerfile: Services/Advert/Advert.API/Dockerfile
+      dockerfile: backend/Services/Advert/Advert.API/Dockerfile
 
   documentstorage.api:
     image: ${DOCKER_REGISTRY-}documentstorageapi
     build:
       context: .
-      dockerfile: Services/DocumentStorage/DocumentStorage.API/Dockerfile
+      dockerfile: backend/Services/DocumentStorage/DocumentStorage.API/Dockerfile
 
   documentmetadata.api:
     image: ${DOCKER_REGISTRY-}documentmetadataapi
     build:
       context: .
-      dockerfile: Services/DocumentMetadata/DocumentMetadata.API/Dockerfile
+      dockerfile: backend/Services/DocumentMetadata/DocumentMetadata.API/Dockerfile
 
   notification.api:
     image: ${DOCKER_REGISTRY-}notificationapi
     build:
       context: .
-      dockerfile: Services/Notification/Notification.API/Dockerfile
+      dockerfile: backend/Services/Notification/Notification.API/Dockerfile
 
   subscription.api:
     image: ${DOCKER_REGISTRY-}subscriptionapi
     build:
       context: .
-      dockerfile: Services/Subscription/Subscription.API/Dockerfile
+      dockerfile: backend/Services/Subscription/Subscription.API/Dockerfile
 
 volumes:
   mongodb_catalog:
