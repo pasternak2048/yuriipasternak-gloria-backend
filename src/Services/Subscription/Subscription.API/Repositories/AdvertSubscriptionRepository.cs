@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Abstractions;
+using BuildingBlocks.Configuration;
 using Contracts.Dtos.Common;
 using Contracts.Dtos.Subscription;
 using MongoDB.Driver;

@@ -1,5 +1,4 @@
 ﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Extensions;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using MassTransit;
@@ -11,6 +10,8 @@ using Notification.API.Services;
 using Notification.API.Services.Interfaces;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
 
 namespace Notification.API.Extensions
 {

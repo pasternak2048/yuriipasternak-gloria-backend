@@ -1,5 +1,5 @@
 ﻿using Advert.API.Models.Entities;
-using BuildingBlocks.Infrastructure;
+using BuildingBlocks.Abstractions;
 using Contracts.Dtos.Advert;
 
 namespace Advert.API.Repositories

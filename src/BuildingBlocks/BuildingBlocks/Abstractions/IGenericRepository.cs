@@ -1,6 +1,6 @@
 ﻿using Contracts.Dtos.Common;
 
-namespace BuildingBlocks.Infrastructure
+namespace BuildingBlocks.Abstractions
 {
 	public interface IGenericRepository<TEntity, TFilters>
 	where TEntity : class

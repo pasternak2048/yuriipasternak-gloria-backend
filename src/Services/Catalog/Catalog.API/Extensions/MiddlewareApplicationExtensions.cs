@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Persistence.Mongo;
+﻿using BuildingBlocks.Infrastructure.Data.Mongo;
 using Catalog.API.Models.Entities;
 
 namespace Catalog.API.Extensions

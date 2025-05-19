@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
 using DocumentStorage.API.Services;
 using DocumentStorage.API.Services.Interfaces;
 

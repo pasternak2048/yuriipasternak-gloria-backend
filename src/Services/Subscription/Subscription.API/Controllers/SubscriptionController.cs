@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Abstractions;
 using BuildingBlocks.Controllers;
-using BuildingBlocks.Infrastructure;
 using Contracts.Dtos.Subscription;
 using Contracts.Events;
 using Microsoft.AspNetCore.Mvc;

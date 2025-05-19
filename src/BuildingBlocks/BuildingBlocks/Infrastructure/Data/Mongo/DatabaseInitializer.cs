@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Persistence.Mongo
+﻿namespace BuildingBlocks.Infrastructure.Data.Mongo
 {
 	public class DatabaseInitializer<T> where T : class
 	{

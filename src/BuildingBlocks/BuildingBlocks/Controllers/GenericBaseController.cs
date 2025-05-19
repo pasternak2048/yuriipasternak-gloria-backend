@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Abstractions;
 using Contracts.Dtos.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

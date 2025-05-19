@@ -1,4 +1,4 @@
-﻿namespace BuildingBlocks.Infrastructure.Entities
+﻿namespace BuildingBlocks.Abstractions
 {
 	public interface IEntity
 	{

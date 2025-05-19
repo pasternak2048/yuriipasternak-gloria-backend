@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Abstractions;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
-using BuildingBlocks.Infrastructure;
 using Catalog.API.Models.Entities;
 using Contracts.Dtos.Catalog;
 using Contracts.Dtos.Common;

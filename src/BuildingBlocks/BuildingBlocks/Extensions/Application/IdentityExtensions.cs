@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BuildingBlocks.Extensions
+namespace BuildingBlocks.Extensions.Application
 {
 	public static class IdentityExtensions
 	{

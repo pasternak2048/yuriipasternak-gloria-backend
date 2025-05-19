@@ -1,7 +1,4 @@
-﻿using BuildingBlocks.Caching;
-using BuildingBlocks.Extensions;
-using BuildingBlocks.Infrastructure;
-using Microsoft.Extensions.Caching.Distributed;
+﻿using Microsoft.Extensions.Caching.Distributed;
 using Subscription.API.Matching.Interfaces;
 using Subscription.API.Matching;
 using Subscription.API.Models.Entities;
@@ -13,6 +10,11 @@ using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Contracts.Dtos.Subscription;
+using BuildingBlocks.Abstractions;
+using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
+using BuildingBlocks.Infrastructure.Data.Caching;
+using BuildingBlocks.Infrastructure.Data.Repositories;
 
 namespace Subscription.API.Extensions
 {

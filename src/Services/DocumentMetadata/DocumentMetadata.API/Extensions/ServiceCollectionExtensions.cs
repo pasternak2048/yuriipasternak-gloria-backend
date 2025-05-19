@@ -1,6 +1,8 @@
-﻿using BuildingBlocks.Caching;
-using BuildingBlocks.Extensions;
-using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Abstractions;
+using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
+using BuildingBlocks.Infrastructure.Data.Caching;
+using BuildingBlocks.Infrastructure.Data.Repositories;
 using Contracts.Dtos.DocumentMetadata;
 using DocumentMetadata.API.Models.Entities;
 using DocumentMetadata.API.Repositories;
