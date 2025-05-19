@@ -4,10 +4,7 @@ using BuildingBlocks.Infrastructure;
 using Microsoft.Extensions.Caching.Distributed;
 using Subscription.API.Matching.Interfaces;
 using Subscription.API.Matching;
-using Subscription.API.Models.DTOs.Requests;
-using Subscription.API.Models.DTOs.Responses;
 using Subscription.API.Models.Entities;
-using Subscription.API.Models.Filters;
 using Subscription.API.Repositories;
 using Subscription.API.Repositories.Interfaces;
 using Subscription.API.Services;
@@ -15,6 +12,7 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using FluentValidation.AspNetCore;
 using FluentValidation;
+using Contracts.Dtos.Subscription;
 
 namespace Subscription.API.Extensions
 {

@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.Common.DTOs;
-using BuildingBlocks.Common.Enums;
-using BuildingBlocks.Infrastructure.Entities;
+﻿using BuildingBlocks.Infrastructure.Entities;
+using Contracts.Dtos.Common;
+using Contracts.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 

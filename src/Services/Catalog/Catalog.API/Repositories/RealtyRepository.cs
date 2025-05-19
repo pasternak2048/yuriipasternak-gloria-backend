@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.Configuration;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
 using Catalog.API.Models.Entities;
-using Catalog.API.Models.Filters;
+using Contracts.Dtos.Catalog;
+using Contracts.Dtos.Common;
 using MongoDB.Driver;
 
 namespace Catalog.API.Repositories

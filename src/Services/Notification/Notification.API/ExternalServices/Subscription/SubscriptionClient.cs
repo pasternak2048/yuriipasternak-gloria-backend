@@ -1,7 +1,7 @@
-﻿using Contracts.Events;
-using Notification.API.ExternalServices.Subscription.Models;
-using System.Text.Json.Serialization;
+﻿using Contracts.Dtos.Subscription;
+using Contracts.Events;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Notification.API.ExternalServices.Subscription
 {

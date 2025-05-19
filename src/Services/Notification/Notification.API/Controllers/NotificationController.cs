@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.Identity;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Common;
+using Contracts.Dtos.Notification;
 using Microsoft.AspNetCore.Mvc;
 using Notification.API.Models.Entities;
-using Notification.API.Models.Filters;
 using Notification.API.Services.Interfaces;
 
 namespace Notification.API.Controllers

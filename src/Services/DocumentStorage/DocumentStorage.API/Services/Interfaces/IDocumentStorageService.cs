@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Common.Enums;
-using DocumentStorage.API.Models.DTOs.Responses;
+﻿using Contracts.Dtos.DocumentStorage;
+using Contracts.Enums;
 
 namespace DocumentStorage.API.Services.Interfaces
 {

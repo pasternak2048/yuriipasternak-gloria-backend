@@ -1,7 +1,7 @@
 ﻿using Advert.API.Models.Entities;
-using BuildingBlocks.Common.DTOs;
-using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Persistence.Mongo;
+using Contracts.Dtos.Common;
+using Contracts.Enums;
 using MongoDB.Driver;
 
 namespace Advert.API.Data

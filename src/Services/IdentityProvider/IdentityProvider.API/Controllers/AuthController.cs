@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
-using IdentityProvider.API.Models.DTOs;
+using Contracts.Dtos.IdentityProvider;
 using IdentityProvider.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

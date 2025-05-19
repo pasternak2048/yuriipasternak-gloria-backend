@@ -1,7 +1,6 @@
 ﻿using BuildingBlocks.Caching;
-using BuildingBlocks.Filtering;
 using BuildingBlocks.Infrastructure.Entities;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Common;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;

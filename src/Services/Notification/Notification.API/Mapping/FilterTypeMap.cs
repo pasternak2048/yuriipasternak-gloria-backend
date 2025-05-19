@@ -1,15 +1,12 @@
-﻿using BuildingBlocks.Common.Enums;
-using Notification.API.Models.Filters.Advert;
-
-namespace Notification.API.Mapping
+﻿namespace Notification.API.Mapping
 {
-	public static class FilterTypeMap
-	{
-		public static Type GetFilterType(NotificationEventType eventType) =>
-			eventType switch
-			{
-				NotificationEventType.AdvertCreated => typeof(AdvertCreatedFilters),
-				_ => throw new NotSupportedException()
-			};
-	}
+	//public static class FilterTypeMap
+	//{
+	//	public static Type GetFilterType(NotificationEventType eventType) =>
+	//		eventType switch
+	//		{
+	//			NotificationEventType.AdvertCreated => typeof(AdvertCreatedFilters),
+	//			_ => throw new NotSupportedException()
+	//		};
+	//}
 }

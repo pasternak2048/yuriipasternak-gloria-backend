@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
-using BuildingBlocks.Pagination;
-using Notification.API.Models.DTOs.Requests;
+using Contracts.Dtos.Common;
+using Contracts.Dtos.Notification;
 using Notification.API.Models.Entities;
-using Notification.API.Models.Filters;
 using Notification.API.Repositories;
 using Notification.API.Services.Interfaces;
 

@@ -2,11 +2,9 @@
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
-using Catalog.API.Models.DTOs.Requests;
-using Catalog.API.Models.DTOs.Responses;
 using Catalog.API.Models.Entities;
-using Catalog.API.Models.Filters;
+using Contracts.Dtos.Catalog;
+using Contracts.Dtos.Common;
 
 namespace Catalog.API.Services
 {

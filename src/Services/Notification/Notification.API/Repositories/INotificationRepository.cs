@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.Pagination;
+﻿using Contracts.Dtos.Common;
+using Contracts.Dtos.Notification;
 using Notification.API.Models.Entities;
-using Notification.API.Models.Filters;
 
 namespace Notification.API.Repositories
 {

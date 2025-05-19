@@ -1,5 +1,5 @@
 ﻿using BuildingBlocks.Exceptions;
-using IdentityProvider.API.Models.DTOs;
+using Contracts.Dtos.IdentityProvider;
 using IdentityProvider.API.Models.Entities;
 using IdentityProvider.API.Models.Entities.Identity;
 using IdentityProvider.API.Services.Interfaces;

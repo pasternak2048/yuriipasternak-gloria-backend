@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Notification.API.Models.DTOs.Requests;
+using Contracts.Dtos.Notification;
 using Notification.API.Models.Entities;
 
 namespace Notification.API.Mapping

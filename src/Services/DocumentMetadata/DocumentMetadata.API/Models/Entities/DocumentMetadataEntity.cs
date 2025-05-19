@@ -1,8 +1,7 @@
-﻿using DocumentMetadata.API.Models.Enums;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BuildingBlocks.Infrastructure.Entities;
+using Contracts.Enums;
 using MongoDB.Bson;
-using BuildingBlocks.Infrastructure.Entities;
-using BuildingBlocks.Common.Enums;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace DocumentMetadata.API.Models.Entities
 {

@@ -1,5 +1,4 @@
-﻿using BuildingBlocks.Filtering;
-using BuildingBlocks.Pagination;
+﻿using Contracts.Dtos.Common;
 
 namespace BuildingBlocks.Infrastructure
 {

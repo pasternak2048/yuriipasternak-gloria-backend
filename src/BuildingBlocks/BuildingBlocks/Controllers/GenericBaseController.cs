@@ -1,6 +1,5 @@
-﻿using BuildingBlocks.Filtering;
-using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
+﻿using BuildingBlocks.Infrastructure;
+using Contracts.Dtos.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

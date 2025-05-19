@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Common.Enums;
-using BuildingBlocks.Infrastructure.Entities;
+﻿using BuildingBlocks.Infrastructure.Entities;
+using Contracts.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
