@@ -1,0 +1,237 @@
+services:
+  gloria.identityproviderdb:
+    container_name: gloria.identityproviderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=SwN12345678
+      - MSSQL_PID=Express
+    restart: always
+    ports:
+      - "1433:1433"
+
+  gloria.catalogdb:
+    container_name: gloria.catalogdb
+    environment:
+      - MONGO_INITDB_DATABASE=GLORIA_CatalogDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - gloria.catalog.db.data:/data/db
+
+  gloria.advertdb:
+    container_name: gloria.advertdb
+    environment:
+      - MONGO_INITDB_DATABASE=GLORIA_AdvertDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - gloria.advert.db.data:/data/db
+
+  gloria.documentmetadatadb:
+    container_name: gloria.documentmetadatadb
+    environment:
+      - MONGO_INITDB_DATABASE=GLORIA_DocumentMetadataDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - "27022:27017"
+    volumes:
+      - gloria.documentmetadata.db.data:/data/db
+
+  gloria.notificationdb:
+    container_name: gloria.notificationdb
+    environment:
+      - MONGO_INITDB_DATABASE=GLORIA_NotificationDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27031:27017
+    volumes:
+      - gloria.notification.db.data:/data/db
+
+  gloria.subscriptiondb:
+    container_name: gloria.subscriptiondb
+    environment:
+      - MONGO_INITDB_DATABASE=GLORIA_SubscriptionDb
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: always
+    ports:
+      - 27032:27017
+    volumes:
+      - gloria.subscription.db.data:/data/db
+
+  gloria.distributedcache:
+    container_name: gloria.distributedcache
+    restart: always
+    ports:
+      - "6379:6379"
+
+  gloria.messagebroker:
+    container_name: gloria.messagebroker
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  gloria.yarpapigatewaydesktop:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "6001:8080"
+      - "6061:8081"
+    depends_on:
+      - gloria.identityprovider.api
+      - gloria.catalog.api
+      - gloria.advert.api
+      - gloria.documentmetadata.api
+      - gloria.documentstorage.api
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.identityprovider.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Database=Server=gloria.identityproviderdb;Database=GLORIA_IdentityProviderDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True
+    depends_on:
+      - gloria.identityproviderdb
+    ports:
+      - "6002:8080"
+      - "6062:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.catalog.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=gloria.distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@gloria.catalogdb:27017
+      - MongoSettings__DatabaseName=GLORIA_CatalogDb
+    depends_on:
+      - gloria.catalogdb
+      - gloria.distributedcache
+    ports:
+      - "6003:8080"
+      - "6063:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.advert.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=gloria.distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@gloria.advertdb:27017
+      - MongoSettings__DatabaseName=GLORIA_AdvertDb
+    depends_on:
+      - gloria.advertdb
+      - gloria.distributedcache
+      - gloria.messagebroker
+    ports:
+      - "6004:8080"
+      - "6064:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.documentmetadata.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=gloria.distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@gloria.documentmetadatadb:27017
+      - MongoSettings__DatabaseName=GLORIA_DocumentMetadataDb
+    depends_on:
+      - gloria.documentmetadatadb
+      - gloria.distributedcache
+    ports:
+      - "6009:8080"
+      - "6069:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.documentstorage.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+    ports:
+      - "6010:8080"
+      - "6070:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.notification.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=gloria.distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@gloria.notificationdb:27017
+      - MongoSettings__DatabaseName=GLORIA_NotificationDb
+    depends_on:
+      - gloria.notificationdb
+      - gloria.messagebroker
+    ports:
+      - "6015:8080"
+      - "6075:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  gloria.subscription.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Redis=gloria.distributedcache:6379
+      - MongoSettings__ConnectionString=mongodb://root:example@gloria.subscriptiondb:27017
+      - MongoSettings__DatabaseName=GLORIA_SubscriptionDb
+    depends_on:
+      - gloria.subscriptiondb
+    ports:
+      - "6016:8080"
+      - "6076:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro

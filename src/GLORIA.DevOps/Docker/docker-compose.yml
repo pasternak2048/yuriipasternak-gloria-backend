@@ -1,0 +1,79 @@
+services:
+  gloria.identityproviderdb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+  gloria.catalogdb:
+    image: mongo:latest
+
+  gloria.advertdb:
+    image: mongo:latest
+
+  gloria.documentmetadatadb:
+    image: mongo:latest
+
+  gloria.notificationdb:
+    image: mongo:latest
+
+  gloria.subscriptiondb:
+    image: mongo:latest
+
+  gloria.distributedcache:
+    image: redis
+
+  gloria.messagebroker:
+    image: rabbitmq:3-management
+
+  gloria.yarpapigatewaydesktop:
+    image: ${DOCKER_REGISTRY-}gloriayarpapigatewaydesktop
+    build:
+      context: ../..
+      dockerfile: GLORIA.ApiGateways/GLORIA.YarpApiGatewayDesktop/Dockerfile
+
+  gloria.identityprovider.api:
+    image: ${DOCKER_REGISTRY-}gloriaidentityproviderapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.IdentityProvider/GLORIA.IdentityProvider.API/Dockerfile
+
+  gloria.catalog.api:
+    image: ${DOCKER_REGISTRY-}gloriacatalogapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Catalog/GLORIA.Catalog.API/Dockerfile
+
+  gloria.advert.api:
+    image: ${DOCKER_REGISTRY-}gloriaadvertapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Advert/GLORIA.Advert.API/Dockerfile
+
+  gloria.documentstorage.api:
+    image: ${DOCKER_REGISTRY-}gloriadocumentstorageapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.DocumentStorage/GLORIA.DocumentStorage.API/Dockerfile
+
+  gloria.documentmetadata.api:
+    image: ${DOCKER_REGISTRY-}gloriadocumentmetadataapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API/Dockerfile
+
+  gloria.notification.api:
+    image: ${DOCKER_REGISTRY-}glorianotificationapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API/Dockerfile
+
+  gloria.subscription.api:
+    image: ${DOCKER_REGISTRY-}gloriasubscriptionapi
+    build:
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Subscription/GLORIA.Subscription.API/Dockerfile
+
+volumes:
+  gloria.catalog.db.data:
+  gloria.advert.db.data:
+  gloria.documentmetadata.db.data:
+  gloria.notification.db.data:
+  gloria.subscription.db.data:
