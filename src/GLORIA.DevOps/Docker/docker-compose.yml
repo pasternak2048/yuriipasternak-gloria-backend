@@ -1,79 +1,79 @@
 services:
-  identityproviderdb:
+  gloria.identityproviderdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
 
-  catalogdb:
+  gloria.catalogdb:
     image: mongo:latest
 
-  advertdb:
+  gloria.advertdb:
     image: mongo:latest
 
-  documentmetadatadb:
+  gloria.documentmetadatadb:
     image: mongo:latest
 
-  notificationdb:
+  gloria.notificationdb:
     image: mongo:latest
 
-  subscriptiondb:
+  gloria.subscriptiondb:
     image: mongo:latest
 
-  distributedcache:
+  gloria.distributedcache:
     image: redis
 
-  messagebroker:
+  gloria.messagebroker:
     image: rabbitmq:3-management
 
-  yarpapigatewaydesktop:
-    image: ${DOCKER_REGISTRY-}yarpapigatewaydesktop
+  gloria.yarpapigatewaydesktop:
+    image: ${DOCKER_REGISTRY-}gloriayarpapigatewaydesktop
     build:
-      context: .
-      dockerfile: ApiGateways/YarpApiGatewayDesktop/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.ApiGateways/GLORIA.YarpApiGatewayDesktop/Dockerfile
 
-  identityprovider.api:
-    image: ${DOCKER_REGISTRY-}identityproviderapi
+  gloria.identityprovider.api:
+    image: ${DOCKER_REGISTRY-}gloriaidentityproviderapi
     build:
-      context: .
-      dockerfile: Services/IdentityProvider/IdentityProvider.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.IdentityProvider/GLORIA.IdentityProvider.API/Dockerfile
 
-  catalog.api:
-    image: ${DOCKER_REGISTRY-}catalogapi
+  gloria.catalog.api:
+    image: ${DOCKER_REGISTRY-}gloriacatalogapi
     build:
-      context: .
-      dockerfile: Services/Catalog/Catalog.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Catalog/GLORIA.Catalog.API/Dockerfile
 
-  advert.api:
-    image: ${DOCKER_REGISTRY-}advertapi
+  gloria.advert.api:
+    image: ${DOCKER_REGISTRY-}gloriaadvertapi
     build:
-      context: .
-      dockerfile: Services/Advert/Advert.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Advert/GLORIA.Advert.API/Dockerfile
 
-  documentstorage.api:
-    image: ${DOCKER_REGISTRY-}documentstorageapi
+  gloria.documentstorage.api:
+    image: ${DOCKER_REGISTRY-}gloriadocumentstorageapi
     build:
-      context: .
-      dockerfile: Services/DocumentStorage/DocumentStorage.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.DocumentStorage/GLORIA.DocumentStorage.API/Dockerfile
 
-  documentmetadata.api:
-    image: ${DOCKER_REGISTRY-}documentmetadataapi
+  gloria.documentmetadata.api:
+    image: ${DOCKER_REGISTRY-}gloriadocumentmetadataapi
     build:
-      context: .
-      dockerfile: Services/DocumentMetadata/DocumentMetadata.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API/Dockerfile
 
-  notification.api:
-    image: ${DOCKER_REGISTRY-}notificationapi
+  gloria.notification.api:
+    image: ${DOCKER_REGISTRY-}glorianotificationapi
     build:
-      context: .
-      dockerfile: Services/Notification/Notification.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API/Dockerfile
 
-  subscription.api:
-    image: ${DOCKER_REGISTRY-}subscriptionapi
+  gloria.subscription.api:
+    image: ${DOCKER_REGISTRY-}gloriasubscriptionapi
     build:
-      context: .
-      dockerfile: Services/Subscription/Subscription.API/Dockerfile
+      context: ../..
+      dockerfile: GLORIA.Services/GLORIA.Subscription/GLORIA.Subscription.API/Dockerfile
 
 volumes:
-  mongodb_catalog:
-  mongodb_advert:
-  mongodb_notification:
-  mongodb_subscription:
-  mongodb_documentmetadata:
+  gloria.catalog.db.data:
+  gloria.advert.db.data:
+  gloria.documentmetadata.db.data:
+  gloria.notification.db.data:
+  gloria.subscription.db.data:

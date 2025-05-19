@@ -4,14 +4,14 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "identityprovider.api": "StartDebugging",
-        "catalog.api": "StartDebugging",
-        "yarpapigatewaydesktop": "StartDebugging",
-        "documentstorage.api": "StartDebugging",
-        "documentmetadata.api": "StartDebugging",
-        "advert.api": "StartDebugging",
-        "notification.api": "StartDebugging",
-        "subscription.api": "StartDebugging"
+        "gloria.identityprovider.api": "StartDebugging",
+        "gloria.catalog.api": "StartDebugging",
+        "gloria.yarpapigatewaydesktop": "StartDebugging",
+        "gloria.documentstorage.api": "StartDebugging",
+        "gloria.documentmetadata.api": "StartDebugging",
+        "gloria.advert.api": "StartDebugging",
+        "gloria.notification.api": "StartDebugging",
+        "gloria.subscription.api": "StartDebugging"
       }
     }
   }
