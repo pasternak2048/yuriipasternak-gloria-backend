@@ -12,21 +12,21 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Services/Notification/Notification.API/Notification.API.csproj", "Services/Notification/Notification.API/"]
-COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
-COPY ["Contracts/Contracts/Contracts.csproj", "Contracts/Contracts/"]
-RUN dotnet restore "./Services/Notification/Notification.API/Notification.API.csproj"
+COPY ["GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API/GLORIA.Notification.API.csproj", "GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API/"]
+COPY ["GLORIA.BuildingBlocks/GLORIA.BuildingBlocks/GLORIA.BuildingBlocks.csproj", "GLORIA.BuildingBlocks/GLORIA.BuildingBlocks/"]
+COPY ["GLORIA.Contracts/GLORIA.Contracts/GLORIA.Contracts.csproj", "GLORIA.Contracts/GLORIA.Contracts/"]
+RUN dotnet restore "./GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API/GLORIA.Notification.API.csproj"
 COPY . .
-WORKDIR "/src/Services/Notification/Notification.API"
-RUN dotnet build "./Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/GLORIA.Services/GLORIA.Notification/GLORIA.Notification.API"
+RUN dotnet build "./GLORIA.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GLORIA.Notification.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Notification.API.dll"]
+ENTRYPOINT ["dotnet", "GLORIA.Notification.API.dll"]

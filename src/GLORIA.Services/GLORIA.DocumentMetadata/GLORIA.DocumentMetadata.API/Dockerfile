@@ -12,20 +12,21 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Services/DocumentMetadata/DocumentMetadata.API/DocumentMetadata.API.csproj", "Services/DocumentMetadata/DocumentMetadata.API/"]
-COPY ["BuildingBlocks/BuildingBlocks/BuildingBlocks.csproj", "BuildingBlocks/BuildingBlocks/"]
-RUN dotnet restore "./Services/DocumentMetadata/DocumentMetadata.API/DocumentMetadata.API.csproj"
+COPY ["GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API/GLORIA.DocumentMetadata.API.csproj", "GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API/"]
+COPY ["GLORIA.BuildingBlocks/GLORIA.BuildingBlocks/GLORIA.BuildingBlocks.csproj", "GLORIA.BuildingBlocks/GLORIA.BuildingBlocks/"]
+COPY ["GLORIA.Contracts/GLORIA.Contracts/GLORIA.Contracts.csproj", "GLORIA.Contracts/GLORIA.Contracts/"]
+RUN dotnet restore "./GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API/GLORIA.DocumentMetadata.API.csproj"
 COPY . .
-WORKDIR "/src/Services/DocumentMetadata/DocumentMetadata.API"
-RUN dotnet build "./DocumentMetadata.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/GLORIA.Services/GLORIA.DocumentMetadata/GLORIA.DocumentMetadata.API"
+RUN dotnet build "./GLORIA.DocumentMetadata.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./DocumentMetadata.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./GLORIA.DocumentMetadata.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "DocumentMetadata.API.dll"]
+ENTRYPOINT ["dotnet", "GLORIA.DocumentMetadata.API.dll"]
