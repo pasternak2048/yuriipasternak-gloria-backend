@@ -1,6 +1,6 @@
-﻿using BuildingBlocks.Common.Enums;
-using BuildingBlocks.Exceptions;
-using DocumentStorage.API.Models.DTOs.Responses;
+﻿using BuildingBlocks.Exceptions;
+using Contracts.Dtos.DocumentStorage;
+using Contracts.Enums;
 using DocumentStorage.API.Services.Interfaces;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;

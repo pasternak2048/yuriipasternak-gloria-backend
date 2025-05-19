@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Controllers;
 using BuildingBlocks.Infrastructure;
+using Contracts.Dtos.Subscription;
 using Contracts.Events;
 using Microsoft.AspNetCore.Mvc;
-using Subscription.API.Models.DTOs.Requests;
-using Subscription.API.Models.DTOs.Responses;
-using Subscription.API.Models.Filters;
 using Subscription.API.Services;
 
 namespace Subscription.API.Controllers

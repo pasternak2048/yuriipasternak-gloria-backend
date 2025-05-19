@@ -1,10 +1,9 @@
 ﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Common;
+using Contracts.Dtos.Subscription;
 using MongoDB.Driver;
 using Subscription.API.Models.Entities;
-using Subscription.API.Models.Filters;
 
 namespace Subscription.API.Repositories
 {

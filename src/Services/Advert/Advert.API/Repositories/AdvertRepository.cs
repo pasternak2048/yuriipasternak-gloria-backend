@@ -1,8 +1,8 @@
 ﻿using Advert.API.Models.Entities;
-using Advert.API.Models.Filters;
-using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Configuration;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Advert;
+using Contracts.Dtos.Common;
+using Contracts.Enums;
 using MongoDB.Driver;
 
 namespace Advert.API.Repositories

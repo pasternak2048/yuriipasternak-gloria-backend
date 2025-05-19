@@ -1,9 +1,6 @@
 ﻿using Advert.API.Data;
 using Advert.API.Messaging;
-using Advert.API.Models.DTOs.Requests;
-using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Entities;
-using Advert.API.Models.Filters;
 using Advert.API.Repositories;
 using Advert.API.Services;
 using BuildingBlocks.Caching;
@@ -11,6 +8,7 @@ using BuildingBlocks.Configuration;
 using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
 using BuildingBlocks.Persistence.Mongo;
+using Contracts.Dtos.Advert;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using MassTransit;

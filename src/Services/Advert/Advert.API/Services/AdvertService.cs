@@ -1,14 +1,12 @@
 ﻿using Advert.API.Messaging;
-using Advert.API.Models.DTOs.Requests;
-using Advert.API.Models.DTOs.Responses;
 using Advert.API.Models.Entities;
-using Advert.API.Models.Filters;
 using Advert.API.Repositories;
 using AutoMapper;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Advert;
+using Contracts.Dtos.Common;
 using Contracts.Events;
 using FluentValidation;
 

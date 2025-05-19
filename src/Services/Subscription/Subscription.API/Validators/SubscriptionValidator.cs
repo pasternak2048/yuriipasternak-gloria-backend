@@ -1,6 +1,5 @@
-﻿using FluentValidation;
-using Subscription.API.Models.DTOs.Requests;
-using Subscription.API.Models.Filters;
+﻿using Contracts.Dtos.Subscription;
+using FluentValidation;
 
 namespace Subscription.API.Validators
 {

@@ -1,5 +1,4 @@
-﻿using DocumentMetadata.API.Models.DTOs.Requests;
-using DocumentMetadata.API.Models.Filters;
+﻿using Contracts.Dtos.DocumentMetadata;
 using FluentValidation;
 
 namespace DocumentMetadata.API.Validarors

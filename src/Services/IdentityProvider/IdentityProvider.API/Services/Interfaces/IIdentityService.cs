@@ -1,4 +1,4 @@
-﻿using IdentityProvider.API.Models.DTOs;
+﻿using Contracts.Dtos.IdentityProvider;
 
 namespace IdentityProvider.API.Services.Interfaces
 {

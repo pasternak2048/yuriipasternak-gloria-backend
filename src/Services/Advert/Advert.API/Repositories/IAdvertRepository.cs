@@ -1,6 +1,6 @@
 ﻿using Advert.API.Models.Entities;
-using Advert.API.Models.Filters;
 using BuildingBlocks.Infrastructure;
+using Contracts.Dtos.Advert;
 
 namespace Advert.API.Repositories
 {

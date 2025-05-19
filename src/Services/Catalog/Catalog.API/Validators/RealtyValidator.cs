@@ -1,6 +1,5 @@
-﻿using BuildingBlocks.Common.DTOs;
-using Catalog.API.Models.DTOs.Requests;
-using Catalog.API.Models.Filters;
+﻿using Contracts.Dtos.Catalog;
+using Contracts.Dtos.Common;
 using FluentValidation;
 
 namespace Catalog.API.Validators

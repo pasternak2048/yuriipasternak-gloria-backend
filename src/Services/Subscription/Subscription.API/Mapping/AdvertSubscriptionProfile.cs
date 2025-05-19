@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BuildingBlocks.Utils;
-using Subscription.API.Models.DTOs.Requests;
-using Subscription.API.Models.DTOs.Responses;
+using Contracts.Dtos.Subscription;
 using Subscription.API.Models.Entities;
 
 namespace Subscription.API.Mapping

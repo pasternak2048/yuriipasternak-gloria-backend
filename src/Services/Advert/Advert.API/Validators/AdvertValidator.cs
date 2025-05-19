@@ -1,6 +1,5 @@
-﻿using Advert.API.Models.DTOs.Requests;
-using Advert.API.Models.Filters;
-using BuildingBlocks.Common.DTOs;
+﻿using Contracts.Dtos.Advert;
+using Contracts.Dtos.Common;
 using FluentValidation;
 
 namespace Advert.API.Validators

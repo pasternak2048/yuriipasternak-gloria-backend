@@ -1,17 +1,15 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Caching;
+using BuildingBlocks.Extensions;
 using BuildingBlocks.Infrastructure;
-using DocumentMetadata.API.Models.DTOs.Requests;
-using DocumentMetadata.API.Models.DTOs.Responses;
+using Contracts.Dtos.DocumentMetadata;
+using DocumentMetadata.API.Models.Entities;
 using DocumentMetadata.API.Repositories;
 using DocumentMetadata.API.Services;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using DocumentMetadata.API.Models.Filters;
-using BuildingBlocks.Caching;
-using DocumentMetadata.API.Models.Entities;
-using FluentValidation.AspNetCore;
-using FluentValidation;
 
 namespace DocumentMetadata.API.Extensions
 {

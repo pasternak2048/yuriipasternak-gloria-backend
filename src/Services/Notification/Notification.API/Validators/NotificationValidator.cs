@@ -1,6 +1,5 @@
-﻿using FluentValidation;
-using Notification.API.Models.DTOs.Requests;
-using Notification.API.Models.Filters;
+﻿using Contracts.Dtos.Notification;
+using FluentValidation;
 
 namespace Notification.API.Validators
 {

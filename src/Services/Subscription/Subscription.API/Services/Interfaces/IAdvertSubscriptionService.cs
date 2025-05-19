@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Common.Enums;
-using Subscription.API.Models.DTOs.Requests;
+﻿using Contracts.Dtos.Subscription;
+using Contracts.Enums;
 using Subscription.API.Models.Entities;
 
 namespace Subscription.API.Services.Interfaces

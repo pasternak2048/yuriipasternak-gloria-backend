@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Common.Enums;
+﻿using Contracts.Enums;
 
 namespace Contracts.Events
 {

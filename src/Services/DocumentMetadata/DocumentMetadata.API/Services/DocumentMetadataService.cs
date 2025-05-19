@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using BuildingBlocks.Common.Enums;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
-using DocumentMetadata.API.Models.DTOs.Requests;
-using DocumentMetadata.API.Models.DTOs.Responses;
+using Contracts.Dtos.Common;
+using Contracts.Dtos.DocumentMetadata;
+using Contracts.Enums;
 using DocumentMetadata.API.Models.Entities;
-using DocumentMetadata.API.Models.Filters;
 
 namespace DocumentMetadata.API.Services
 {

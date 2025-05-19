@@ -1,8 +1,7 @@
-﻿using BuildingBlocks.Common.DTOs;
-using BuildingBlocks.Configuration;
-using BuildingBlocks.Persistence.Mongo;
+﻿using BuildingBlocks.Persistence.Mongo;
 using Catalog.API.Models.Entities;
-using Catalog.API.Models.Enums;
+using Contracts.Dtos.Common;
+using Contracts.Enums;
 using MongoDB.Driver;
 
 namespace Catalog.API.Data

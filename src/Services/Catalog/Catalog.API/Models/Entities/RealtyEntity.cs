@@ -1,8 +1,8 @@
-﻿using Catalog.API.Models.Enums;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BuildingBlocks.Infrastructure.Entities;
+using Contracts.Dtos.Common;
+using Contracts.Enums;
 using MongoDB.Bson;
-using BuildingBlocks.Infrastructure.Entities;
-using BuildingBlocks.Common.DTOs;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Catalog.API.Models.Entities
 {

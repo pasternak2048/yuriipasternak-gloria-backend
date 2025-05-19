@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Common.Enums;
+﻿using Contracts.Enums;
 using DocumentStorage.API.Services.Interfaces;
 
 namespace DocumentStorage.API.Services

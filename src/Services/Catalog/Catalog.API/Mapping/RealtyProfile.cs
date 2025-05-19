@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using Catalog.API.Models.DTOs.Responses;
-using Catalog.API.Models.DTOs.Requests;
 using Catalog.API.Models.Entities;
-using BuildingBlocks.Common.DTOs;
+using Contracts.Dtos.Catalog;
+using Contracts.Dtos.Common;
 
 namespace Catalog.API.Mapping
 {

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using DocumentMetadata.API.Models.DTOs.Requests;
-using DocumentMetadata.API.Models.DTOs.Responses;
+using Contracts.Dtos.DocumentMetadata;
 using DocumentMetadata.API.Models.Entities;
 
 namespace DocumentMetadata.API.MappingProfiles

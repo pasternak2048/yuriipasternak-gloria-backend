@@ -1,9 +1,8 @@
-﻿using BuildingBlocks.Common.Enums;
+﻿using Contracts.Dtos.Notification;
+using Contracts.Enums;
 using Contracts.Events;
 using MassTransit;
 using Notification.API.ExternalServices.Subscription;
-using Notification.API.Models.DTOs.Requests;
-using Notification.API.Models.Entities;
 using Notification.API.Services.Interfaces;
 
 namespace Notification.API.Events.Consumers.Advert

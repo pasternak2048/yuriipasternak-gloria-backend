@@ -1,6 +1,5 @@
 ﻿using BuildingBlocks.Security;
-using DocumentStorage.API.Models.DTOs.Requests;
-using DocumentStorage.API.Models.DTOs.Responses;
+using Contracts.Dtos.DocumentStorage;
 using DocumentStorage.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,6 @@
-﻿using Advert.API.Models.DTOs.Requests;
-using Advert.API.Models.DTOs.Responses;
-using Advert.API.Models.Filters;
-using BuildingBlocks.Controllers;
+﻿using BuildingBlocks.Controllers;
 using BuildingBlocks.Infrastructure;
+using Contracts.Dtos.Advert;
 
 namespace Advert.API.Controllers
 {

@@ -1,8 +1,6 @@
 ﻿using BuildingBlocks.Controllers;
 using BuildingBlocks.Infrastructure;
-using Catalog.API.Models.DTOs.Requests;
-using Catalog.API.Models.DTOs.Responses;
-using Catalog.API.Models.Filters;
+using Contracts.Dtos.Catalog;
 
 namespace Catalog.API.Controllers
 {

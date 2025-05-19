@@ -1,8 +1,8 @@
 ﻿using BuildingBlocks.Configuration;
 using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Pagination;
+using Contracts.Dtos.Common;
+using Contracts.Dtos.DocumentMetadata;
 using DocumentMetadata.API.Models.Entities;
-using DocumentMetadata.API.Models.Filters;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 

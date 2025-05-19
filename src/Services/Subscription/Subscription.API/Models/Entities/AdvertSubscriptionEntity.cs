@@ -1,7 +1,7 @@
-﻿using BuildingBlocks.Common.Enums;
-using BuildingBlocks.Infrastructure.Entities;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using BuildingBlocks.Infrastructure.Entities;
+using Contracts.Enums;
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Subscription.API.Models.Entities
 {
