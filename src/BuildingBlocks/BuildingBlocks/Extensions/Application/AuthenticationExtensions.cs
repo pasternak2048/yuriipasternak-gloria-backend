@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace BuildingBlocks.Extensions
+namespace BuildingBlocks.Extensions.Application
 {
 	public static class AuthenticationExtensions
 	{

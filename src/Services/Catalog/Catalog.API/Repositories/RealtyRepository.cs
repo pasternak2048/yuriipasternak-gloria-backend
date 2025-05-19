@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Configuration;
-using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Abstractions;
+using BuildingBlocks.Configuration;
 using Catalog.API.Models.Entities;
 using Contracts.Dtos.Catalog;
 using Contracts.Dtos.Common;

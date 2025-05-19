@@ -1,8 +1,10 @@
-﻿using BuildingBlocks.Caching;
+﻿using BuildingBlocks.Abstractions;
 using BuildingBlocks.Configuration;
-using BuildingBlocks.Extensions;
-using BuildingBlocks.Infrastructure;
-using BuildingBlocks.Persistence.Mongo;
+using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
+using BuildingBlocks.Infrastructure.Data.Caching;
+using BuildingBlocks.Infrastructure.Data.Mongo;
+using BuildingBlocks.Infrastructure.Data.Repositories;
 using Catalog.API.Data;
 using Catalog.API.Models.Entities;
 using Catalog.API.Repositories;

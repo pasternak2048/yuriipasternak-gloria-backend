@@ -1,11 +1,11 @@
-﻿using BuildingBlocks.Caching;
-using BuildingBlocks.Infrastructure.Entities;
+﻿using BuildingBlocks.Abstractions;
+using BuildingBlocks.Infrastructure.Data.Caching;
 using Contracts.Dtos.Common;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
-namespace BuildingBlocks.Infrastructure
+namespace BuildingBlocks.Infrastructure.Data.Repositories
 {
 	public class CachedGenericRepository<T, TFilters> : IGenericRepository<T, TFilters>
 	where T : class, IEntity

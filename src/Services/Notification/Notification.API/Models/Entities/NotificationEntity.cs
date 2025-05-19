@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Infrastructure.Entities;
+﻿using BuildingBlocks.Abstractions;
 using Contracts.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;

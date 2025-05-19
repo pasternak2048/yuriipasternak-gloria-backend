@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 
-namespace BuildingBlocks.Persistence.Mongo
+namespace BuildingBlocks.Infrastructure.Data.Mongo
 {
 	public interface ICollectionSeeder<T>
 	{

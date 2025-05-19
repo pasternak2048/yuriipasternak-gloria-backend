@@ -1,5 +1,5 @@
 ﻿using Advert.API.Models.Entities;
-using BuildingBlocks.Persistence.Mongo;
+using BuildingBlocks.Infrastructure.Data.Mongo;
 
 namespace Advert.API.Extensions
 {

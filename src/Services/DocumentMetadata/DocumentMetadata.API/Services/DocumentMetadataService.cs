@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using BuildingBlocks.Abstractions;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
-using BuildingBlocks.Infrastructure;
 using Contracts.Dtos.Common;
 using Contracts.Dtos.DocumentMetadata;
 using Contracts.Enums;

@@ -1,4 +1,5 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Extensions.Application;
+using BuildingBlocks.Extensions.Infrastructure;
 
 namespace IdentityProvider.API.Extensions
 {

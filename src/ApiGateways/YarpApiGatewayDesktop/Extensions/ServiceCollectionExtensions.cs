@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Extensions;
+﻿using BuildingBlocks.Extensions.Application;
 
 namespace YarpApiGatewayDesktop.Extensions
 {

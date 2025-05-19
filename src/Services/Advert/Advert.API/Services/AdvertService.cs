@@ -2,9 +2,9 @@
 using Advert.API.Models.Entities;
 using Advert.API.Repositories;
 using AutoMapper;
+using BuildingBlocks.Abstractions;
 using BuildingBlocks.Exceptions;
 using BuildingBlocks.Identity;
-using BuildingBlocks.Infrastructure;
 using Contracts.Dtos.Advert;
 using Contracts.Dtos.Common;
 using Contracts.Events;

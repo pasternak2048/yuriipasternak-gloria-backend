@@ -1,6 +1,4 @@
-﻿using BuildingBlocks.Persistence.Mongo;
-
-namespace Notification.API.Extensions
+﻿namespace Notification.API.Extensions
 {
 	public static class MiddlewareApplicationExtensions
 	{

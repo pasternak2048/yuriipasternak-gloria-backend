@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 
-namespace BuildingBlocks.Caching
+namespace BuildingBlocks.Infrastructure.Data.Caching
 {
 	public class CacheStampManager
 	{

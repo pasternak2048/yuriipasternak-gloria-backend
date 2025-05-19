@@ -1,7 +1,7 @@
 ﻿using BuildingBlocks.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BuildingBlocks.Extensions
+namespace BuildingBlocks.Extensions.Infrastructure
 {
 	public static class ExceptionHandlerExtensions
 	{

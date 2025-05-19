@@ -1,4 +1,4 @@
-﻿using BuildingBlocks.Persistence.Mongo;
+﻿using BuildingBlocks.Infrastructure.Data.Mongo;
 using Catalog.API.Models.Entities;
 using Contracts.Dtos.Common;
 using Contracts.Enums;

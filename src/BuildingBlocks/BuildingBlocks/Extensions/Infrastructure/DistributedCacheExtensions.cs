@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BuildingBlocks.Extensions
+namespace BuildingBlocks.Extensions.Infrastructure
 {
 	public static class DistributedCacheExtensions
 	{

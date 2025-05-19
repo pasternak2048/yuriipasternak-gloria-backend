@@ -1,5 +1,5 @@
-﻿using BuildingBlocks.Controllers;
-using BuildingBlocks.Infrastructure;
+﻿using BuildingBlocks.Abstractions;
+using BuildingBlocks.Controllers;
 using Contracts.Dtos.DocumentMetadata;
 
 namespace DocumentMetadata.API.Controllers

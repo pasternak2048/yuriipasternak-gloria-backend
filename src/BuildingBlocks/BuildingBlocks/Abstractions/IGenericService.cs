@@ -1,6 +1,6 @@
 ﻿using Contracts.Dtos.Common;
 
-namespace BuildingBlocks.Infrastructure
+namespace BuildingBlocks.Abstractions
 {
 	public interface IGenericService<TResponse, TCreateRequest, TUpdateRequest, TFilters>
 	where TResponse : class
