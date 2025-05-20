@@ -18,6 +18,13 @@ namespace GLORIA.Subscription.API.Repositories
 				.GetCollection<AdvertSubscriptionEntity>("subscriptions_advert");
 		}
 
+		// ---------- ANY ----------
+		public async Task<bool> AnyAsync(AdvertSubscriptionFilters filters, CancellationToken cancellationToken)
+		{
+			var filter = filters.ToFilter<AdvertSubscriptionEntity>();
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
+		}
+
 		// ---------- GET BY ID ----------
 		public async Task<AdvertSubscriptionEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 			=> await _collection.Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);

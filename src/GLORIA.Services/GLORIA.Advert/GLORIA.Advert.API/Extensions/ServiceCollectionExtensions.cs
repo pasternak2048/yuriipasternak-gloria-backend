@@ -61,10 +61,9 @@ namespace GLORIA.Advert.API.Extensions
 			services.AddScoped<IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>, AdvertService>();
 			services.AddScoped<CacheStampManager>();
 			services.AddScoped<AdvertRepository>();
-			services.AddScoped<IAdvertRepository>(sp => sp.GetRequiredService<AdvertRepository>());
 			services.AddScoped<IGenericRepository<AdvertEntity, AdvertFilters>>(provider =>
 				new CachedGenericRepository<AdvertEntity, AdvertFilters>(
-					provider.GetRequiredService<IAdvertRepository>(),
+					provider.GetRequiredService<AdvertRepository>(),
 					provider.GetRequiredService<IDistributedCache>(),
 					provider.GetRequiredService<CacheStampManager>(),
 					provider.GetRequiredService<ILogger<CachedGenericRepository<AdvertEntity, AdvertFilters>>>()
