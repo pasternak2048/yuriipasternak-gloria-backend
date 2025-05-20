@@ -6,6 +6,8 @@ namespace GLORIA.BuildingBlocks.Abstractions
 	where TEntity : class
 	where TFilters : BaseFilters
 	{
+		Task<bool> AnyAsync(TFilters filters, CancellationToken cancellationToken);
+
 		Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
 		Task<PaginatedResult<TEntity>> GetPaginatedAsync(TFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken);

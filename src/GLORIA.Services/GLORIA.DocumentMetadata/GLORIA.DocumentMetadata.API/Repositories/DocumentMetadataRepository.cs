@@ -18,6 +18,13 @@ namespace GLORIA.DocumentMetadata.API.Repositories
 			_collection = database.GetCollection<DocumentMetadataEntity>("document_metadata");
 		}
 
+		// ---------- ANY ----------
+		public async Task<bool> AnyAsync(DocumentMetadataFilters filters, CancellationToken cancellationToken)
+		{
+			var filter = filters.ToFilter<DocumentMetadataEntity>();
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
+		}
+
 		// ---------- GET BY ID ----------
 		public async Task<DocumentMetadataEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 		{
@@ -29,7 +36,7 @@ namespace GLORIA.DocumentMetadata.API.Repositories
 			PaginatedRequest pagination,
 			CancellationToken cancellationToken)
 		{
-			var filter = BuildFilterDefinition(filters);
+			var filter = filters.ToFilter<DocumentMetadataEntity>();
 			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
 			var items = await _collection.Find(filter)
 				.SortByDescending(r => r.CreatedAt)
@@ -56,23 +63,6 @@ namespace GLORIA.DocumentMetadata.API.Repositories
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 		{
 			await _collection.DeleteOneAsync(x => x.Id == id, cancellationToken);
-		}
-
-		private static FilterDefinition<DocumentMetadataEntity> BuildFilterDefinition(DocumentMetadataFilters filters)
-		{
-			var builder = Builders<DocumentMetadataEntity>.Filter;
-			var filter = builder.Empty;
-
-			if (filters.OwnerUserId.HasValue)
-				filter &= builder.Eq(x => x.OwnerUserId, filters.OwnerUserId.Value);
-			if (filters.DocumentType.HasValue)
-				filter &= builder.Eq(x => x.DocumentType, filters.DocumentType.Value);
-			if (filters.OwnerObjectId.HasValue)
-				filter &= builder.Eq(x => x.OwnerObjectId, filters.OwnerObjectId.Value);
-			if (filters.OwnerObjectType.HasValue)
-				filter &= builder.Eq(x => x.OwnerObjectType, filters.OwnerObjectType.Value);
-
-			return filter;
 		}
 	}
 }

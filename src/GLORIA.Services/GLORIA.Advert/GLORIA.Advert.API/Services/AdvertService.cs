@@ -14,12 +14,12 @@ namespace GLORIA.Advert.API.Services
 {
 	public class AdvertService : IGenericService<AdvertResponse, AdvertCreateRequest, AdvertUpdateRequest, AdvertFilters>
 	{
-		private readonly IAdvertRepository _repository;
+		private readonly IGenericRepository<AdvertEntity, AdvertFilters> _repository;
 		private readonly IMapper _mapper;
 		private readonly IUserIdentityProvider _userIdentityProvider;
 		private readonly IAdvertEventPublisher _eventPublisher;
 
-		public AdvertService(IAdvertRepository repository, IMapper mapper, IUserIdentityProvider userIdentityProvider, IAdvertEventPublisher eventPublisher)
+		public AdvertService(IGenericRepository<AdvertEntity, AdvertFilters> repository, IMapper mapper, IUserIdentityProvider userIdentityProvider, IAdvertEventPublisher eventPublisher)
 		{
 			_repository = repository;
 			_mapper = mapper;
@@ -42,8 +42,13 @@ namespace GLORIA.Advert.API.Services
 
 		public async Task CreateAsync(AdvertCreateRequest request, CancellationToken cancellationToken)
 		{
-			var alreadyExists = await _repository.ExistsActiveOrInactiveAsync(request.RealtyId, cancellationToken);
-			if (alreadyExists)
+			var filters = new AdvertFilters
+			{
+				RealtyId = request.RealtyId,
+				OnlyActiveOrInactive = true
+			};
+
+			if (await _repository.AnyAsync(filters, cancellationToken))
 				throw new ValidationException("An active or inactive advert for this realty already exists.");
 
 			var entity = _mapper.Map<AdvertEntity>(request);

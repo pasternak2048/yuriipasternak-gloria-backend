@@ -21,10 +21,15 @@ namespace GLORIA.Notification.API.Repositories
 			await _collection.InsertOneAsync(notification, null, cancellationToken);
 		}
 
+		public async Task<bool> AnyAsync(NotificationFilters filters, CancellationToken cancellationToken)
+		{
+			var filter = filters.ToFilter<NotificationEntity>();
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
+		}
+
 		public async Task<PaginatedResult<NotificationEntity>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			var builder = Builders<NotificationEntity>.Filter;
-			var filter = BuildFilterDefinition(filters);;
+			var filter = filters.ToFilter<NotificationEntity>();
 
 			var total = await _collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
 			var items = await _collection.Find(filter)
@@ -54,26 +59,17 @@ namespace GLORIA.Notification.API.Repositories
 
 		public async Task<int> MarkAllAsReadAsync(Guid userId, CancellationToken cancellationToken)
 		{
-			var filter = Builders<NotificationEntity>.Filter.And(
-				Builders<NotificationEntity>.Filter.Eq(x => x.UserId, userId),
-				Builders<NotificationEntity>.Filter.Eq(x => x.IsRead, false)
-			);
+			var filters = new NotificationFilters
+			{
+				UserId = userId,
+				IsRead = false
+			};
+
+			var filter = filters.ToFilter<NotificationEntity>();
 			var update = Builders<NotificationEntity>.Update.Set(x => x.IsRead, true);
 			var result = await _collection.UpdateManyAsync(filter, update, cancellationToken: cancellationToken);
+
 			return (int)result.ModifiedCount;
-		}
-
-		private static FilterDefinition<NotificationEntity> BuildFilterDefinition(NotificationFilters filters)
-		{
-			var builder = Builders<NotificationEntity>.Filter;
-			var filter = builder.Empty;
-
-			if (filters.UserId.HasValue)
-				filter &= builder.Eq(x => x.UserId, filters.UserId.Value);
-			if (filters.IsRead.HasValue)
-				filter &= builder.Eq(x => x.IsRead, filters.IsRead.Value);
-
-			return filter;
 		}
 	}
 }

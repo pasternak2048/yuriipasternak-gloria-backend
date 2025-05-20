@@ -1,4 +1,5 @@
 ﻿using GLORIA.Advert.API.Models.Entities;
+using GLORIA.BuildingBlocks.Abstractions;
 using GLORIA.BuildingBlocks.Configuration;
 using GLORIA.Contracts.Dtos.Advert;
 using GLORIA.Contracts.Dtos.Common;
@@ -7,13 +8,20 @@ using MongoDB.Driver;
 
 namespace GLORIA.Advert.API.Repositories
 {
-	public class AdvertRepository : IAdvertRepository
+	public class AdvertRepository : IGenericRepository<AdvertEntity, AdvertFilters>
 	{
 		private readonly IMongoCollection<AdvertEntity> _collection;
 
 		public AdvertRepository(IMongoClient client, MongoSettings settings)
 		{
 			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<AdvertEntity>("adverts");
+		}
+
+		// ---------- ANY ----------
+		public async Task<bool> AnyAsync(AdvertFilters filters, CancellationToken cancellationToken)
+		{
+			var filter = filters.ToFilter<AdvertEntity>();
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
 		}
 
 		// ---------- GET BY ID ----------
@@ -23,7 +31,7 @@ namespace GLORIA.Advert.API.Repositories
 		// ---------- GET PAGINATED ----------
 		public async Task<PaginatedResult<AdvertEntity>> GetPaginatedAsync(AdvertFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			var filter = BuildFilterDefinition(filters);
+			var filter = filters.ToFilter<AdvertEntity>();
 			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
 			var items = await _collection.Find(filter)
 				.SortByDescending(r => r.CreatedAt)
@@ -57,33 +65,6 @@ namespace GLORIA.Advert.API.Repositories
 						 builder.In(a => a.Status, new[] { AdvertStatus.Active, AdvertStatus.Inactive });
 
 			return await _collection.Find(filter).AnyAsync(cancellationToken);
-		}
-
-		private static FilterDefinition<AdvertEntity> BuildFilterDefinition(AdvertFilters filters)
-		{
-			var builder = Builders<AdvertEntity>.Filter;
-			var filter = builder.Empty;
-
-			if (filters.RealtyId.HasValue)
-				filter &= builder.Eq(a => a.RealtyId, filters.RealtyId);
-			if (filters.AdvertType.HasValue)
-				filter &= builder.Eq(a => a.AdvertType, filters.AdvertType);
-			if (filters.Status.HasValue)
-				filter &= builder.Eq(a => a.Status, filters.Status);
-			if (filters.MinPrice.HasValue)
-				filter &= builder.Gte(a => a.Price, filters.MinPrice.Value);
-			if (filters.MaxPrice.HasValue)
-				filter &= builder.Lte(a => a.Price, filters.MaxPrice.Value);
-			if (!string.IsNullOrEmpty(filters.Street))
-				filter &= builder.Eq(a => a.Address.Street, filters.Street);
-			if (!string.IsNullOrEmpty(filters.City))
-				filter &= builder.Eq(a => a.Address.City, filters.City);
-			if (!string.IsNullOrEmpty(filters.Region))
-				filter &= builder.Eq(a => a.Address.Region, filters.Region);
-			if (!string.IsNullOrEmpty(filters.ZipCode))
-				filter &= builder.Eq(a => a.Address.ZipCode, filters.ZipCode);
-
-			return filter;
 		}
 	}
 }

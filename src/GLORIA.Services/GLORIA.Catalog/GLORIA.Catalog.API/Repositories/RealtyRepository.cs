@@ -16,6 +16,13 @@ namespace GLORIA.Catalog.API.Repositories
 			_collection = client.GetDatabase(settings.DatabaseName).GetCollection<RealtyEntity>("realties");
 		}
 
+		// ---------- ANY ----------
+		public async Task<bool> AnyAsync(RealtyFilters filters, CancellationToken cancellationToken)
+		{
+			var filter = filters.ToFilter<RealtyEntity>();
+			return await _collection.Find(filter).AnyAsync(cancellationToken);
+		}
+
 		// ---------- GET BY ID ----------
 		public async Task<RealtyEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
 			=> await _collection.Find(r => r.Id == id).FirstOrDefaultAsync(cancellationToken);
@@ -23,8 +30,8 @@ namespace GLORIA.Catalog.API.Repositories
 		// ---------- GET PAGINATED ----------
 		public async Task<PaginatedResult<RealtyEntity>> GetPaginatedAsync(RealtyFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
-			
-			var filter = BuildFilterDefinition(filters);
+
+			var filter = filters.ToFilter<RealtyEntity>();
 			var total = await _collection.CountDocumentsAsync(filter, null, cancellationToken);
 			var items = await _collection.Find(filter)
 				.SortByDescending(r => r.CreatedAt)
@@ -50,18 +57,5 @@ namespace GLORIA.Catalog.API.Repositories
 		// ---------- DELETE ----------
 		public async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
 			=> await _collection.DeleteOneAsync(r => r.Id == id, cancellationToken);
-
-		private static FilterDefinition<RealtyEntity> BuildFilterDefinition(RealtyFilters filters)
-		{
-			var builder = Builders<RealtyEntity>.Filter;
-			var filter = builder.Empty;
-
-			if (filters.Type.HasValue)
-				filter &= builder.Eq(r => r.Type, filters.Type);
-			if (filters.Status.HasValue)
-				filter &= builder.Eq(r => r.Status, filters.Status);
-
-			return filter;
-		}
 	}
 }
