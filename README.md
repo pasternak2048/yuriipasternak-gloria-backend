@@ -45,22 +45,42 @@ It includes:
 
 ```text
 src/
-├── ApiGateways/
-│   └── YarpApiGatewayDesktop/
+├── GLORIA.ApiGateways/
+│   └── GLORIA.YarpApiGatewayDesktop/       # YARP-based API Gateway (entry point for all services)
 │
-├── Services/
-│   ├── Advert/
-│   ├── Catalog/
-│   ├── DocumentMetadata/
-│   ├── DocumentStorage/
-│   ├── IdentityProvider/
-│   ├── Notification/
-│   └── Subscription/
+├── GLORIA.BuildingBlocks/                  # Infrastructure: MongoDB, Redis, DI, Middleware, Common utils
 │
-├── Contracts/               # Shared DTOs, Filters, Enums, Events
-├── BuildingBlocks/          # Infrastructure: DI, Mongo, Redis, Middleware
-├── docker-compose.yml       # Local development setup
-└── GLORIA.Backend.sln       # Unified solution
+├── GLORIA.Contracts/                       # Shared DTOs, Filters, Enums, and Integration Events
+│
+├── GLORIA.DevOps/
+│   └── Docker/
+│       ├── docker-compose.yml              # Orchestration for local development
+│       ├── docker-compose.override.yml     # Local overrides: ports, volumes, env vars
+│       └── docker-compose.dcproj           # Visual Studio support for Docker
+│
+├── GLORIA.Services/                        # Domain microservices (bounded contexts)
+│   ├── GLORIA.Advert/
+│   │   └── GLORIA.Advert.API/              # Ads for property rentals/sales
+│   │
+│   ├── GLORIA.Catalog/
+│   │   └── GLORIA.Catalog.API/             # Real estate entities, dictionaries, types
+│   │
+│   ├── GLORIA.DocumentMetadata/
+│   │   └── GLORIA.DocumentMetadata.API/    # Metadata for documents (ownership, type)
+│   │
+│   ├── GLORIA.DocumentStorage/
+│   │   └── GLORIA.DocumentStorage.API/     # File storage system (local or cloud/Azure)
+│   │
+│   ├── GLORIA.IdentityProvider/
+│   │   └── GLORIA.IdentityProvider.API/    # Authentication, JWT tokens, sessions
+│   │
+│   ├── GLORIA.Notification/
+│   │   └── GLORIA.Notification.API/        # User notifications (event-based)
+│   │
+│   └── GLORIA.Subscription/
+│       └── GLORIA.Subscription.API/        # Subscriptions to new adverts, events, updates
+│
+└── GLORIA.Backend.sln                      # Unified solution file (.sln)
 ```
 Each service is self-contained, fully testable, and independently deployable.
 Shared code is cleanly separated into reusable packages (Contracts, BuildingBlocks) — ready to be published as NuGet packages.
