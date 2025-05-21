@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using GLORIA.BuildingBlocks.Exceptions;
 using GLORIA.BuildingBlocks.Identity;
+using GLORIA.Contracts.Dtos.Advert;
 using GLORIA.Contracts.Dtos.Common;
+using GLORIA.Contracts.Dtos.DocumentMetadata;
 using GLORIA.Contracts.Dtos.Notification;
 using GLORIA.Notification.API.Models.Entities;
 using GLORIA.Notification.API.Repositories;
@@ -22,15 +24,15 @@ namespace GLORIA.Notification.API.Services
 			_mapper = mapper;
 		}
 
-		public Task CreateAsync(NotificationCreateRequest request, CancellationToken cancellationToken)
+		public async Task CreateAsync(NotificationCreateRequest request, CancellationToken cancellationToken)
 		{
 			var entity = _mapper.Map<NotificationEntity>(request);
 			entity.CreatedAt = DateTime.UtcNow;
 
-			return _repository.CreateAsync(entity, cancellationToken);
+			await _repository.CreateAsync(entity, cancellationToken);
 		}
 
-		public Task<PaginatedResult<NotificationEntity>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
+		public async Task<PaginatedResult<NotificationResponse>> GetPaginatedAsync(NotificationFilters filters, PaginatedRequest pagination, CancellationToken cancellationToken)
 		{
 			if(_user.UserId is null)
 			{
@@ -40,10 +42,13 @@ namespace GLORIA.Notification.API.Services
 			if (!_user.IsAdmin)
 				filters.UserId = _user.UserId;
 
-			return _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
-		}
+            var result = await _repository.GetPaginatedAsync(filters, pagination, cancellationToken);
+            var mapped = result.Data.Select(_mapper.Map<NotificationResponse>);
+            return new PaginatedResult<NotificationResponse>(pagination.PageIndex, pagination.PageSize, result.Count, mapped);
 
-		public async Task<NotificationEntity?> MarkAsReadAsync(Guid id, CancellationToken cancellationToken)
+        }
+
+		public async Task<NotificationResponse?> MarkAsReadAsync(Guid id, CancellationToken cancellationToken)
 		{
 			var notification = await _repository.GetByIdAsync(id, cancellationToken);
 			if (notification == null) return null;
@@ -51,8 +56,11 @@ namespace GLORIA.Notification.API.Services
 			if (notification.UserId != _user.UserId && !_user.IsAdmin)
 				throw new ForbiddenAccessException("You are not allowed to mark this notification as read.");
 
-			return await _repository.MarkAsReadAsync(id, cancellationToken);
-		}
+			var result = await _repository.MarkAsReadAsync(id, cancellationToken);
+
+			return _mapper.Map<NotificationResponse>(result);
+
+        }
 
 		public Task<int> MarkAllAsReadAsync(CancellationToken cancellationToken)
 		{

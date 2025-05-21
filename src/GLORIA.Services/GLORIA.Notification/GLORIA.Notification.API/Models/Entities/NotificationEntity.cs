@@ -1,4 +1,5 @@
 ﻿using GLORIA.BuildingBlocks.Abstractions;
+using GLORIA.Contracts.Dtos.Notification;
 using GLORIA.Contracts.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -23,5 +24,7 @@ namespace GLORIA.Notification.API.Models.Entities
 		public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 		public bool IsRead { get; set; } = false;
-	}
+
+        public NotificationObject? Object { get; set; }
+    }
 }

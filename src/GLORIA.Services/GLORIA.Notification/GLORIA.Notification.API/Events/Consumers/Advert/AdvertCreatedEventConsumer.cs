@@ -35,12 +35,17 @@ namespace GLORIA.Notification.API.Events.Consumers.Advert
 				{
 					UserId = subscription.UserId,
 					EventType = NotificationEventType.AdvertCreated,
-					Title = $"New advert in {@event.City} — {@event.Title}",
-					Message = $"Price: {@event.Price} {@event.Currency}"
+					Title = $"New advert in {@event.City}!",
+					Message = $"Address: {@event.City}, {@event.Street} street. Price: {@event.Price} {@event.Currency}",
+					Object = new NotificationObject
+					{
+						Id = @event.AdvertId,
+						Type = NotificationObjectType.Advert
+					}
 				};
 
 				await _notificationService.CreateAsync(notification, context.CancellationToken);
-			}
+            }
 		}
 	}
 }
