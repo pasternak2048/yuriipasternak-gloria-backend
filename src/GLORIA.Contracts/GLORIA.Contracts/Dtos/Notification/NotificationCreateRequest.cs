@@ -11,5 +11,7 @@ namespace GLORIA.Contracts.Dtos.Notification
 		public string Title { get; set; } = string.Empty;
 
 		public string Message { get; set; } = string.Empty;
-	}
+
+        public NotificationObject? Object { get; set; }
+    }
 }

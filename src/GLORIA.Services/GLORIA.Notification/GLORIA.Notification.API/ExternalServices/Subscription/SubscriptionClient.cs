@@ -20,7 +20,7 @@ namespace GLORIA.Notification.API.ExternalServices.Subscription
 			_http = http;
 		}
 
-		public async Task<IReadOnlyCollection<AdvertSubscriptionResponse>> GetMatchingSubscriptionsAsync(
+		public async Task<IReadOnlyCollection<AdvertSubscriptionMatchingResponse>> GetMatchingSubscriptionsAsync(
 			AdvertCreatedEvent @event,
 			CancellationToken cancellationToken)
 		{
@@ -31,9 +31,9 @@ namespace GLORIA.Notification.API.ExternalServices.Subscription
 
 			var content = await response.Content.ReadAsStringAsync(cancellationToken);
 
-			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionResponse>>(content, _jsonOptions);
+			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(content, _jsonOptions);
 
-			return result ?? Array.Empty<AdvertSubscriptionResponse>();
+			return result ?? Array.Empty<AdvertSubscriptionMatchingResponse>();
 		}
 	}
 }

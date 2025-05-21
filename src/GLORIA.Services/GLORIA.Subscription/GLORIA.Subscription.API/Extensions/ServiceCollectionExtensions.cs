@@ -6,8 +6,6 @@ using GLORIA.BuildingBlocks.Extensions.Infrastructure;
 using GLORIA.BuildingBlocks.Infrastructure.Data.Caching;
 using GLORIA.BuildingBlocks.Infrastructure.Data.Repositories;
 using GLORIA.Contracts.Dtos.Subscription;
-using GLORIA.Subscription.API.Matching;
-using GLORIA.Subscription.API.Matching.Interfaces;
 using GLORIA.Subscription.API.Models.Entities;
 using GLORIA.Subscription.API.Repositories;
 using GLORIA.Subscription.API.Repositories.Interfaces;
@@ -51,7 +49,6 @@ namespace GLORIA.Subscription.API.Extensions
 					provider.GetRequiredService<ILogger<CachedGenericRepository<AdvertSubscriptionEntity, AdvertSubscriptionFilters>>>()
 			));
 			services.AddScoped<IAdvertSubscriptionLookupRepository, AdvertSubscriptionLookupRepository>();
-			services.AddScoped<IAdvertSubscriptionMatcher, AdvertSubscriptionMatcher>();
 			services.AddScoped<AdvertSubscriptionMatchingService>();
 		}
 	}

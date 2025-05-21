@@ -23,6 +23,8 @@ namespace GLORIA.Subscription.API.Mapping
 				.ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
 				.ForMember(dest => dest.ModifiedAt, opt => opt.Ignore())
 				.ForMember(dest => dest.ModifiedBy, opt => opt.Ignore());
-		}
+
+            CreateMap<AdvertSubscriptionEntity, AdvertSubscriptionMatchingResponse>();
+        }
 	}
 }
