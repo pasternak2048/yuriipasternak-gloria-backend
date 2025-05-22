@@ -1,21 +1,14 @@
-﻿using GLORIA.Contracts.Dtos.Subscription;
+﻿using GLORIA.BuildingBlocks.Security;
+using GLORIA.Contracts.Dtos.Subscription;
 using GLORIA.Contracts.Events;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace GLORIA.Notification.API.ExternalServices.Subscription
 {
 	public class SubscriptionClient
 	{
-		private readonly HttpClient _http;
+		private readonly ISignedHttpClient _http;
 
-		private static readonly JsonSerializerOptions _jsonOptions = new()
-		{
-			PropertyNameCaseInsensitive = true,
-			Converters = { new JsonStringEnumConverter() }
-		};
-
-		public SubscriptionClient(HttpClient http)
+		public SubscriptionClient(ISignedHttpClient http)
 		{
 			_http = http;
 		}
@@ -24,16 +17,12 @@ namespace GLORIA.Notification.API.ExternalServices.Subscription
 			AdvertCreatedEvent @event,
 			CancellationToken cancellationToken)
 		{
-			var response = await _http.PostAsJsonAsync("api/subscription/matching/advert", @event, cancellationToken);
+            var result = await _http.PostAsync<AdvertCreatedEvent, IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(
+            "api/subscription/matching/advert",
+            @event,
+            cancellationToken);
 
-			if (!response.IsSuccessStatusCode)
-				throw new Exception($"Failed to get subscriptions. Status: {response.StatusCode}");
-
-			var content = await response.Content.ReadAsStringAsync(cancellationToken);
-
-			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(content, _jsonOptions);
-
-			return result ?? Array.Empty<AdvertSubscriptionMatchingResponse>();
-		}
+            return result ?? Array.Empty<AdvertSubscriptionMatchingResponse>();
+        }
 	}
 }
