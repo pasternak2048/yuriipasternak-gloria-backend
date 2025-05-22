@@ -10,6 +10,8 @@ namespace GLORIA.BuildingBlocks.Extensions.Application
 		{
 			services.Configure<SecurityValidationOptions>(configuration.GetSection("SecurityValidation"));
 			services.AddSingleton<ISignatureValidator, SignatureValidator>();
+			services.AddSingleton<ISignatureService, SignatureService>();
+			services.AddSingleton<ISignedHttpClient, SignedHttpClient>();
 		}
 	}
 }

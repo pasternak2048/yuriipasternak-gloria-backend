@@ -1,8 +1,6 @@
 ﻿using GLORIA.BuildingBlocks.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace GLORIA.BuildingBlocks.Security
 {
@@ -17,62 +15,60 @@ namespace GLORIA.BuildingBlocks.Security
 			_options = options.Value;
 		}
 
-		public bool IsValid(HttpRequest request)
-		{
-			if (!request.Headers.TryGetValue(SignatureHeader, out var signatureHeader) ||
-				!request.Headers.TryGetValue(ServiceNameHeader, out var serviceNameHeader))
-			{
-				throw new UnauthorizedException("Missing required headers.");
-			}
+        public bool IsValid(HttpRequest request)
+        {
+            if (!_options.Enabled)
+            {
+                return true;
+            }
 
-			var providedSignature = signatureHeader.ToString();
-			var providedServiceName = serviceNameHeader.ToString();
+            if (!request.Headers.TryGetValue(SignatureHeader, out var signatureHeader) ||
+                !request.Headers.TryGetValue(ServiceNameHeader, out var serviceNameHeader))
+            {
+                throw new UnauthorizedException("Missing required headers.");
+            }
 
-			if (string.IsNullOrWhiteSpace(providedSignature) ||
-				string.IsNullOrWhiteSpace(providedServiceName))			
-			{
-				throw new UnauthorizedException("Empty signature headers.");
-			}
+            var providedSignature = signatureHeader.ToString();
+            var providedServiceName = serviceNameHeader.ToString();
 
-			var expectedServiceName = _options.Service.Name;
-			var expectedSecret = _options.Service.Secret;
-			var validationWindow = _options.ValidationWindowMinutes;
+            if (string.IsNullOrWhiteSpace(providedSignature) ||
+                string.IsNullOrWhiteSpace(providedServiceName))
+            {
+                throw new UnauthorizedException("Empty signature headers.");
+            }
 
-			if (!string.Equals(providedServiceName, expectedServiceName, StringComparison.OrdinalIgnoreCase))
-			{
-				throw new BadRequestException("Invalid service name.");
-			}
+            var trusted = _options.TrustedServices
+                .FirstOrDefault(s => string.Equals(s.Name, providedServiceName, StringComparison.OrdinalIgnoreCase));
 
-			var now = DateTime.UtcNow;
-			var validSlots = new[]
-			{
-				now.AddMinutes(-validationWindow).ToString("HH"),
-				now.ToString("HH"),
-				now.AddMinutes(validationWindow).ToString("HH")
-			};
+            if (trusted is null)
+            {
+                throw new BadRequestException("Unknown service name.");
+            }
 
-			foreach (var slot in validSlots)
-			{
-				if (IsValidSignature(slot, providedServiceName, expectedSecret, providedSignature))
-					return true;
-			}
+            var validationWindow = _options.ValidationWindowMinutes;
 
-			throw new UnauthorizedException("Signature mismatch.");
-		}
+            var now = DateTime.UtcNow;
+            var validSlots = new[]
+            {
+                now.AddMinutes(-validationWindow).ToString("HH"),
+                now.ToString("HH"),
+                now.AddMinutes(validationWindow).ToString("HH")
+            };
 
-		private bool IsValidSignature(string timeSlot, string serviceName, string secret, string providedSignature)
+            foreach (var slot in validSlots)
+            {
+                if (IsValidSignature(slot, trusted.Name, trusted.Secret, providedSignature))
+                    return true;
+            }
+
+            throw new UnauthorizedException("Signature mismatch.");
+        }
+
+        private bool IsValidSignature(string timeSlot, string serviceName, string secret, string providedSignature)
 		{
 			var payload = $"{timeSlot}{serviceName}{secret}";
-			var computed = ComputeSha512(payload);
+			var computed = SignatureUtils.ComputeSha512(payload);
 			return computed.Equals(providedSignature, StringComparison.OrdinalIgnoreCase);
-		}
-
-		private string ComputeSha512(string input)
-		{
-			using var sha = SHA512.Create();
-			var bytes = Encoding.UTF8.GetBytes(input);
-			var hash = sha.ComputeHash(bytes);
-			return BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 		}
 	}
 }
