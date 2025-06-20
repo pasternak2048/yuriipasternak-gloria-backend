@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,6 +16,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\GLORIA.BuildingBlocks\GLORIA.BuildingBlocks\GLORIA.BuildingBlocks.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="LYRA.Client">
+      <HintPath>..\..\..\..\..\LYRA.Libs\LYRA.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="LYRA.Security">
+      <HintPath>..\..\..\..\..\LYRA.Libs\LYRA.Security.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

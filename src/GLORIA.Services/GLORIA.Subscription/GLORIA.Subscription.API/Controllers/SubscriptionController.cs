@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using GLORIA.BuildingBlocks.Abstractions;
 using GLORIA.BuildingBlocks.Controllers;
-using GLORIA.BuildingBlocks.Security;
 using GLORIA.Contracts.Dtos.Subscription;
 using GLORIA.Contracts.Events;
 using GLORIA.Subscription.API.Services;
@@ -26,7 +25,6 @@ namespace GLORIA.Subscription.API.Controllers
 		}
 
 		[HttpPost("matching/advert")]
-		[ValidateSignature]
 		public async Task<IActionResult> GetMatchingAdvertSubscriptions([FromBody] AdvertCreatedEvent @event, CancellationToken cancellationToken)
 		{
 			var response = await _matchingService.GetMatchingSubscriptionsAsync(@event, cancellationToken);

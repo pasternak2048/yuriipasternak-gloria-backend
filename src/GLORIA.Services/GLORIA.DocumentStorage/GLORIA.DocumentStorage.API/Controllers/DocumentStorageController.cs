@@ -1,5 +1,4 @@
-﻿using GLORIA.BuildingBlocks.Security;
-using GLORIA.Contracts.Dtos.DocumentStorage;
+﻿using GLORIA.Contracts.Dtos.DocumentStorage;
 using GLORIA.DocumentStorage.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +18,6 @@ namespace GLORIA.DocumentStorage.API.Controllers
 		/// <summary>
 		/// Upload a file and (optionally) generate a thumbnail if it's an image.
 		/// </summary>
-		[ValidateSignature]
 		[HttpPost("upload")]
 		public async Task<ActionResult<DocumentStorageResponse>> UploadAsync(
 			[FromForm] DocumentStorageUploadRequest request,
@@ -38,7 +36,6 @@ namespace GLORIA.DocumentStorage.API.Controllers
 		/// <summary>
 		/// Delete a file by its relative path.
 		/// </summary>
-		[ValidateSignature]
 		[HttpDelete("delete")]
 		public async Task<IActionResult> DeleteAsync([FromQuery] string relativePath, CancellationToken cancellationToken)
 		{

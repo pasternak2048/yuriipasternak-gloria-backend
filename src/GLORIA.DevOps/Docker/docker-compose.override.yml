@@ -64,6 +64,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
+    networks:
+      - gloria-net
     ports:
       - 27032:27017
     volumes:
@@ -227,6 +229,8 @@ services:
       - MongoSettings__DatabaseName=GLORIA_SubscriptionDb
     depends_on:
       - gloria.subscriptiondb
+    networks:
+      - gloria-net
     ports:
       - "6016:8080"
       - "6076:8081"

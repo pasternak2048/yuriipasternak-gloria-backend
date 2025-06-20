@@ -1,17 +1,20 @@
-﻿using FluentValidation.AspNetCore;
-using FluentValidation;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using GLORIA.BuildingBlocks.Configuration;
+using GLORIA.BuildingBlocks.Extensions.Application;
+using GLORIA.BuildingBlocks.Extensions.Infrastructure;
+using GLORIA.Notification.API.Events.Consumers.Advert;
+using GLORIA.Notification.API.ExternalServices.Subscription;
+using GLORIA.Notification.API.Repositories;
+using GLORIA.Notification.API.Services;
+using GLORIA.Notification.API.Services.Interfaces;
+using LYRA.Client.Extensions;
+using LYRA.Client.Models;
+using LYRA.Security.Enums;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
 using System.Text.Json.Serialization;
-using GLORIA.BuildingBlocks.Extensions.Application;
-using GLORIA.BuildingBlocks.Extensions.Infrastructure;
-using GLORIA.BuildingBlocks.Configuration;
-using GLORIA.Notification.API.Services.Interfaces;
-using GLORIA.Notification.API.ExternalServices.Subscription;
-using GLORIA.Notification.API.Repositories;
-using GLORIA.Notification.API.Services;
-using GLORIA.Notification.API.Events.Consumers.Advert;
 
 namespace GLORIA.Notification.API.Extensions
 {
@@ -26,7 +29,6 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddSwaggerDocumentation("Notification API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
-			services.AddSignatureValidation(configuration);
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
@@ -65,6 +67,19 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddScoped<INotificationRepository, NotificationRepository>();
 			services.AddScoped<INotificationService, NotificationService>();
 
+			services.AddLyraAsCaller(opts =>
+			{
+                opts.Touchpoints = new List<LyraTouchpoint>
+				{
+					new()
+					{
+						SystemName = "gloria@notification",
+						Secret = "super-secret-notification-key",
+						Context = AccessContext.Http,
+						SignatureType = SignatureType.HMAC
+					}
+				};
+            });
 		}
 	}
 }

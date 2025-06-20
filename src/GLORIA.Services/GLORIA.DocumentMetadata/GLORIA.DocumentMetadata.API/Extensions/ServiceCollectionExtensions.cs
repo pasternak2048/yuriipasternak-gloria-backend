@@ -26,7 +26,6 @@ namespace GLORIA.DocumentMetadata.API.Extensions
 			services.AddSwaggerDocumentation("Document Metadata API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
-			services.AddSignatureValidation(configuration);
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.AddControllers()

@@ -13,7 +13,6 @@ namespace GLORIA.DocumentStorage.API.Extensions
 			services.AddCorsPolicy();
 			services.AddExceptionHandlerServices();
 			services.AddSwaggerDocumentation("Document Storage API");
-			services.AddSignatureValidation(configuration);
 			services.AddControllers();
 			services.AddScoped<IDocumentStorageService, DocumentStorageService>();
 			services.AddScoped<IFileValidatorService, FileValidatorService>();

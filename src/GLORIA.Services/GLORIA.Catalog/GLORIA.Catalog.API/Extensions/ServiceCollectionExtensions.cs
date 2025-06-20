@@ -30,7 +30,6 @@ namespace GLORIA.Catalog.API.Extensions
 			services.AddSwaggerDocumentation("Catalog API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
-			services.AddSignatureValidation(configuration);
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.AddControllers()
