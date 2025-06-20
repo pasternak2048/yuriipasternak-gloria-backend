@@ -1,4 +1,6 @@
-﻿namespace GLORIA.Subscription.API.Extensions
+﻿using LYRA.Client.Middleware;
+
+namespace GLORIA.Subscription.API.Extensions
 {
 	public static class MiddlewareApplicationExtensions
 	{
@@ -17,6 +19,8 @@
 					options.RoutePrefix = string.Empty;
 				});
 			}
-		}
+
+            app.UseMiddleware<LyraVerificationMiddleware>();
+        }
 	}
 }

@@ -2,6 +2,12 @@
 {
     public interface ISignedHttpClient
     {
-        Task<TResponse?> PostAsync<TRequest, TResponse>(string uri, TRequest body, CancellationToken cancellationToken = default);
+        Task<TResponse?> SendSignedAsync<TRequest, TResponse>(
+            HttpMethod method,
+            string path,
+            string targetSystem,
+            string callerSystem,
+            TRequest body,
+            CancellationToken cancellationToken = default);
     }
 }

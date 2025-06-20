@@ -77,3 +77,7 @@ volumes:
   gloria.documentmetadata.db.data:
   gloria.notification.db.data:
   gloria.subscription.db.data:
+  
+networks:
+  gloria-net:
+    external: true

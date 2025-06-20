@@ -33,7 +33,6 @@ namespace GLORIA.Advert.API.Extensions
 			services.AddSwaggerDocumentation("Advert API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
-			services.AddSignatureValidation(configuration);
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));

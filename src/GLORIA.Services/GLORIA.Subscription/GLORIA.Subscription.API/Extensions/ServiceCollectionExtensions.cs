@@ -10,6 +10,7 @@ using GLORIA.Subscription.API.Models.Entities;
 using GLORIA.Subscription.API.Repositories;
 using GLORIA.Subscription.API.Repositories.Interfaces;
 using GLORIA.Subscription.API.Services;
+using LYRA.Client.Extensions;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -27,7 +28,6 @@ namespace GLORIA.Subscription.API.Extensions
 			services.AddSwaggerDocumentation("Subscription API");
 			services.AddMongoInfrastructure(configuration);
 			services.AddDistributedCache(configuration);
-			services.AddSignatureValidation(configuration);
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.AddControllers()
@@ -50,6 +50,11 @@ namespace GLORIA.Subscription.API.Extensions
 			));
 			services.AddScoped<IAdvertSubscriptionLookupRepository, AdvertSubscriptionLookupRepository>();
 			services.AddScoped<AdvertSubscriptionMatchingService>();
-		}
+
+            services.AddLyraAsReceiver(opts =>
+            {
+                opts.LyraServerHost = "http://lyra.server:8080";
+            });
+        }
 	}
 }
