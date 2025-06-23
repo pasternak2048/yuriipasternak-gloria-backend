@@ -9,7 +9,9 @@ using GLORIA.Notification.API.Repositories;
 using GLORIA.Notification.API.Services;
 using GLORIA.Notification.API.Services.Interfaces;
 using LYRA.Client.Extensions;
+using LYRA.Client.Interfaces;
 using LYRA.Client.Models;
+using LYRA.Client.Signers.Http;
 using LYRA.Security.Enums;
 using MassTransit;
 using Microsoft.Extensions.Options;
@@ -32,10 +34,11 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-			services.AddHttpClient<SubscriptionClient>(client =>
-			{
-				client.BaseAddress = new Uri(configuration["Services:Subscription"]);
-			});
+            services.AddHttpClient<ILyraSignedHttpClient, LyraSignedHttpClient>(client =>
+            {
+                client.BaseAddress = new Uri(configuration["Services:Subscription"]);
+            });
+            services.AddScoped<SubscriptionClient>();
 			services.AddMassTransit(x =>
 			{
 				x.AddConsumer<AdvertCreatedEventConsumer>();
@@ -73,7 +76,7 @@ namespace GLORIA.Notification.API.Extensions
 				{
 					new()
 					{
-						SystemName = "gloria@notification",
+						SystemName = "notification@gloria",
 						Secret = "super-secret-notification-key",
 						Context = AccessContext.Http,
 						SignatureType = SignatureType.HMAC
