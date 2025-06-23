@@ -1,14 +1,14 @@
-﻿using GLORIA.BuildingBlocks.Security;
-using GLORIA.Contracts.Dtos.Subscription;
+﻿using GLORIA.Contracts.Dtos.Subscription;
 using GLORIA.Contracts.Events;
+using LYRA.Client.Interfaces;
 
 namespace GLORIA.Notification.API.ExternalServices.Subscription
 {
     public class SubscriptionClient
     {
-        private readonly ISignedHttpClient _http;
+        private readonly ILyraSignedHttpClient _http;
 
-        public SubscriptionClient(ISignedHttpClient http)
+        public SubscriptionClient(ILyraSignedHttpClient http)
         {
             _http = http;
         }
@@ -17,7 +17,7 @@ namespace GLORIA.Notification.API.ExternalServices.Subscription
             AdvertCreatedEvent @event,
             CancellationToken cancellationToken)
         {
-            var result = await _http.SendSignedAsync<AdvertCreatedEvent, IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(
+            var result = await _http.SendAsync<AdvertCreatedEvent, IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(
                 method: HttpMethod.Post,
                 path: "/api/subscription/matching/advert",
                 targetSystem: "subscription@gloria",

@@ -6,6 +6,8 @@ services:
       - MSSQL_SA_PASSWORD=SwN12345678
       - MSSQL_PID=Express
     restart: always
+    networks:
+      - gloria-net
     ports:
       - "1433:1433"
 
@@ -16,6 +18,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
+    networks:
+      - gloria-net
     ports:
       - 27017:27017
     volumes:
@@ -28,6 +32,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
+    networks:
+      - gloria-net
     ports:
       - 27018:27017
     volumes:
@@ -40,6 +46,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
+    networks:
+      - gloria-net
     ports:
       - "27022:27017"
     volumes:
@@ -52,6 +60,8 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
     restart: always
+    networks:
+      - gloria-net
     ports:
       - 27031:27017
     volumes:
@@ -74,6 +84,8 @@ services:
   gloria.distributedcache:
     container_name: gloria.distributedcache
     restart: always
+    networks:
+      - gloria-net
     ports:
       - "6379:6379"
 
@@ -83,6 +95,8 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
     restart: always
+    networks:
+      - gloria-net
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -101,6 +115,8 @@ services:
       - gloria.advert.api
       - gloria.documentmetadata.api
       - gloria.documentstorage.api
+    networks:
+      - gloria-net
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
@@ -115,6 +131,8 @@ services:
       - ConnectionStrings__Database=Server=gloria.identityproviderdb;Database=GLORIA_IdentityProviderDb;User Id=sa;Password=SwN12345678;Encrypt=False;TrustServerCertificate=True
     depends_on:
       - gloria.identityproviderdb
+    networks:
+      - gloria-net
     ports:
       - "6002:8080"
       - "6062:8081"
@@ -135,6 +153,8 @@ services:
     depends_on:
       - gloria.catalogdb
       - gloria.distributedcache
+    networks:
+      - gloria-net
     ports:
       - "6003:8080"
       - "6063:8081"
@@ -156,6 +176,8 @@ services:
       - gloria.advertdb
       - gloria.distributedcache
       - gloria.messagebroker
+    networks:
+      - gloria-net
     ports:
       - "6004:8080"
       - "6064:8081"
@@ -176,6 +198,8 @@ services:
     depends_on:
       - gloria.documentmetadatadb
       - gloria.distributedcache
+    networks:
+      - gloria-net
     ports:
       - "6009:8080"
       - "6069:8081"
@@ -190,6 +214,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
+    networks:
+      - gloria-net
     ports:
       - "6010:8080"
       - "6070:8081"
@@ -210,6 +236,8 @@ services:
     depends_on:
       - gloria.notificationdb
       - gloria.messagebroker
+    networks:
+      - gloria-net
     ports:
       - "6015:8080"
       - "6075:8081"
