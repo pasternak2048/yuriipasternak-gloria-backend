@@ -12,7 +12,6 @@ using LYRA.Client.Extensions;
 using LYRA.Client.Interfaces;
 using LYRA.Client.Models;
 using LYRA.Client.Signers.Http;
-using LYRA.Security.Enums;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -69,20 +68,10 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddHttpContextAccessor();
 			services.AddScoped<INotificationRepository, NotificationRepository>();
 			services.AddScoped<INotificationService, NotificationService>();
-
 			services.AddLyraAsCaller(opts =>
 			{
-                opts.Touchpoints = new List<LyraTouchpoint>
-				{
-					new()
-					{
-						SystemName = "notification@gloria",
-						Secret = "super-secret-notification-key",
-						Context = AccessContext.Http,
-						SignatureType = SignatureType.HMAC
-					}
-				};
-            });
+				opts.Touchpoints = configuration.GetSection("Lyra:Touchpoints").Get<List<LyraTouchpoint>>() ?? [];
+			});
 		}
 	}
 }
