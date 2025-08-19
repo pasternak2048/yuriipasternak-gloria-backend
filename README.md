@@ -1,4 +1,4 @@
-# GLORIA 🏡 — Go. Live. Own. Rent. Inform. Act.
+# GLORIA - Go. Live. Own. Rent. Inform. Act.
 
 **GLORIA** is a modular real estate management platform built with **.NET 8**, designed with principles of clean architecture, scalability, and service separation.
 
@@ -13,35 +13,35 @@ It includes:
 > GLORIA is designed to scale.
 
 
-## 🚀 Features
+## Features
 
-- 🔐 **Authentication & Authorization**
+- **Authentication & Authorization**
   - Access & Refresh JWT tokens
   - Session tracking with IP & device info
   - Multi-session logout and token invalidation
-- 🏢 **Real Estate Management**
+- **Real Estate Management**
   - Catalog of properties (CRUD)
   - Publishable offers with filters and enums
-- 📂 **Document Handling**
+- **Document Handling**
   - Upload and store files with metadata
   - Local or cloud storage ready
-- 🔔 **Event-Driven Architecture**
+- **Event-Driven Architecture**
   - RabbitMQ-powered pub/sub between services
   - Subscriptions + notifications when offers are created
-- 🌐 **API Gateway**
+- **API Gateway**
   - YARP-powered HTTP routing to all services
   - CORS, HTTPS
-- ⚙️ **Generic Infrastructure**
+- ⚙**Generic Infrastructure**
   - Generic CRUD controllers and repositories
   - Auto-caching with invalidation
   - MongoDB seeding, DI extensions, distributed cache
-- 🧪 **Ready for NuGet**
+- **Ready for NuGet**
   - Clean `Contracts` and `BuildingBlocks` projects
   - No frontend dependencies
 
 
 
-## 📦 Project Structure
+## Project Structure
 
 ```text
 src/
@@ -87,11 +87,11 @@ Shared code is cleanly separated into reusable packages (Contracts, BuildingBloc
 
 
 
-## 🧱 Architecture & Tech Stack
+## Architecture & Tech Stack
 
 GLORIA follows a layered architecture with clean separation between concerns and responsibilities. It is built around a **microservices-first** approach with strong internal consistency and clear external contracts.
 
-### 🧠 Architecture Principles
+### Architecture Principles
 
 - **Clean Architecture**
   - Contracts, infrastructure, and logic are strictly isolated
@@ -102,7 +102,7 @@ GLORIA follows a layered architecture with clean separation between concerns and
 - **Generic Infrastructure**
   - Reusable patterns for CRUD, caching, Mongo, DI, exception handling
 
-### 🔧 Technologies Used
+### Technologies Used
 
 | Layer              | Stack                                            |
 |-------------------|--------------------------------------------------|
@@ -116,22 +116,22 @@ GLORIA follows a layered architecture with clean separation between concerns and
 
 
 
-## ▶️ How to Run (Local Development)
+## How to Run (Local Development)
 
 > The entire backend stack can be launched with a single command using Docker.
 
-### 🐳 Requirements
+### Requirements
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - [Docker + Docker Compose](https://www.docker.com/products/docker-desktop)
 
-### 🚀 Run Everything
+### Run Everything
 
 ```bash
 docker compose up --build
 ```
 
-### 📍 Services started locally
+### Services started locally
 
 | Service              | URL                                |
 |----------------------|------------------------------------|
@@ -149,7 +149,7 @@ docker compose up --build
 
 
 
-## 💡 Why this project exists
+## Why this project exists
 
 I built GLORIA as a way to challenge myself and grow as a backend engineer.
 
@@ -164,6 +164,6 @@ This project helps me:
 GLORIA is not a toy. It’s my personal journey toward mastery.
 If you’re a developer or employer looking to understand how I think, code and grow — this project is me.
 
-## 📄 License
+## License
 
 This project is licensed under the [MIT License](LICENSE).
