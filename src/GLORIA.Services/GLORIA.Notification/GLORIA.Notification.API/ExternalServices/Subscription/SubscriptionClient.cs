@@ -1,31 +1,39 @@
 ﻿using GLORIA.Contracts.Dtos.Subscription;
 using GLORIA.Contracts.Events;
-using LYRA.Client.Interfaces;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GLORIA.Notification.API.ExternalServices.Subscription
 {
-    public class SubscriptionClient
-    {
-        private readonly ILyraSignedHttpClient _http;
+	public class SubscriptionClient
+	{
+		private readonly HttpClient _http;
 
-        public SubscriptionClient(ILyraSignedHttpClient http)
-        {
-            _http = http;
-        }
+		public SubscriptionClient(HttpClient http)
+		{
+			_http = http;
+		}
 
-        public async Task<IReadOnlyCollection<AdvertSubscriptionMatchingResponse>> GetMatchingSubscriptionsAsync(
-            AdvertCreatedEvent @event,
-            CancellationToken cancellationToken)
-        {
-            var result = await _http.SendAsync<AdvertCreatedEvent, IReadOnlyCollection<AdvertSubscriptionMatchingResponse>>(
-                method: HttpMethod.Post,
-                path: "/api/subscription/matching/advert",
-                targetSystem: "subscription@gloria",
-                callerSystem: "notification@gloria",
-                body: @event,
-                cancellationToken: cancellationToken);
+		public async Task<IReadOnlyCollection<AdvertSubscriptionResponse>> GetMatchingSubscriptionsAsync(
+			AdvertCreatedEvent @event,
+			CancellationToken cancellationToken)
+		{
+			var response = await _http.PostAsJsonAsync("api/subscription/matching/advert", @event, cancellationToken);
 
-            return result ?? Array.Empty<AdvertSubscriptionMatchingResponse>();
-        }
-    }
+			if (!response.IsSuccessStatusCode)
+				throw new Exception($"Failed to get subscriptions. Status: {response.StatusCode}");
+
+			var content = await response.Content.ReadAsStringAsync(cancellationToken);
+
+			var options = new JsonSerializerOptions
+			{
+				PropertyNameCaseInsensitive = true,
+				Converters = { new JsonStringEnumConverter() }
+			};
+
+			var result = JsonSerializer.Deserialize<IReadOnlyCollection<AdvertSubscriptionResponse>>(content, options);
+
+			return result ?? Array.Empty<AdvertSubscriptionResponse>();
+		}
+	}
 }

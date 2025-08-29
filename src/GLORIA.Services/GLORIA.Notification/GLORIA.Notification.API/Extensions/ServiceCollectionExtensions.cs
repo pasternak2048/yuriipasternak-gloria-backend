@@ -8,10 +8,6 @@ using GLORIA.Notification.API.ExternalServices.Subscription;
 using GLORIA.Notification.API.Repositories;
 using GLORIA.Notification.API.Services;
 using GLORIA.Notification.API.Services.Interfaces;
-using LYRA.Client.Extensions;
-using LYRA.Client.Interfaces;
-using LYRA.Client.Models;
-using LYRA.Client.Signers.Http;
 using MassTransit;
 using Microsoft.Extensions.Options;
 using System.Reflection;
@@ -33,10 +29,6 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 			services.AddFluentValidationAutoValidation();
 			services.Configure<RabbitMqSettings>(configuration.GetSection("RabbitMq"));
-            services.AddHttpClient<ILyraSignedHttpClient, LyraSignedHttpClient>(client =>
-            {
-                client.BaseAddress = new Uri(configuration["Services:Subscription"]);
-            });
             services.AddScoped<SubscriptionClient>();
 			services.AddMassTransit(x =>
 			{
@@ -68,10 +60,7 @@ namespace GLORIA.Notification.API.Extensions
 			services.AddHttpContextAccessor();
 			services.AddScoped<INotificationRepository, NotificationRepository>();
 			services.AddScoped<INotificationService, NotificationService>();
-			services.AddLyraAsCaller(opts =>
-			{
-				opts.Touchpoints = configuration.GetSection("Lyra:Touchpoints").Get<List<LyraTouchpoint>>() ?? [];
-			});
+			services.AddScoped<HttpClient>();
 		}
 	}
 }
